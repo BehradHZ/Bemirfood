@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.controller.loginController" fx:id="mainBorderPane"
+            fx:controller="frontend.bemirfoodclient.controller.registerController" fx:id="mainBorderPane"
             prefHeight="787.5" prefWidth="700.0">
     <center>
         <VBox alignment="CENTER" style="-fx-background-color: white;">
@@ -17,20 +17,28 @@
                     <Image url="@assets/firstPageHeaderImage.jpg"/>
                 </ImageView>
 
-                <Label text="Login" style="-fx-font-weight: bold; -fx-font-size: 36;">
-                    <VBox.margin>
-                        <Insets top="20"/>
-                    </VBox.margin>
-                </Label>
+                <Label text="Register" style="-fx-font-weight: bold; -fx-font-size: 36;"/>
 
-                <Label text="Let's login to your Bemirfood! account."/>
+                <Label text="Enter your details to set you up a Bemirfood! account."/>
 
             </VBox>
             <VBox alignment="CENTER_LEFT" spacing="5">
 
-                <Label text="Phone number" style="-fx-font-weight: bold; -fx-font-size: 16">
+                <Label text="Full name" style="-fx-font-weight: bold; -fx-font-size: 16">
                     <VBox.margin>
                         <Insets top="30" left="30"/>
+                    </VBox.margin>
+                </Label>
+
+                <TextField fx:id="fullNameTextField">
+                    <VBox.margin>
+                        <Insets right="30" left="30"/>
+                    </VBox.margin>
+                </TextField>
+
+                <Label text="Phone Number" style="-fx-font-weight: bold; -fx-font-size: 16">
+                    <VBox.margin>
+                        <Insets left="30"/>
                     </VBox.margin>
                 </Label>
 
@@ -40,9 +48,21 @@
                     </VBox.margin>
                 </TextField>
 
+                <Label text="Email Address" style="-fx-font-weight: bold; -fx-font-size: 16">
+                    <VBox.margin>
+                        <Insets left="30"/>
+                    </VBox.margin>
+                </Label>
+
+                <TextField fx:id="emailTextField">
+                    <VBox.margin>
+                        <Insets right="30" left="30"/>
+                    </VBox.margin>
+                </TextField>
+
                 <Label text="Password" style="-fx-font-weight: bold; -fx-font-size: 16">
                     <VBox.margin>
-                        <Insets top="10" left="30"/>
+                        <Insets left="30"/>
                     </VBox.margin>
                 </Label>
 
@@ -57,21 +77,21 @@
                         </HBox.hgrow>
                         <PasswordField fx:id="passwordField">
                             <tooltip>
-                                <Tooltip text="Your password must contain at least 8 characters including:&#10;
+                        <Tooltip text="Your password must contain at least 8 characters including:&#10;
                                         - 1 uppercase letter&#10;
                                         - 1 lowercase letter&#10;
                                         - 1 number 0-9&#10;
                                         - 1 special character."/>
-                            </tooltip>
+                    </tooltip>
                         </PasswordField>
                         <TextField fx:id="visiblePasswordField" visible="false">
                             <tooltip>
-                                <Tooltip text="Your password must contain at least 8 characters including:&#10;
+                        <Tooltip text="Your password must contain at least 8 characters including:&#10;
                                         - 1 uppercase letter&#10;
                                         - 1 lowercase letter&#10;
                                         - 1 number 0-9&#10;
                                         - 1 special character."/>
-                            </tooltip>
+                    </tooltip>
                         </TextField>
                     </StackPane>
 
@@ -94,13 +114,28 @@
                     </StackPane>
                 </HBox>
 
+                <Label text="Role" style="-fx-font-weight: bold; -fx-font-size: 16">
+                    <VBox.margin>
+                        <Insets left="30"/>
+                    </VBox.margin>
+                </Label>
+
+                <HBox alignment="CENTER" spacing="10">
+                    <fx:define>
+                        <ToggleGroup fx:id="roleToggleGroup"/>
+                    </fx:define>
+                    <RadioButton toggleGroup="$roleToggleGroup" text="Buyer" style="-fx-font-size: 15" selected="true"/>
+                    <RadioButton toggleGroup="$roleToggleGroup" text="Seller" style="-fx-font-size: 15"/>
+                    <RadioButton toggleGroup="$roleToggleGroup" text="Courier" style="-fx-font-size: 15"/>
+                </HBox>
+
             </VBox>
 
-            <Button fx:id="loginButton" text="Login" style="-fx-background-color: #4567f2; -fx-text-fill: #ffffff; -fx-background-radius: 10;
-                                        -fx-font-weight: bold; -fx-font-size: 16" prefWidth="136"
-                    onAction="#loginButtonClicked">
+            <Button fx:id="registerButton" text="Register" style="-fx-background-color: #4567f2; -fx-text-fill: #ffffff; -fx-background-radius: 10;
+                                            -fx-font-weight: bold; -fx-font-size: 16" prefWidth="136"
+                    onAction="#handelRegisterButtonClicked">
                 <VBox.margin>
-                    <Insets top="45"/>
+                    <Insets top="30"/>
                 </VBox.margin>
             </Button>
 
@@ -110,18 +145,18 @@
                     <Insets top="10"/>
                 </VBox.margin>
 
-                <Label text="don't have an account?"/>
+                <Label text="already have an account?"/>
 
-                <Hyperlink text="register here!" onAction="#registerHyperlinkClicked"/>
+                <Hyperlink text="login here!" onAction="#handelLoginHyperlinkClicked"/>
 
             </HBox>
 
         </VBox>
     </center>
     <right>
-            <ImageView fx:id="firstPageImage" preserveRatio="true">
-                <Image url="@assets/firstPageImage.jpg"/>
-            </ImageView>
+        <ImageView fx:id="firstPageImage" preserveRatio="true">
+            <Image url="@assets/firstPageImage.jpg"/>
+        </ImageView>
     </right>
 
 </BorderPane>
