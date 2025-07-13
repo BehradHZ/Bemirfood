@@ -10,4 +10,6 @@ module frontend.bemirfoodclient {
     exports frontend.bemirfoodclient;
     exports frontend.bemirfoodclient.controller;
     opens frontend.bemirfoodclient.controller to javafx.fxml;
+    exports frontend.bemirfoodclient.controller.homepage;
+    opens frontend.bemirfoodclient.controller.homepage to javafx.fxml;
 }

@@ -1,4 +1,4 @@
-package frontend.bemirfoodclient.controller;
+package frontend.bemirfoodclient.controller.homepage;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,7 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 
-public class BuyerViewController {
+public class BuyerHomepageController {
     @FXML
     public ImageView homepageBemirfoodLogo;
     @FXML
