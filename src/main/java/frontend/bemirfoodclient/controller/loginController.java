@@ -59,11 +59,25 @@ public class loginController {
     }
 
     public int checkLoginStatus(String phoneNumber, String password) {
-        return 200;
+        //do the stuff in backend
+        return 200; //temporary
     }
 
     public String checkLoginRole(String phoneNumber){
-        return "/frontend/bemirfoodclient/homepage/buyer-homepage-view.fxml";
+        //do the stuff in backend
+        String role = "buyer"; //temporary
+        switch (role){
+            case "buyer":
+                return "/frontend/bemirfoodclient/homepage/buyer-homepage-view.fxml";
+            case "seller":
+                return "/frontend/bemirfoodclient/homepage/seller-homepage-view.fxml";
+            case "courier":
+                return "/frontend/bemirfoodclient/homepage/courier-homepage-view.fxml";
+            case "admin":
+                return "/frontend/bemirfoodclient/homepage/admin-homepage-view.fxml";
+            default:
+                return "";
+        }
     }
 
     @FXML

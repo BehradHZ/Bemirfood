@@ -22,7 +22,7 @@
                 </graphic>
             </Button>
 
-            <TextField fx:id="searchTextField" promptText="جستجو کن" style="-fx-background-color: #ebedf0;
+            <TextField fx:id="searchTextField" promptText="search here..." style="-fx-background-color: #ebedf0;
                         -fx-background-radius: 15; -fx-font-size: 14" prefWidth="300"/>
 
             <Button style="-fx-background-color: #ebedf0;

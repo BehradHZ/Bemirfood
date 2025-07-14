@@ -76,12 +76,25 @@ public class registerController {
     }
 
     public int checkLoginStatus(String fullName, String phoneNumber, String email, String password, String role) {
-        return 200;
+        //do the stuff in backend
+        return 200; //temporary
     }
 
     public String checkLoginRole(String phoneNumber){
-        return "/frontend/bemirfoodclient/homepage/buyer-homepage-view.fxml";
-    }
+        //do the stuff in backend
+        String role = "buyer"; //temporary
+        switch (role){
+            case "buyer":
+                return "/frontend/bemirfoodclient/homepage/buyer-homepage-view.fxml";
+            case "seller":
+                return "/frontend/bemirfoodclient/homepage/seller-homepage-view.fxml";
+            case "courier":
+                return "/frontend/bemirfoodclient/homepage/courier-homepage-view.fxml";
+            case "admin":
+                return "/frontend/bemirfoodclient/homepage/admin-homepage-view.fxml";
+            default:
+                return "";
+        }    }
 
     @FXML
     public void handelRegisterButtonClicked() {
@@ -92,11 +105,6 @@ public class registerController {
                 passwordField.getText(),
                 role)){
             case 200:
-                System.out.println("User registered with " + fullNameTextField.getText() + " " +
-                        phoneNumberTextField.getText() + " " +
-                        emailTextField.getText() + " " +
-                        passwordField.getText() + " " +
-                        role);
                 PauseTransition delay = new PauseTransition(Duration.seconds(5));
                 delay.setOnFinished(event -> {
                     try {

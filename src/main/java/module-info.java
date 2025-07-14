@@ -1,4 +1,4 @@
-module frontend.bemirfoodclient {
+    module frontend.bemirfoodclient {
     requires javafx.controls;
     requires javafx.fxml;
 
@@ -12,4 +12,7 @@ module frontend.bemirfoodclient {
     opens frontend.bemirfoodclient.controller to javafx.fxml;
     exports frontend.bemirfoodclient.controller.homepage;
     opens frontend.bemirfoodclient.controller.homepage to javafx.fxml;
-}
+    exports frontend.bemirfoodclient.controller.profile;
+        exports frontend.bemirfoodclient.controller.profile.buyer;
+        exports frontend.bemirfoodclient.controller.profile.buyer.details;
+    }

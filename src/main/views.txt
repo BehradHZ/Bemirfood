@@ -2,7 +2,7 @@ registration view                                                     Done-//POS
 login view                                                            Done-//POST-auth/login
 
 -Buyer:
-	buyer homepage view [vendors + items + profile + ]
+	buyer homepage view [vendors + items + profile + ]                Created/Not done yet
 	profile view [edit + logout (pop-up)]                             //GET-auth/profile + //POST-auth/logout
 	update profile (pop-up)                                           //PUT-auth/profile
 
