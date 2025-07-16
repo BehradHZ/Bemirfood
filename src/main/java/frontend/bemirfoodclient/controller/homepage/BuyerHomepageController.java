@@ -3,8 +3,6 @@ package frontend.bemirfoodclient.controller.homepage;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.NodeOrientation;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -33,9 +31,6 @@ public class BuyerHomepageController {
     public void initialize() {
         homepageBemirfoodLogo.setPreserveRatio(true);
         homepageBemirfoodLogo.setFitHeight(40);
-
-        searchTextField.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
-        searchTextField.setAlignment(Pos.CENTER_RIGHT);
 
         searchIcon.setPreserveRatio(true);
         searchIcon.setFitHeight(17);

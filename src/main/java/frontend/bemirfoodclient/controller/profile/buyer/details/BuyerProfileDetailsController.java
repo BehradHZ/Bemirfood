@@ -34,7 +34,7 @@ public class BuyerProfileDetailsController {
 
     }
 
-    public int updateCurrentUserProfile(String full_name, String phoneNumber, String email, String address, String profileImageBase64, Object bank_info) {
+    public static int updateCurrentUserProfile(String full_name, String phoneNumber, String email, String address, String profileImageBase64, Object bank_info) {
         //do the stuff in backend
         return 200; //temporary
     }
@@ -142,33 +142,43 @@ public class BuyerProfileDetailsController {
         }
     }
 
-    @FXML
-    public void editProfileButtonClicked() {
-
-    }
-
-    public String getFullName() {
+    public static String getFullName() {
         //do the stuff in backend
-        return "Behrad Hozouri";
+        return "Behrad Hozouri"; //temporary
     }
 
-    public String getPhoneNumber() {
+    public static String getPhoneNumber() {
         //do the stuff in backend
-        return "09220866912";
+        return "09220866912"; //temporary
     }
 
-    public String getEmail() {
+    public static String getEmail() {
         //do the stuff in backend
-        return "bhvsrt2006@gmail.com";
+        return "bhvsrt2006@gmail.com"; //temporary
     }
 
-    public String getProfileImageBase64() {
+    public static String getProfileImageBase64() {
         //do the stuff in backend
         if (false /*profile picture is added (temporary)*/) {
-            return "/frontend/bemirfoodclient/assets/userProfilePicture.jpg";
+            return "/frontend/bemirfoodclient/assets/userProfilePicture.jpg"; //temporary
         } else {
             return "/frontend/bemirfoodclient/assets/icons/profileUpload.png";
         }
     }
 
+    public static String getAddress() {
+        //do the stuff in backend
+        return "Karaj"; //temporary
+    }
+
+    //change this based on backend BankInfo Object
+    public static String getBankName() {
+        //do the stuff in backend
+        return "Saderat"; //temporary
+    }
+
+    public static String getAccountNumber() {
+        //do the stuff in backend
+        return "12345"; //temporary
+    }
 }
