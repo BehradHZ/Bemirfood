@@ -30,7 +30,8 @@ public class BemirfoodApplication extends Application {
             fxmlLoader = new FXMLLoader(BemirfoodApplication.class.getResource(
 //                    "login-view.fxml"
 //                    "register-view.fxml"
-//                    "homepage/courier-homepage-view.fxml"
+//                    "homepage/seller-homepage-view.fxml"
+//                    "profile/seller/seller-profile-view.fxml"
                     "profile/courier/courier-profile-view.fxml"
             ));
         }

@@ -64,6 +64,15 @@
             </StackPane>
             <Separator/>
             <StackPane>
+                <Button fx:id="myTransactionsSmall" text="  My transactions" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 20
+                           ; -fx-text-fill: #444444" onAction="#myTransactionsButtonClicked"/>
+                <Button fx:id="myTransactionsLarge" text=" My transactions" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 24
+                           ; -fx-text-fill: #0066ff" visible="false" onAction="#myTransactionsButtonClicked" wrapText="true"/>
+            </StackPane>
+            <Separator/>
+            <StackPane>
                 <Button fx:id="logoutSmall" text="  Logout" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
                         style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 20
                            ; -fx-text-fill: #444444" onAction="#logoutButtonClicked"/>

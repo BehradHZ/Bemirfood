@@ -125,9 +125,9 @@
                     <fx:define>
                         <ToggleGroup fx:id="roleToggleGroup"/>
                     </fx:define>
-                    <RadioButton toggleGroup="$roleToggleGroup" text="Buyer" style="-fx-font-size: 15" selected="true"/>
-                    <RadioButton toggleGroup="$roleToggleGroup" text="Seller" style="-fx-font-size: 15"/>
-                    <RadioButton toggleGroup="$roleToggleGroup" text="Courier" style="-fx-font-size: 15"/>
+                    <RadioButton fx:id="buyerToggleOption" toggleGroup="$roleToggleGroup" text="Buyer" style="-fx-font-size: 15" selected="true"/>
+                    <RadioButton fx:id="sellerToggleOption" toggleGroup="$roleToggleGroup" text="Seller" style="-fx-font-size: 15"/>
+                    <RadioButton fx:id="courierToggleOption" toggleGroup="$roleToggleGroup" text="Courier" style="-fx-font-size: 15"/>
                 </HBox>
 
                 <HBox>
@@ -162,7 +162,7 @@
 
             <Button fx:id="registerButton" text="Register" style="-fx-background-color: #4567f2; -fx-text-fill: #ffffff; -fx-background-radius: 10;
                                         -fx-font-weight: bold; -fx-font-size: 16" prefWidth="136"
-                    onAction="#handelRegisterButtonClicked">
+                    onAction="#handelRegisterButtonClicked" defaultButton="true">
                 <VBox.margin>
                     <Insets top="20"/>
                 </VBox.margin>

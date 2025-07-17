@@ -6,9 +6,87 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="frontend.bemirfoodclient.controller.profile.seller.SellerProfileController"
-            prefHeight="400.0" prefWidth="600.0">
+            style="-fx-background-color: #f4f4f4"
+            fx:id="mainBorderPane">
 
-</AnchorPane>
+    <padding>
+        <Insets top="12" bottom="25" left="25" right="25"/>
+    </padding>
+    <top>
+        <HBox alignment="CENTER_LEFT">
+            <BorderPane.margin>
+                <Insets bottom="13"/>
+            </BorderPane.margin>
+            <Button fx:id="backButton" style="-fx-background-color: #f4f4f4" onAction="#backButtonClicked">
+                <graphic>
+                    <ImageView fx:id="backButtonImage">
+                        <Image url="@../../assets/icons/back.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Region fx:id="profileSpacer"/>
+            <Button fx:id="editButton" style="-fx-background-color: #f4f4f4" onAction="#editButtonClicked">
+                <graphic>
+                    <ImageView fx:id="editButtonImage">
+                        <Image url="@../../assets/icons/edit.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+    </top>
+    <left>
+        <VBox prefWidth="250" style="-fx-background-color: #ffffff; -fx-background-radius: 25">
+            <BorderPane.margin>
+                <Insets right="25" />
+            </BorderPane.margin>
+            <StackPane>
+                <Button fx:id="profileSmall" text="  Profile" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 20
+                           ; -fx-text-fill: #444444" onAction="#profileButtonClicked"/>
+                <Button fx:id="profileLarge" text=" Profile" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 24
+                           ; -fx-text-fill: #0066ff" onAction="#profileButtonClicked" wrapText="true"/>
+            </StackPane>
+            <Separator/>
+            <StackPane>
+                <Button fx:id="myRestaurantsSmall" text="  My restaurants" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 20
+                           ; -fx-text-fill: #444444" onAction="#myRestaurantsButtonClicked"/>
+                <Button fx:id="myRestaurantsLarge" text=" My restaurants" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 24
+                           ; -fx-text-fill: #0066ff" visible="false" onAction="#myRestaurantsButtonClicked" wrapText="true"/>
+            </StackPane>
+            <Separator/>
+            <StackPane>
+                <Button fx:id="myTransactionsSmall" text="  My transactions" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 20
+                           ; -fx-text-fill: #444444" onAction="#myTransactionsButtonClicked"/>
+                <Button fx:id="myTransactionsLarge" text=" My transactions" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 24
+                           ; -fx-text-fill: #0066ff" visible="false" onAction="#myTransactionsButtonClicked" wrapText="true"/>
+            </StackPane>
+            <Separator/>
+            <StackPane>
+                <Button fx:id="logoutSmall" text="  Logout" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 20
+                           ; -fx-text-fill: #444444" onAction="#logoutButtonClicked"/>
+                <Button fx:id="logoutLarge" text=" Logout" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 24
+                           ; -fx-text-fill: #e40000" visible="false" onAction="#logoutButtonClicked" wrapText="true"/>
+            </StackPane>
+
+        </VBox>
+    </left>
+
+    <center>
+        <VBox style="-fx-background-color: #ffffff; -fx-background-radius: 25">
+
+        </VBox>
+    </center>
+</BorderPane>

@@ -98,7 +98,7 @@
 
             <Button fx:id="loginButton" text="Login" style="-fx-background-color: #4567f2; -fx-text-fill: #ffffff; -fx-background-radius: 10;
                                         -fx-font-weight: bold; -fx-font-size: 16" prefWidth="136"
-                    onAction="#loginButtonClicked">
+                    onAction="#loginButtonClicked" defaultButton="true">
                 <VBox.margin>
                     <Insets top="45"/>
                 </VBox.margin>

@@ -6,9 +6,53 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.controller.homepage.SellerHomepageController"
-            prefHeight="400.0" prefWidth="600.0">
+            fx:controller="frontend.bemirfoodclient.controller.homepage.SellerHomepageController">
+    <top>
+        <HBox alignment="CENTER" style="-fx-background-color: #ffffff">
+            <Button prefHeight="40" style="-fx-background-color: #ffffff" onAction="#homepageBemirfoodLogoClicked">
+                <graphic>
+                    <ImageView fx:id="homepageBemirfoodLogo">
+                        <Image url="@../assets/Bemirfood_Logo.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
 
-</AnchorPane>
+            <TextField fx:id="searchTextField" promptText="search here..." style="-fx-background-color: #ebedf0;
+                        -fx-background-radius: 15; -fx-font-size: 14" prefWidth="300"/>
+
+            <Button style="-fx-background-color: #ebedf0;
+                        -fx-background-radius: 25;" onAction="#searchButtonClicked">
+                <HBox.margin>
+                    <Insets left="7"/>
+                </HBox.margin>
+                <graphic>
+                    <ImageView fx:id="searchIcon">
+                        <Image url="@../assets/icons/search.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <Region fx:id="toolbarSpacer"/>
+
+            <Button style="-fx-background-color: #ffffff" onAction="#profileButtonClicked">
+                <graphic>
+                    <ImageView fx:id="profileIcon">
+                        <Image url="@../assets/icons/profile.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+    </top>
+    <center>
+        <VBox style="-fx-background-color: #ffffff">
+
+        </VBox>
+        <Label text="this is seller homepage"/>
+    </center>
+
+</BorderPane>
