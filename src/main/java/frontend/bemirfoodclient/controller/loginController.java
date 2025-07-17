@@ -2,6 +2,9 @@ package frontend.bemirfoodclient.controller;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
 import javafx.animation.PauseTransition;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -34,6 +37,8 @@ public class loginController {
     @FXML
     public Button loginButton;
 
+    private BooleanProperty isLoggingIn = new SimpleBooleanProperty(false);
+
     @FXML
     public void initialize() {
         firstPageImage.fitHeightProperty().bind(mainBorderPane.heightProperty());
@@ -56,6 +61,13 @@ public class loginController {
         visiblePasswordField.textProperty().bindBidirectional(passwordField.textProperty());
         visiblePasswordField.visibleProperty().bind(makePasswordHidden.visibleProperty());
         passwordField.visibleProperty().bind(makePasswordVisible.visibleProperty());
+
+        BooleanBinding allFieldsFilled =
+                phoneNumberTextField.textProperty().isEmpty().or(
+                        passwordField.textProperty().isEmpty()
+                );
+
+        loginButton.disableProperty().bind(allFieldsFilled.or(isLoggingIn));
     }
 
     public int checkLoginStatus(String phoneNumber, String password) {
@@ -63,9 +75,9 @@ public class loginController {
         return 200; //temporary
     }
 
-    public String checkLoginRole(String phoneNumber){
+    public String checkLoginRole(String username){
         //do the stuff in backend
-        String role = "buyer"; //temporary
+        String role = "courier"; //temporary
         switch (role){
             case "buyer":
                 return "/frontend/bemirfoodclient/homepage/buyer-homepage-view.fxml";
@@ -82,7 +94,7 @@ public class loginController {
 
     @FXML
     public void loginButtonClicked() {
-        loginButton.setDisable(true);
+        isLoggingIn.set(true);
         switch (checkLoginStatus(phoneNumberTextField.getText(), passwordField.getText())){
             case 200:
                 PauseTransition delay = new PauseTransition(Duration.seconds(5));
@@ -95,13 +107,13 @@ public class loginController {
                     } catch (IOException ioe) {
                         ioe.printStackTrace();
                     }
-                    loginButton.setDisable(false);
+                    isLoggingIn.set(false);
                 });
                 delay.play();
 
                 break;
             case 400:
-                loginButton.setDisable(false);
+                isLoggingIn.set(false);
                 Alert alert400 = new Alert(Alert.AlertType.ERROR);
                 Stage stage400 = (Stage) alert400.getDialogPane().getScene().getWindow();
                     stage400.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
@@ -112,7 +124,7 @@ public class loginController {
                 alert400.showAndWait();
                 break;
             case 401:
-                loginButton.setDisable(false);
+                isLoggingIn.set(false);
                 Alert alert401 = new Alert(Alert.AlertType.ERROR);
                 Stage stage401 = (Stage) alert401.getDialogPane().getScene().getWindow();
                     stage401.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
@@ -123,7 +135,7 @@ public class loginController {
                 alert401.showAndWait();
                 break;
             case 403:
-                loginButton.setDisable(false);
+                isLoggingIn.set(false);
                 Alert alert403 = new Alert(Alert.AlertType.ERROR);
                     Stage stage403 = (Stage) alert403.getDialogPane().getScene().getWindow();
                 stage403.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
@@ -134,7 +146,7 @@ public class loginController {
                 alert403.showAndWait();
                 break;
             case 404:
-                loginButton.setDisable(false);
+                isLoggingIn.set(false);
                 Alert alert404 = new Alert(Alert.AlertType.ERROR);
                     Stage stage404 = (Stage) alert404.getDialogPane().getScene().getWindow();
                 stage404.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
@@ -145,7 +157,7 @@ public class loginController {
                 alert404.showAndWait();
                 break;
             case 409:
-                loginButton.setDisable(false);
+                isLoggingIn.set(false);
                 Alert alert409 = new Alert(Alert.AlertType.ERROR);
                 Stage stage409 = (Stage) alert409.getDialogPane().getScene().getWindow();
                     stage409.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
@@ -156,7 +168,7 @@ public class loginController {
                 alert409.showAndWait();
                 break;
             case 415:
-                loginButton.setDisable(false);
+                isLoggingIn.set(false);
                 Alert alert415 = new Alert(Alert.AlertType.ERROR);
                 Stage stage415 = (Stage) alert415.getDialogPane().getScene().getWindow();
                 stage415.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
@@ -167,7 +179,7 @@ public class loginController {
                 alert415.showAndWait();
                 break;
             case 429:
-                loginButton.setDisable(false);
+                isLoggingIn.set(false);
                 Alert alert429 = new Alert(Alert.AlertType.ERROR);
                 Stage stage429 = (Stage) alert429.getDialogPane().getScene().getWindow();
                     stage429.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
@@ -178,7 +190,7 @@ public class loginController {
                 alert429.showAndWait();
                 break;
             case 500:
-                loginButton.setDisable(false);
+                isLoggingIn.set(false);
                 Alert alert500 = new Alert(Alert.AlertType.ERROR);
                 Stage stage500 = (Stage) alert500.getDialogPane().getScene().getWindow();
                     stage500.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
@@ -189,7 +201,7 @@ public class loginController {
                 alert500.showAndWait();
                 break;
             default:
-                loginButton.setDisable(false);
+                isLoggingIn.set(false);
                 break;
         }
     }

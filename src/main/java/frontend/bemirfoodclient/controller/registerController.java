@@ -2,6 +2,9 @@ package frontend.bemirfoodclient.controller;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
 import javafx.animation.PauseTransition;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -38,10 +41,15 @@ public class registerController {
     @FXML
     public ToggleGroup roleToggleGroup;
     @FXML
+    public TextField bankNameTextField;
+    @FXML
+    public TextField accountNumberTextField;
+    @FXML
     public Button registerButton;
 
     public String role;
 
+    private BooleanProperty isRegistering = new SimpleBooleanProperty(false);
 
     @FXML
     public void initialize() {
@@ -73,9 +81,24 @@ public class registerController {
            }
         });
 
+        BooleanBinding allFieldsFilled =
+                fullNameTextField.textProperty().isEmpty().or(
+                        phoneNumberTextField.textProperty().isEmpty().or(
+                                emailTextField.textProperty().isEmpty().or(
+                                        passwordField.textProperty().isEmpty().or(
+                                                bankNameTextField.textProperty().isEmpty().or(
+                                                        accountNumberTextField.textProperty().isEmpty()
+                                        )
+                                )
+                        )
+                )
+        );
+
+        registerButton.disableProperty().bind(allFieldsFilled.or(isRegistering));
+
     }
 
-    public int checkLoginStatus(String fullName, String phoneNumber, String email, String password, String role) {
+    public int checkLoginStatus(String fullName, String phoneNumber, String email, String password, String role, String bankName, String accountNumber) {
         //do the stuff in backend
         return 200; //temporary
     }
@@ -98,12 +121,14 @@ public class registerController {
 
     @FXML
     public void handelRegisterButtonClicked() {
-        registerButton.setDisable(true);
+        isRegistering.set(true);
         switch (checkLoginStatus(fullNameTextField.getText(),
                 phoneNumberTextField.getText(),
                 emailTextField.getText(),
                 passwordField.getText(),
-                role)){
+                role,
+                bankNameTextField.getText(),
+                accountNumberTextField.getText())){
             case 200:
                 PauseTransition delay = new PauseTransition(Duration.seconds(5));
                 delay.setOnFinished(event -> {
@@ -120,7 +145,7 @@ public class registerController {
 
                 break;
             case 400:
-                registerButton.setDisable(false);
+                isRegistering.set(false);
                 Alert alert400 = new Alert(Alert.AlertType.ERROR);
                 Stage stage400 = (Stage) alert400.getDialogPane().getScene().getWindow();
                 stage400.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
@@ -131,7 +156,7 @@ public class registerController {
                 alert400.showAndWait();
                 break;
             case 401:
-                registerButton.setDisable(false);
+                isRegistering.set(false);
                 Alert alert401 = new Alert(Alert.AlertType.ERROR);
                 Stage stage401 = (Stage) alert401.getDialogPane().getScene().getWindow();
                 stage401.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
@@ -142,7 +167,7 @@ public class registerController {
                 alert401.showAndWait();
                 break;
             case 403:
-                registerButton.setDisable(false);
+                isRegistering.set(false);
                 Alert alert403 = new Alert(Alert.AlertType.ERROR);
                 Stage stage403 = (Stage) alert403.getDialogPane().getScene().getWindow();
                 stage403.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
@@ -153,7 +178,7 @@ public class registerController {
                 alert403.showAndWait();
                 break;
             case 404:
-                registerButton.setDisable(false);
+                isRegistering.set(false);
                 Alert alert404 = new Alert(Alert.AlertType.ERROR);
                 Stage stage404 = (Stage) alert404.getDialogPane().getScene().getWindow();
                 stage404.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
@@ -164,7 +189,7 @@ public class registerController {
                 alert404.showAndWait();
                 break;
             case 409:
-                registerButton.setDisable(false);
+                isRegistering.set(false);
                 Alert alert409 = new Alert(Alert.AlertType.ERROR);
                 Stage stage409 = (Stage) alert409.getDialogPane().getScene().getWindow();
                 stage409.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
@@ -175,7 +200,7 @@ public class registerController {
                 alert409.showAndWait();
                 break;
             case 415:
-                registerButton.setDisable(false);
+                isRegistering.set(false);
                 Alert alert415 = new Alert(Alert.AlertType.ERROR);
                 Stage stage415 = (Stage) alert415.getDialogPane().getScene().getWindow();
                 stage415.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
@@ -186,7 +211,7 @@ public class registerController {
                 alert415.showAndWait();
                 break;
             case 429:
-                registerButton.setDisable(false);
+                isRegistering.set(false);
                 Alert alert429 = new Alert(Alert.AlertType.ERROR);
                 Stage stage429 = (Stage) alert429.getDialogPane().getScene().getWindow();
                 stage429.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
@@ -197,7 +222,7 @@ public class registerController {
                 alert429.showAndWait();
                 break;
             case 500:
-                registerButton.setDisable(false);
+                isRegistering.set(false);
                 Alert alert500 = new Alert(Alert.AlertType.ERROR);
                 Stage stage500 = (Stage) alert500.getDialogPane().getScene().getWindow();
                 stage500.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
@@ -208,7 +233,7 @@ public class registerController {
                 alert500.showAndWait();
                 break;
             default:
-                registerButton.setDisable(false);
+                isRegistering.set(false);
                 break;
         }
     }

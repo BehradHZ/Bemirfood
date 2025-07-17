@@ -1,0 +1,93 @@
+
+-Buyer:
+	buyer homepage view [vendors + items + profile + ]                Created/Not done yet
+
+	vendors list view [filters (pop-up)]                              //POST-vendors
+
+	restaurant view [restaurant details +
+	                 favorite toggle +                                //PUT-favorites/{restaurantId} - //DELETE-favorites/{restaurantId}
+	                 add to cart + count]                             //GET-vendors/{id}
+
+	items list view [filters (pop-up)]                                //POST-items
+
+	item view [details +                                              //GET-items/{id}
+	           add to cart + count +
+	           rating + comments]                                     //GET-ratings/items/{item_id}
+
+    add a rating or review (pop-up)                                            //POST-ratings
+    delete a rating or review (button)                                         //DELETE-ratings/{id}
+    update a rating or review (button + pop-up)                                //PUT-ratings/{id}
+    rating or review view [like and dislike]                                   //GET-ratings/{id}
+
+	search view
+	carts list view
+	individual cart view [status]
+
+	payment view [order details +
+	              coupon validation (button -> alert) +
+	              payment method +
+	              submit]
+    coupon validation                                                 //GET-coupons
+    submit an order                                                   //POST-orders
+
+    submit status view                                                //POST-payment/online
+
+    submitted order status view                                       //GET-orders/{id}
+    order history view                                                //GET-orders/history
+    transaction history view                                          //GET-transactions
+    wallet view [top-up (pop-up)]
+    top-up view                                                       //POST-wallet/top-up
+
+-Vendor:
+    profile [edit + logout (pop-up)]                                  //GET-auth/profile + //POST-auth/logout
+    update profile (pop-up)                                           //PUT-auth/profile
+	vendor homepage [restaurant creation/show + ?] {
+        on sign-up:
+            create restaurant                                         //POST-restaurants
+        on login:
+            show restaurant                                           //GET-restaurants/mine
+	}
+	restaurant view [edit + delete + ?]
+    update restaurant details (pop-up)                                //PUT-restaurants/{id}
+    add food item to restaurant (pop-up)                              //POST-restaurants/{id}/item
+	edit food item                                                    //PUT-restaurants/{id}/item/{item_id}
+	delete food item from a restaurant                                //DELETE-restaurants/{id}/item/{item_id}
+	item view [edit (button -> pop-up) +
+	           delete (button -> pop-up)]
+	add restaurant menu                                               //POST-restaurants/{id}/menu
+	delete restaurant menu                                            //DELETE-restaurants/{id}/menu/{title}
+
+	    add item to a menu of a restaurant                            //PUT-restaurants/{id}/menu/{title}
+	    delete item to a menu of a restaurant                         //DELETE-restaurants/{id}/menu/{title}/{item_id}
+
+	orders list view                                                  //GET-restaurants/{id}/orders
+	change status of an order                                         //PATCH-restaurants/orders/{order_id}
+	individual order view [change status (button -> pop-up)]
+
+	get available delivery requests                                   //GET-deliveries/available
+	wallet view [top-up (pop-up)]
+	top-up view                                                       //POST-wallet/top-up
+
+-Courier:
+	courier homepage                                                    Not finished yet
+	change status of a delivery request                               //PATCH-deliveries/{order_id}
+	delivery history view                                             //GET-deliveries/history
+	individual delivery view
+	wallet view [top-up (pop-up)]
+	top-up view                                                       //POST-wallet/top-up
+
+-Admin:
+    profile [edit + logout (pop-up)]                                  //GET-auth/profile + //POST-auth/logout
+    update profile (pop-up)                                           //PUT-auth/profile
+	admin homepage
+	all users list view [(approved +                                  //GET-admin/users
+	                  que +                                           //PATCH-admin/users/{id}/status
+	                  non-approved) tabs]
+    all orders list                                                   //GET-admin/orders
+
+    View financial transactions
+    List all coupons
+    Create a coupon
+    Delete a coupon
+    Update a coupon
+    Get coupon details

@@ -20,13 +20,14 @@
                 <Label text="Register" style="-fx-font-weight: bold; -fx-font-size: 36;"/>
 
                 <Label text="Enter your details to set you up a Bemirfood! account."/>
+                <Label text="* fields are required"/>
 
             </VBox>
             <VBox alignment="CENTER_LEFT" spacing="5">
 
-                <Label text="Full name" style="-fx-font-weight: bold; -fx-font-size: 16">
+                <Label text="Full name*" style="-fx-font-weight: bold; -fx-font-size: 16">
                     <VBox.margin>
-                        <Insets top="30" left="30"/>
+                        <Insets top="10" left="30"/>
                     </VBox.margin>
                 </Label>
 
@@ -36,7 +37,7 @@
                     </VBox.margin>
                 </TextField>
 
-                <Label text="Phone Number" style="-fx-font-weight: bold; -fx-font-size: 16">
+                <Label text="Phone Number*" style="-fx-font-weight: bold; -fx-font-size: 16">
                     <VBox.margin>
                         <Insets left="30"/>
                     </VBox.margin>
@@ -48,7 +49,7 @@
                     </VBox.margin>
                 </TextField>
 
-                <Label text="Email Address" style="-fx-font-weight: bold; -fx-font-size: 16">
+                <Label text="Email Address*" style="-fx-font-weight: bold; -fx-font-size: 16">
                     <VBox.margin>
                         <Insets left="30"/>
                     </VBox.margin>
@@ -60,7 +61,7 @@
                     </VBox.margin>
                 </TextField>
 
-                <Label text="Password" style="-fx-font-weight: bold; -fx-font-size: 16">
+                <Label text="Password*" style="-fx-font-weight: bold; -fx-font-size: 16">
                     <VBox.margin>
                         <Insets left="30"/>
                     </VBox.margin>
@@ -129,13 +130,41 @@
                     <RadioButton toggleGroup="$roleToggleGroup" text="Courier" style="-fx-font-size: 15"/>
                 </HBox>
 
+                <HBox>
+                    <VBox>
+                        <Label text="Bank Name*" style="-fx-font-weight: bold; -fx-font-size: 16">
+                            <VBox.margin>
+                                <Insets left="30"/>
+                            </VBox.margin>
+                        </Label>
+                        <TextField fx:id="bankNameTextField">
+                            <VBox.margin>
+                                <Insets right="30" left="30"/>
+                            </VBox.margin>
+                        </TextField>
+                    </VBox>
+
+                    <VBox>
+                        <Label text="Account number*" style="-fx-font-weight: bold; -fx-font-size: 16">
+                            <VBox.margin>
+                                <Insets left="30"/>
+                            </VBox.margin>
+                        </Label>
+                        <TextField fx:id="accountNumberTextField">
+                            <VBox.margin>
+                                <Insets right="30" left="30"/>
+                            </VBox.margin>
+                        </TextField>
+                    </VBox>
+                </HBox>
+
             </VBox>
 
             <Button fx:id="registerButton" text="Register" style="-fx-background-color: #4567f2; -fx-text-fill: #ffffff; -fx-background-radius: 10;
-                                            -fx-font-weight: bold; -fx-font-size: 16" prefWidth="136"
+                                        -fx-font-weight: bold; -fx-font-size: 16" prefWidth="136"
                     onAction="#handelRegisterButtonClicked">
                 <VBox.margin>
-                    <Insets top="30"/>
+                    <Insets top="20"/>
                 </VBox.margin>
             </Button>
 
