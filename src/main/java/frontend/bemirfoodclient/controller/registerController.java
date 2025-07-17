@@ -2,6 +2,7 @@ package frontend.bemirfoodclient.controller;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
 import javafx.animation.PauseTransition;
+import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -38,6 +39,10 @@ public class registerController {
     @FXML
     public ToggleGroup roleToggleGroup;
     @FXML
+    public TextField bankNameTextField;
+    @FXML
+    public TextField accountNumberTextField;
+    @FXML
     public Button registerButton;
 
     public String role;
@@ -73,9 +78,24 @@ public class registerController {
            }
         });
 
+        BooleanBinding allFieldsFilled =
+                fullNameTextField.textProperty().isEmpty().or(
+                        phoneNumberTextField.textProperty().isEmpty().or(
+                                emailTextField.textProperty().isEmpty().or(
+                                        passwordField.textProperty().isEmpty().or(
+                                                bankNameTextField.textProperty().isEmpty().or(
+                                                        accountNumberTextField.textProperty().isEmpty()
+                                        )
+                                )
+                        )
+                )
+        );
+
+        registerButton.disableProperty().bind(allFieldsFilled);
+
     }
 
-    public int checkLoginStatus(String fullName, String phoneNumber, String email, String password, String role) {
+    public int checkLoginStatus(String fullName, String phoneNumber, String email, String password, String role, String bankName, String accountNumber) {
         //do the stuff in backend
         return 200; //temporary
     }
@@ -99,11 +119,14 @@ public class registerController {
     @FXML
     public void handelRegisterButtonClicked() {
         registerButton.setDisable(true);
+
         switch (checkLoginStatus(fullNameTextField.getText(),
                 phoneNumberTextField.getText(),
                 emailTextField.getText(),
                 passwordField.getText(),
-                role)){
+                role,
+                bankNameTextField.getText(),
+                accountNumberTextField.getText())){
             case 200:
                 PauseTransition delay = new PauseTransition(Duration.seconds(5));
                 delay.setOnFinished(event -> {

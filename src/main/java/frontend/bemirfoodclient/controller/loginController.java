@@ -2,6 +2,7 @@ package frontend.bemirfoodclient.controller;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
 import javafx.animation.PauseTransition;
+import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -56,6 +57,13 @@ public class loginController {
         visiblePasswordField.textProperty().bindBidirectional(passwordField.textProperty());
         visiblePasswordField.visibleProperty().bind(makePasswordHidden.visibleProperty());
         passwordField.visibleProperty().bind(makePasswordVisible.visibleProperty());
+
+        BooleanBinding allFieldsFilled =
+                phoneNumberTextField.textProperty().isEmpty().or(
+                        passwordField.textProperty().isEmpty()
+                );
+
+        loginButton.disableProperty().bind(allFieldsFilled);
     }
 
     public int checkLoginStatus(String phoneNumber, String password) {
@@ -65,7 +73,7 @@ public class loginController {
 
     public String checkLoginRole(String phoneNumber){
         //do the stuff in backend
-        String role = "buyer"; //temporary
+        String role = "courier"; //temporary
         switch (role){
             case "buyer":
                 return "/frontend/bemirfoodclient/homepage/buyer-homepage-view.fxml";

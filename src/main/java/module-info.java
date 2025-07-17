@@ -12,9 +12,11 @@
     opens frontend.bemirfoodclient.controller to javafx.fxml;
     exports frontend.bemirfoodclient.controller.homepage;
     opens frontend.bemirfoodclient.controller.homepage to javafx.fxml;
-        exports frontend.bemirfoodclient.controller.profile.buyer;
-        exports frontend.bemirfoodclient.controller.profile.buyer.details;
-        exports frontend.bemirfoodclient.controller.profile.admin;
-        exports frontend.bemirfoodclient.controller.profile.courier;
-        exports frontend.bemirfoodclient.controller.profile.seller;
+    exports frontend.bemirfoodclient.controller.profile.buyer;
+    exports frontend.bemirfoodclient.controller.profile.buyer.details;
+    exports frontend.bemirfoodclient.controller.profile.admin;
+    exports frontend.bemirfoodclient.controller.profile.courier;
+    exports frontend.bemirfoodclient.controller.profile.seller;
+    exports frontend.bemirfoodclient.controller.profile.courier.details;
+    opens frontend.bemirfoodclient.controller.profile.courier.details to javafx.fxml;
     }
