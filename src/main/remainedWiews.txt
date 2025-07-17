@@ -39,7 +39,6 @@
     top-up view                                                       //POST-wallet/top-up
 
 -Vendor:
-    profile [edit + logout (pop-up)]                                  //GET-auth/profile + //POST-auth/logout
     update profile (pop-up)                                           //PUT-auth/profile
 	vendor homepage [restaurant creation/show + ?] {
         on sign-up:
@@ -60,7 +59,7 @@
 	    add item to a menu of a restaurant                            //PUT-restaurants/{id}/menu/{title}
 	    delete item to a menu of a restaurant                         //DELETE-restaurants/{id}/menu/{title}/{item_id}
 
-	orders list view                                                  //GET-restaurants/{id}/orders
+	orders list view (for each restaurant)                            //GET-restaurants/{id}/orders
 	change status of an order                                         //PATCH-restaurants/orders/{order_id}
 	individual order view [change status (button -> pop-up)]
 

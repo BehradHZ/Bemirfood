@@ -45,6 +45,13 @@ public class registerController {
     @FXML
     public ToggleGroup roleToggleGroup;
     @FXML
+    public RadioButton buyerToggleOption;
+    @FXML
+    public RadioButton sellerToggleOption;
+    @FXML
+    public RadioButton courierToggleOption;
+
+    @FXML
     public TextField bankNameTextField;
     @FXML
     public TextField accountNumberTextField;
@@ -100,6 +107,13 @@ public class registerController {
 
         registerButton.disableProperty().bind(allFieldsFilled.or(isRegistering));
 
+        //temporary
+        fullNameTextField.setText("09");
+        phoneNumberTextField.setText("09");
+        emailTextField.setText("09");
+        passwordField.setText("09");
+        bankNameTextField.setText("09");
+        accountNumberTextField.setText("09");
     }
 
     public int checkLoginStatus(String fullName, String phoneNumber, String email, String password, String role, String bankName, String accountNumber) {
@@ -109,25 +123,29 @@ public class registerController {
 
     public String checkLoginRole(String phoneNumber){
         //do the stuff in backend
-        String role = "buyer"; //temporary
-        switch (role){
-            case "buyer":
-                return "/frontend/bemirfoodclient/homepage/buyer-homepage-view.fxml";
-            case "seller":
-                return "/frontend/bemirfoodclient/homepage/seller-homepage-view.fxml";
-            case "courier":
-                return "/frontend/bemirfoodclient/homepage/courier-homepage-view.fxml";
-            case "admin":
-                return "/frontend/bemirfoodclient/homepage/admin-homepage-view.fxml";
-            default:
-                return "";
-        }    }
+        String role; //temporary
+        if (roleToggleGroup.getSelectedToggle().equals(buyerToggleOption))
+            role = "buyer";
+        else if (roleToggleGroup.getSelectedToggle().equals(sellerToggleOption))
+            role = "seller";
+        else if (roleToggleGroup.getSelectedToggle().equals(courierToggleOption))
+            role = "courier";
+        else
+            role = "";
+
+        return switch (role) {
+            case "buyer" -> "/frontend/bemirfoodclient/homepage/buyer-homepage-view.fxml";
+            case "seller" -> "/frontend/bemirfoodclient/homepage/seller-homepage-view.fxml";
+            case "courier" -> "/frontend/bemirfoodclient/homepage/courier-homepage-view.fxml";
+            default -> "";
+        };
+    }
 
 
 
     @FXML
     public void handelRegisterButtonClicked() {
-        registerButton.setDisable(true);
+        isRegistering.set(true);
 
         String fullName = fullNameTextField.getText();
         String mobile = phoneNumberTextField.getText();

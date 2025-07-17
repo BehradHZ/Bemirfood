@@ -39,6 +39,11 @@ public class CourierProfileController {
     public Button deliveryHistoryLarge;
 
     @FXML
+    public Button myTransactionsSmall;
+    @FXML
+    public Button myTransactionsLarge;
+
+    @FXML
     public Button logoutSmall;
     @FXML
     public Button logoutLarge;
@@ -73,6 +78,7 @@ public class CourierProfileController {
         profileView = "profile";
         profileLarge.setVisible(true);
         deliveryHistoryLarge.setVisible(false);
+        myTransactionsLarge.setVisible(false);
         logoutLarge.setVisible(false);
         editButton.setVisible(true);
 
@@ -90,6 +96,7 @@ public class CourierProfileController {
         profileView = "deliveryHistory";
         profileLarge.setVisible(false);
         deliveryHistoryLarge.setVisible(true);
+        myTransactionsLarge.setVisible(false);
         logoutLarge.setVisible(false);
         editButton.setVisible(false);
 
@@ -102,9 +109,28 @@ public class CourierProfileController {
     }
 
     @FXML
+    public void myTransactionsButtonClicked() {
+        profileView = "myTransactions";
+        profileLarge.setVisible(false);
+        deliveryHistoryLarge.setVisible(false);
+        myTransactionsLarge.setVisible(true);
+        logoutLarge.setVisible(false);
+        editButton.setVisible(true);
+
+        try {
+            Parent view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
+                    "/frontend/bemirfoodclient/profile/seller/details/my-transactions-details.fxml")));
+            mainBorderPane.setCenter(view);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     public void logoutButtonClicked() {
         profileLarge.setVisible(false);
         deliveryHistoryLarge.setVisible(false);
+        myTransactionsLarge.setVisible(false);
         logoutLarge.setVisible(true);
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -133,8 +159,11 @@ public class CourierProfileController {
                 case "profile":
                     profileButtonClicked();
                     break;
-                case "myOrders":
+                case "deliveryHistory":
                     deliveryHistoryButtonClicked();
+                    break;
+                case "myTransactions":
+                    myTransactionsButtonClicked();
                     break;
                 default:
                     break;
