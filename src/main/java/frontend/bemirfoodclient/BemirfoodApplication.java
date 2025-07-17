@@ -29,9 +29,9 @@ public class BemirfoodApplication extends Application {
         } else {
             fxmlLoader = new FXMLLoader(BemirfoodApplication.class.getResource(
 //                    "login-view.fxml"
-                    "register-view.fxml"
+//                    "register-view.fxml"
 //                    "homepage/courier-homepage-view.fxml"
-//                    "profile/courier/courier-profile-view.fxml"
+                    "profile/courier/courier-profile-view.fxml"
             ));
         }
         Scene scene = new Scene(fxmlLoader.load(), 787.5, 700 );
