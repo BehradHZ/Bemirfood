@@ -3,7 +3,6 @@ package frontend.bemirfoodclient.controller.profile.buyer.details;
 import frontend.bemirfoodclient.model.dto.UserDto;
 import frontend.bemirfoodclient.model.entity.BankInfo;
 import frontend.bemirfoodclient.model.entity.User;
-import frontend.bemirfoodclient.model.entity.UserRole;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
@@ -59,6 +58,6 @@ public class EditProfileDialogController {
         BankInfo bankInfo = new BankInfo(bankName, accountNumber);
 
         return new UserDto(
-                new User(fullName, phoneNumber, UserRole.CUSTOMER, email, null, address, bankInfo, null));
+                new User(fullName, phoneNumber, "buyer", email, null, address, bankInfo));
     }
 }

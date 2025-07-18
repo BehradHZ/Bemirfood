@@ -15,6 +15,10 @@ public class BankInfo {
         this.balance = 0.0;
     }
 
+    public BankInfo(BankInfo bankInfo) {
+
+    }
+
     public void deposit(double amount) {
         this.balance += amount;
     }

@@ -102,7 +102,7 @@ public class TransactionCardController {
         return "5"; //temporary
     }
     public String getStatus(Transaction transaction) {
-        return "successful"; //temporary
+        return "failure"; //temporary
     }
     public String getPaymentMethod(Transaction transaction) {
         return "online"; //temporary

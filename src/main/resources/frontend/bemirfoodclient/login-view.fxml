@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.controller.loginController" fx:id="mainBorderPane"
+            fx:controller="frontend.bemirfoodclient.controller.LoginController" fx:id="mainBorderPane"
             prefHeight="787.5" prefWidth="700.0">
     <center>
         <VBox alignment="CENTER" style="-fx-background-color: white;">

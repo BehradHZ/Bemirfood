@@ -1,37 +1,48 @@
 package frontend.bemirfoodclient.model.entity;
 
+import frontend.bemirfoodclient.model.dto.UserDto;
+
 public class User {
 
-    private long id;
-    private String username;
-    private String password;
-    private UserRole role;
-    private BankInfo bankInfo;
     private String fullName;
-    private String email;
-    private String photo;
-    private String address;
     private String mobile;
+    private String email;
+    private UserRole role;
+    private String address;
+    private String photo;
+    private BankInfo bankInfo;
+    private String password;
 
-    public User(String fullName, String mobile,UserRole role,String email, String photo,
-                String address, BankInfo bankInfo, String password) {
+    public User(String fullName, String mobile, String role, String email, String photo,
+                String address, BankInfo bankInfo) {
         this.fullName = fullName;
         this.mobile = mobile;
-        this.role = role;
+        if (role.equals("admin")) {
+            this.role = UserRole.ADMIN;
+        } else if (role.equals("buyer")) {
+            this.role = UserRole.CUSTOMER;
+        } else if (role.equals("seller")) {
+            this.role = UserRole.SELLER;
+        } else if (role.equals("courier")) {
+            this.role = UserRole.DELIVERY;
+        }
         this.email = email;
         this.photo = photo;
         this.address = address;
         this.bankInfo = bankInfo;
-        this.password = password;
-        this.username = mobile;
+        this.password = "";
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public static User UserDtoToUser(UserDto userDto) {
+        return new User(
+                userDto.getFullName(),
+                userDto.getPhone(),
+                userDto.getRole(),
+                userDto.getEmail(),
+                userDto.getProfileImageBase64(),
+                userDto.getAddress(),
+                userDto.getBankInfo()
+        );
     }
 
     public String getFullName() {
@@ -52,6 +63,16 @@ public class User {
 
     public UserRole getRole() {
         return role;
+    }
+
+    public String getRoleAsString() {
+        return switch (role) {
+            case ADMIN -> "admin";
+            case CUSTOMER -> "buyer";
+            case SELLER -> "seller";
+            case DELIVERY -> "courier";
+        };
+
     }
 
     public void setRole(UserRole role) {
@@ -96,13 +117,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 }

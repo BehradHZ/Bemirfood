@@ -1,0 +1,10 @@
+no register data
+
+temporary register data
+{
+    "full_name": "Behrad Hozouri",
+    "mobile": "09220866912",
+    "password": "B&rt2006",
+    "role": "buyer",
+    "address": "Karaj"
+}

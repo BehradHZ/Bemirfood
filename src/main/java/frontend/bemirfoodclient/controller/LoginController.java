@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
 
-public class loginController {
+public class LoginController {
     @FXML
     public BorderPane mainBorderPane;
     @FXML

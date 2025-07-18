@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.RegisterAdditionalController" fx:id="mainBorderPane"
+            prefHeight="787.5" prefWidth="700.0">
+
+    <center>
+        <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff">
+            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #ffffff">
+                <VBox.margin>
+                    <Insets top="10" left="10" bottom="80"/>
+                </VBox.margin>
+                <Button fx:id="backButton" style="-fx-background-color: #ffffff" onAction="#backButtonClicked">
+                    <graphic>
+                        <ImageView fx:id="backButtonImage">
+                            <Image url="@assets/icons/back.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </HBox>
+
+            <VBox alignment="CENTER" style="-fx-background-color: white;">
+                <VBox alignment="CENTER" spacing="5">
+
+                    <ImageView>
+                        <Image url="@assets/firstPageHeaderImage.jpg"/>
+                    </ImageView>
+
+                    <Label text="Register" style="-fx-font-weight: bold; -fx-font-size: 36;"/>
+
+                    <Label text="You can add your additional details here."/>
+
+                </VBox>
+                <VBox alignment="CENTER_LEFT" spacing="5">
+
+                    <Label text="Email Address" style="-fx-font-weight: bold; -fx-font-size: 16">
+                        <VBox.margin>
+                            <Insets top="20" left="30"/>
+                        </VBox.margin>
+                    </Label>
+
+                    <TextField fx:id="emailTextField">
+                        <VBox.margin>
+                            <Insets right="30" left="30"/>
+                        </VBox.margin>
+                    </TextField>
+
+                    <HBox>
+                        <VBox>
+                            <Label text="Bank Name" style="-fx-font-weight: bold; -fx-font-size: 16">
+                                <VBox.margin>
+                                    <Insets left="30" top="10"/>
+                                </VBox.margin>
+                            </Label>
+                            <TextField fx:id="bankNameTextField">
+                                <VBox.margin>
+                                    <Insets right="30" left="30"/>
+                                </VBox.margin>
+                            </TextField>
+                        </VBox>
+
+                        <VBox>
+                            <Label text="Account number" style="-fx-font-weight: bold; -fx-font-size: 16">
+                                <VBox.margin>
+                                    <Insets left="30" top="10"/>
+                                </VBox.margin>
+                            </Label>
+                            <TextField fx:id="accountNumberTextField">
+                                <VBox.margin>
+                                    <Insets right="30" left="30"/>
+                                </VBox.margin>
+                            </TextField>
+                        </VBox>
+                    </HBox>
+
+                </VBox>
+
+                <Button fx:id="registerButton" text="Register" style="-fx-background-color: #4567f2; -fx-text-fill: #ffffff; -fx-background-radius: 10;
+                                        -fx-font-weight: bold; -fx-font-size: 16" prefWidth="136"
+                        onAction="#handelRegisterButtonClicked" defaultButton="true">
+                    <VBox.margin>
+                        <Insets top="50"/>
+                    </VBox.margin>
+                </Button>
+
+                <HBox alignment="CENTER">
+
+                    <VBox.margin>
+                        <Insets top="10"/>
+                    </VBox.margin>
+
+                    <Label text="already have an account?"/>
+
+                    <Hyperlink text="login here!" onAction="#handelLoginHyperlinkClicked"/>
+
+                </HBox>
+
+            </VBox>
+        </VBox>
+    </center>
+    <right>
+        <ImageView fx:id="firstPageImage" preserveRatio="true">
+            <Image url="@assets/firstPageImage.jpg"/>
+        </ImageView>
+    </right>
+
+</BorderPane>

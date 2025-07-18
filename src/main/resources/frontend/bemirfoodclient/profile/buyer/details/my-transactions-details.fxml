@@ -25,14 +25,14 @@
                     <Label fx:id="balance" text="20,000 Toomans" style="-fx-font-size: 24; -fx-font-weight: bold"/>
                 </VBox>
                 <Region fx:id="balanceSpacer"/>
-                <VBox alignment="CENTER_RIGHT" spacing="15">
+                <VBox alignment="CENTER_RIGHT" spacing="10">
                     <HBox.margin>
                         <Insets right="15"/>
                     </HBox.margin>
-                <Button text="TOP-UP" style="-fx-background-color: #4bae4f; -fx-background-radius: 16; -fx-font-weight: bold;
-                                        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0)"/>
-                <Button text="WITHDRAWAL" style="-fx-background-color: #ff6464; -fx-background-radius: 16; -fx-font-weight: bold;
-                                        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0)"/>
+                <Button text=" TOP-UP " prefHeight="30" style="-fx-background-color: #4bae4f; -fx-background-radius: 20; -fx-font-weight: bold;
+                                        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0)" onAction="#topUpButtonClicked"/>
+                <Button text=" WITHDRAWAL " prefHeight="30" style="-fx-background-color: #ff6464; -fx-background-radius: 20; -fx-font-weight: bold;
+                                        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 0)" onAction="#withdrawalButtonClicked"/>
                 </VBox>
             </HBox>
             <Separator>

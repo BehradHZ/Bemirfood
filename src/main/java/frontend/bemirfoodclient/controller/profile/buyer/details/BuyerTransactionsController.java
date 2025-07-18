@@ -42,4 +42,14 @@ public class BuyerTransactionsController {
 
         return transactions;
     }
+
+    @FXML
+    public void topUpButtonClicked() {
+
+    }
+
+    @FXML
+    public void withdrawalButtonClicked() {
+
+    }
 }

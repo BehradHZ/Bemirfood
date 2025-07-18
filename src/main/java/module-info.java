@@ -5,7 +5,7 @@
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
-
+    requires com.google.gson;
     opens frontend.bemirfoodclient to javafx.fxml;
     exports frontend.bemirfoodclient;
     exports frontend.bemirfoodclient.controller;
@@ -22,4 +22,7 @@
     opens frontend.bemirfoodclient.controller.profile.seller to javafx.fxml;
     exports frontend.bemirfoodclient.controller.profile.seller.details;
     opens frontend.bemirfoodclient.controller.profile.seller.details to javafx.fxml;
+    opens frontend.bemirfoodclient.model.dto to com.google.gson;
+    opens frontend.bemirfoodclient.model.entity to com.google.gson;
+
     }

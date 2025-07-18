@@ -1,53 +1,43 @@
 package frontend.bemirfoodclient.controller;
 
-import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.HttpClientHandler;
+import HttpClientHandler.HttpResponseData;
+import com.google.gson.Gson;
 import frontend.bemirfoodclient.BemirfoodApplication;
-import javafx.beans.binding.BooleanBinding;
+import frontend.bemirfoodclient.model.dto.UserDto;
+import frontend.bemirfoodclient.model.entity.User;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
-import java.util.function.UnaryOperator;
 
 
-public class registerController {
+public class RegisterAdditionalController {
+    User user;
+
     @FXML
     public BorderPane mainBorderPane;
     @FXML
     public ImageView firstPageImage;
     @FXML
-    public TextField fullNameTextField;
+    public Button backButton;
     @FXML
-    public TextField phoneNumberTextField;
+    public ImageView backButtonImage;
     @FXML
     public TextField emailTextField;
-    @FXML
-    public PasswordField passwordField;
-    @FXML
-    public TextField visiblePasswordField;
-    @FXML
-    public Button makePasswordVisible;
-    @FXML
-    public Button makePasswordHidden;
-    @FXML
-    public ToggleGroup roleToggleGroup;
-    @FXML
-    public RadioButton buyerToggleOption;
-    @FXML
-    public RadioButton sellerToggleOption;
-    @FXML
-    public RadioButton courierToggleOption;
-
     @FXML
     public TextField bankNameTextField;
     @FXML
@@ -55,59 +45,33 @@ public class registerController {
     @FXML
     public Button registerButton;
 
-    public String role;
-
     private BooleanProperty isRegistering = new SimpleBooleanProperty(false);
 
     @FXML
     public void initialize() {
+        String homeDirectory = System.getProperty("user.home");
+        Path filePath = Path.of(homeDirectory, "registerTemp.txt");
+        try {
+            String fileContent = Files.readString(filePath);
+            int jsonStartIndex = fileContent.indexOf('{');
+            String jsonText = fileContent.substring(jsonStartIndex);
+
+            Gson gson = new Gson();
+            UserDto userDto = gson.fromJson(jsonText, UserDto.class);
+            user = User.UserDtoToUser(userDto);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         firstPageImage.fitHeightProperty().bind(mainBorderPane.heightProperty());
 
-        UnaryOperator<TextFormatter.Change> phoneNumberFilter = change -> {
-            String newText = change.getControlNewText();
-            try {
-                if (newText.matches("\\d*") && newText.length() <= 11 && (newText.charAt(0) == '0' && newText.charAt(1) == '9')) {
-                    return change;
-                } else {
-                    return null;
-                }
-            } catch (StringIndexOutOfBoundsException siobe) {
-                return change;
-            }
-        };
-        TextFormatter<String> phoneNumberTextFormatter = new TextFormatter<>(phoneNumberFilter);
-        phoneNumberTextField.setTextFormatter(phoneNumberTextFormatter);
-
-        visiblePasswordField.textProperty().bindBidirectional(passwordField.textProperty());
-        visiblePasswordField.visibleProperty().bind(makePasswordHidden.visibleProperty());
-        passwordField.visibleProperty().bind(makePasswordVisible.visibleProperty());
-
-        BooleanBinding allFieldsFilled =
-                fullNameTextField.textProperty().isEmpty().or(
-                        phoneNumberTextField.textProperty().isEmpty().or(
-                                emailTextField.textProperty().isEmpty().or(
-                                        passwordField.textProperty().isEmpty().or(
-                                                bankNameTextField.textProperty().isEmpty().or(
-                                                        accountNumberTextField.textProperty().isEmpty()
-                                        )
-                                )
-                        )
-                )
-        );
-
-        registerButton.disableProperty().bind(allFieldsFilled.or(isRegistering));
-
-        //temporary
-//        fullNameTextField.setText("");
-//        phoneNumberTextField.setText("");
-//        emailTextField.setText("");
-//        passwordField.setText("");
-//        bankNameTextField.setText("");
-//        accountNumberTextField.setText("");
+        backButtonImage.setPreserveRatio(true);
+        backButtonImage.setFitHeight(20);
     }
 
-    public int checkLoginStatus(String fullName, String phoneNumber, String email, String password, String role, String bankName, String accountNumber) {
+    public int checkLoginStatus(String fullName, String phoneNumber, String email, String password, String role,
+                                String address, String profileImageBase64, String bankName, String accountNumber) {
         //do the stuff in backend
         String json = String.format("""
         {
@@ -139,19 +103,9 @@ public class registerController {
         }
     }
 
-    public String checkLoginRole(String phoneNumber){
-        //do the stuff in backend
-        String role; //temporary
-        if (roleToggleGroup.getSelectedToggle().equals(buyerToggleOption))
-            role = "buyer";
-        else if (roleToggleGroup.getSelectedToggle().equals(sellerToggleOption))
-            role = "seller";
-        else if (roleToggleGroup.getSelectedToggle().equals(courierToggleOption))
-            role = "courier";
-        else
-            role = "";
-
+    public String checkLoginRole(String role){
         return switch (role) {
+            case "admin" -> "";
             case "buyer" -> "/frontend/bemirfoodclient/homepage/buyer-homepage-view.fxml";
             case "seller" -> "/frontend/bemirfoodclient/homepage/seller-homepage-view.fxml";
             case "courier" -> "/frontend/bemirfoodclient/homepage/courier-homepage-view.fxml";
@@ -161,23 +115,37 @@ public class registerController {
 
     @FXML
     public void handelRegisterButtonClicked() {
-        RadioButton selectedToggle = (RadioButton) roleToggleGroup.getSelectedToggle();
-        role = ((RadioButton) selectedToggle).getText().toLowerCase();
-
         isRegistering.set(true);
 
-        switch (checkLoginStatus(fullNameTextField.getText(),
-                phoneNumberTextField.getText(),
+        String fullName = user.getFullName();
+        String phoneNumber = user.getMobile();
+        String password = user.getPassword();
+        String role = user.getRoleAsString();
+        String address = user.getAddress();
+
+        switch (checkLoginStatus(fullName,
+                phoneNumber,
                 emailTextField.getText(),
-                passwordField.getText(),
+                password,
                 role,
+                address,
+                "",
                 bankNameTextField.getText(),
                 accountNumberTextField.getText())){
             case 200:
                 try {
-                    Stage stage = (Stage) phoneNumberTextField.getScene().getWindow();
+                    try {
+                        String homeDirectory = System.getProperty("user.home");
+                        Path filePath = Path.of(homeDirectory, "registerTemp.txt");
+                        Files.writeString(filePath, "no register data");
+                        System.out.println("Successfully wrote data to " + filePath);
+
+                    } catch (IOException e) { // Catch the specific, correct exception
+                        e.printStackTrace();
+                    }
+                    Stage stage = (Stage) emailTextField.getScene().getWindow();
                     Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
-                            checkLoginRole(phoneNumberTextField.getText()))));
+                            checkLoginRole(role))));
                     stage.getScene().setRoot(root);
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
@@ -284,7 +252,7 @@ public class registerController {
     @FXML
     public void handelLoginHyperlinkClicked() {
         try {
-            Stage stage = (Stage) phoneNumberTextField.getScene().getWindow();
+            Stage stage = (Stage) emailTextField.getScene().getWindow();
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
                     "/frontend/bemirfoodclient/login-view.fxml")));
             stage.getScene().setRoot(root);
@@ -293,13 +261,6 @@ public class registerController {
         }
     }
 
-    public void makePasswordVisible() {
-        makePasswordVisible.setVisible(false);
-        makePasswordHidden.setVisible(true);
-    }
-
-    public void makePasswordHidden() {
-        makePasswordHidden.setVisible(false);
-        makePasswordVisible.setVisible(true);
+    public void backButtonClicked() {
     }
 }
