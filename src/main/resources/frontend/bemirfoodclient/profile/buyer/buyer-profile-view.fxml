@@ -41,7 +41,8 @@
         </HBox>
     </top>
     <left>
-        <VBox prefWidth="250" style="-fx-background-color: #ffffff; -fx-background-radius: 25">
+        <VBox prefWidth="250" style="-fx-background-color: #ffffff; -fx-background-radius: 25;
+             -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);">
             <BorderPane.margin>
                 <Insets right="25" />
             </BorderPane.margin>

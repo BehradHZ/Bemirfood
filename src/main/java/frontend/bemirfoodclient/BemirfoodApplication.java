@@ -32,7 +32,7 @@ public class BemirfoodApplication extends Application {
 //                    "register-view.fxml"
 //                    "homepage/seller-homepage-view.fxml"
                     "profile/buyer/buyer-profile-view.fxml"
-//                    "profile/seller/seller-profile-view.fxml"
+//                    " profile/seller/seller-profile-view.fxml"
 //                    "profile/courier/courier-profile-view.fxml"
 
 

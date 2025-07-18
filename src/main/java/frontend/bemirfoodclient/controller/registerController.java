@@ -99,12 +99,12 @@ public class registerController {
         registerButton.disableProperty().bind(allFieldsFilled.or(isRegistering));
 
         //temporary
-        fullNameTextField.setText("");
-        phoneNumberTextField.setText("");
-        emailTextField.setText("");
-        passwordField.setText("");
-        bankNameTextField.setText("");
-        accountNumberTextField.setText("");
+//        fullNameTextField.setText("");
+//        phoneNumberTextField.setText("");
+//        emailTextField.setText("");
+//        passwordField.setText("");
+//        bankNameTextField.setText("");
+//        accountNumberTextField.setText("");
     }
 
     public int checkLoginStatus(String fullName, String phoneNumber, String email, String password, String role, String bankName, String accountNumber) {
