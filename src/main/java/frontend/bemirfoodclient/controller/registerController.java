@@ -105,7 +105,34 @@ public class registerController {
 
     public int checkLoginStatus(String fullName, String phoneNumber, String email, String password, String role, String bankName, String accountNumber) {
         //do the stuff in backend
-        return 200; //temporary
+        String json = String.format("""
+        {
+          "password": "%s",
+          "full_name": "%s",
+          "mobile": "%s",
+          "email": "%s",
+          "address": "",
+          "profileImageBase64": "",
+          "bank_info": {
+            "bank_name": "%s",
+            "account_number": "%s"
+          },
+          "role": "%s"
+        }
+        """,
+                    password, fullName, phoneNumber, email,
+                    bankName, accountNumber, role
+            );
+
+        int code = 0;
+        try {
+            HttpResponseData responseData = HttpClientHandler.sendPostRequest("http://localhost:4567/auth/register", json);
+            code = responseData.getStatusCode();
+            String body = responseData.getBody();
+            return code;
+        } catch (IOException e) {
+            return 500;
+        }
     }
 
     public String checkLoginRole(String phoneNumber){
