@@ -1,0 +1,23 @@
+.transaction-card {
+    -fx-background-color: white;
+    -fx-padding: 15px;
+    -fx-background-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);
+}
+
+.title-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.amount-label {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.status-label {
+    -fx-background-color: #e4f8e4;
+    -fx-text-fill: #008000;
+    -fx-padding: 3px 8px;
+    -fx-background-radius: 10px;
+}

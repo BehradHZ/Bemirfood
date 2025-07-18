@@ -55,10 +55,10 @@
             </StackPane>
             <Separator/>
             <StackPane>
-                <Button fx:id="deliveryHistorySmall" text=" Delivery History" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                <Button fx:id="deliveryHistorySmall" text="  Delivery History" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
                         style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 20
                            ; -fx-text-fill: #444444" onAction="#deliveryHistoryButtonClicked"/>
-                <Button fx:id="deliveryHistoryLarge" text="Delivery History" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                <Button fx:id="deliveryHistoryLarge" text=" Delivery History" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
                         style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 24
                            ; -fx-text-fill: #0066ff" visible="false" onAction="#deliveryHistoryButtonClicked" wrapText="true"/>
             </StackPane>

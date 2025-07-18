@@ -79,13 +79,6 @@ public class registerController {
         visiblePasswordField.visibleProperty().bind(makePasswordHidden.visibleProperty());
         passwordField.visibleProperty().bind(makePasswordVisible.visibleProperty());
 
-        roleToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
-           if(newValue != null) {
-               RadioButton selectedRadioButton = (RadioButton) newValue;
-               role = selectedRadioButton.getText().toLowerCase();
-           }
-        });
-
         BooleanBinding allFieldsFilled =
                 fullNameTextField.textProperty().isEmpty().or(
                         phoneNumberTextField.textProperty().isEmpty().or(
@@ -137,7 +130,11 @@ public class registerController {
 
     @FXML
     public void handelRegisterButtonClicked() {
+        RadioButton selectedToggle = (RadioButton) roleToggleGroup.getSelectedToggle();
+        role = ((RadioButton) selectedToggle).getText().toLowerCase();
+
         isRegistering.set(true);
+
         switch (checkLoginStatus(fullNameTextField.getText(),
                 phoneNumberTextField.getText(),
                 emailTextField.getText(),

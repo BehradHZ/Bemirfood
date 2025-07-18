@@ -31,8 +31,11 @@ public class BemirfoodApplication extends Application {
 //                    "login-view.fxml"
 //                    "register-view.fxml"
 //                    "homepage/seller-homepage-view.fxml"
+                    "profile/buyer/buyer-profile-view.fxml"
 //                    "profile/seller/seller-profile-view.fxml"
-                    "profile/courier/courier-profile-view.fxml"
+//                    "profile/courier/courier-profile-view.fxml"
+
+
             ));
         }
         Scene scene = new Scene(fxmlLoader.load(), 787.5, 700 );

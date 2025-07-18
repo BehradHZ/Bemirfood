@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.TransactionCardController" styleClass="transaction-card">
+
+    <center>
+        <VBox>
+            <HBox>
+                <VBox.margin>
+                    <Insets top="20"/>
+                </VBox.margin>
+                <Label fx:id="time"/>
+                <Label fx:id="date"/>
+                <Region fx:id="firstLineSpacer"/>
+                <Label fx:id="title"/>
+            </HBox>
+            <HBox>
+                <VBox.margin>
+                    <Insets top="5"/>
+                </VBox.margin>
+                <Label fx:id="amount"/>
+                <Region fx:id="secondLineSpacer"/>
+                <Label fx:id="status"/>
+<!--                shape-->
+                <Label fx:id="paymentMethod"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

@@ -1,6 +1,16 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER">
-    <Label text="My transactions Details Section" style="-fx-font-size: 24px;" />
-</VBox>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="frontend.bemirfoodclient.controller.profile.buyer.details.BuyerTransactionsController">
+
+    <top>
+        <Label text="this is transactions top section."/>
+    </top>
+    <center>
+        <VBox fx:id="transactionsCardsSection">
+            <Label text="this is transactions center section."/>
+        </VBox>
+    </center>
+</BorderPane>
