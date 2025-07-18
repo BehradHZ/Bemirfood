@@ -1,5 +1,7 @@
 package frontend.bemirfoodclient.controller;
 
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.HttpClientHandler;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
@@ -16,6 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
+
 
 public class registerController {
     @FXML
@@ -58,6 +61,7 @@ public class registerController {
 
     @FXML
     public void initialize() {
+
         firstPageImage.fitHeightProperty().bind(mainBorderPane.heightProperty());
 
         UnaryOperator<TextFormatter.Change> phoneNumberFilter = change -> {
@@ -95,12 +99,12 @@ public class registerController {
         registerButton.disableProperty().bind(allFieldsFilled.or(isRegistering));
 
         //temporary
-        fullNameTextField.setText("09");
-        phoneNumberTextField.setText("09");
-        emailTextField.setText("09");
-        passwordField.setText("09");
-        bankNameTextField.setText("09");
-        accountNumberTextField.setText("09");
+        fullNameTextField.setText("");
+        phoneNumberTextField.setText("");
+        emailTextField.setText("");
+        passwordField.setText("");
+        bankNameTextField.setText("");
+        accountNumberTextField.setText("");
     }
 
     public int checkLoginStatus(String fullName, String phoneNumber, String email, String password, String role, String bankName, String accountNumber) {
@@ -273,6 +277,9 @@ public class registerController {
                 break;
         }
     }
+
+
+
 
     @FXML
     public void handelLoginHyperlinkClicked() {

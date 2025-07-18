@@ -5,7 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpClientHandler {
-    public static String sendPostRequest(String urlStr, String jsonInputString) throws IOException {
+    public static HttpResponseData sendPostRequest(String urlStr, String jsonInputString) throws IOException {
         URL url = new URL(urlStr);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
@@ -18,14 +18,20 @@ public class HttpClientHandler {
             os.write(input, 0, input.length);
         }
 
-        try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(conn.getInputStream(), "utf-8"))) {
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                response.append(line.trim());
+        int statusCode = conn.getResponseCode();
+        InputStream inputStream = (statusCode >= 400) ? conn.getErrorStream() : conn.getInputStream();
+
+        StringBuilder response = new StringBuilder();
+        if (inputStream != null) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, "utf-8"))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    response.append(line.trim());
+                }
             }
-            return response.toString();
         }
+
+        return new HttpResponseData(statusCode, response.toString());
     }
+
 }
