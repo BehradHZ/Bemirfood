@@ -1,6 +1,6 @@
 package frontend.bemirfoodclient.model.dto;
 
-import frontend.bemirfoodclient.model.entity.BankInfo;
+import frontend.bemirfoodclient.model.entity.Bank_info;
 import frontend.bemirfoodclient.model.entity.User;
 
 public class UserDto {
@@ -10,7 +10,7 @@ public class UserDto {
     String role;
     String address;
     String profileImageBase64;
-    BankInfo bank_info;
+    Bank_info bank_info;
     String password;
 
     public UserDto(User user) {
@@ -20,36 +20,32 @@ public class UserDto {
         this.role = user.getRole().toString();
         this.address = user.getAddress();
         this.profileImageBase64 = user.getPhoto();
-        this.bank_info = user.getBankInfo();
+        this.bank_info = user.getBank_info();
         this.password = user.getPassword();
     }
 
     public UserDto(String full_name, String phone, String email, String role, String address, String profileImageBase64,
-                   String bankName, String accountNumber) {
+                   String bank_name, String account_number) {
         this.full_name = full_name;
         this.phone = phone;
         this.email = email;
         this.role = role;
         this.address = address;
         this.profileImageBase64 = profileImageBase64;
-        this.bank_info = new BankInfo(bankName, accountNumber);
+        this.bank_info = new Bank_info(bank_name, account_number);
         this.password = "";
     }
 
     public UserDto(String full_name, String phone, String email, String role, String address, String profileImageBase64,
-                   String bankName, String accountNumber, String password) {
+                   String bank_name, String account_number, String password) {
         this.full_name = full_name;
         this.phone = phone;
         this.email = email;
         this.role = role;
         this.address = address;
         this.profileImageBase64 = profileImageBase64;
-        this.bank_info = new BankInfo(bankName, accountNumber);
+        this.bank_info = new Bank_info(bank_name, account_number);
         this.password = password;
-    }
-
-    public User UserDto(UserDto userDto) {
-        return new User(full_name, phone, role, email, profileImageBase64, address, bank_info);
     }
 
     public String getFullName() {
@@ -100,11 +96,11 @@ public class UserDto {
         this.profileImageBase64 = profileImageBase64;
     }
 
-    public BankInfo getBankInfo() {
+    public Bank_info getBank_info() {
         return bank_info;
     }
 
-    public void setBankInfo(BankInfo bank_info) {
+    public void setBank_info(Bank_info bank_info) {
         this.bank_info = bank_info;
     }
 

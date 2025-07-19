@@ -26,8 +26,8 @@
             </HBox>
 
             <VBox alignment="CENTER" style="-fx-background-color: white;">
-                <VBox alignment="CENTER" spacing="5">
 
+                <VBox alignment="CENTER" spacing="5">
                     <ImageView>
                         <Image url="@assets/firstPageHeaderImage.jpg"/>
                     </ImageView>
@@ -35,9 +35,15 @@
                     <Label text="Register" style="-fx-font-weight: bold; -fx-font-size: 36;"/>
 
                     <Label text="You can add your additional details here."/>
-
                 </VBox>
+
                 <VBox alignment="CENTER_LEFT" spacing="5">
+                    <Button maxHeight="50" maxWidth="50" onAction="#addProfilePicture"
+                            style="-fx-background-color: #dddddd; -fx-background-radius: 500">
+                        <graphic>
+                            <ImageView fx:id="profileUpload"/>
+                        </graphic>
+                    </Button>
 
                     <Label text="Email Address" style="-fx-font-weight: bold; -fx-font-size: 16">
                         <VBox.margin>
@@ -58,7 +64,7 @@
                                     <Insets left="30" top="10"/>
                                 </VBox.margin>
                             </Label>
-                            <TextField fx:id="bankNameTextField">
+                            <TextField fx:id="bank_nameTextField">
                                 <VBox.margin>
                                     <Insets right="30" left="30"/>
                                 </VBox.margin>
@@ -71,7 +77,7 @@
                                     <Insets left="30" top="10"/>
                                 </VBox.margin>
                             </Label>
-                            <TextField fx:id="accountNumberTextField">
+                            <TextField fx:id="account_numberTextField">
                                 <VBox.margin>
                                     <Insets right="30" left="30"/>
                                 </VBox.margin>

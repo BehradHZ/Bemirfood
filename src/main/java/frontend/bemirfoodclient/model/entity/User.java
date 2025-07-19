@@ -10,27 +10,47 @@ public class User {
     private UserRole role;
     private String address;
     private String photo;
-    private BankInfo bankInfo;
+    private Bank_info bank_info;
     private String password;
 
     public User(String fullName, String mobile, String role, String email, String photo,
-                String address, BankInfo bankInfo) {
+                String address, Bank_info bank_info) {
         this.fullName = fullName;
         this.mobile = mobile;
         if (role.equals("admin")) {
             this.role = UserRole.ADMIN;
         } else if (role.equals("buyer")) {
-            this.role = UserRole.CUSTOMER;
+            this.role = UserRole.BUYER;
         } else if (role.equals("seller")) {
             this.role = UserRole.SELLER;
         } else if (role.equals("courier")) {
-            this.role = UserRole.DELIVERY;
+            this.role = UserRole.COURIER;
         }
         this.email = email;
         this.photo = photo;
         this.address = address;
-        this.bankInfo = bankInfo;
+        this.bank_info = bank_info;
         this.password = "";
+    }
+
+    public User(String fullName, String mobile, String role, String email, String photo,
+                String address, Bank_info bank_info, String password) {
+        this.fullName = fullName;
+        this.mobile = mobile;
+        if (role.equals("admin")) {
+            this.role = UserRole.ADMIN;
+        } else if (role.equals("buyer")) {
+            this.role = UserRole.BUYER;
+        } else if (role.equals("seller")) {
+            this.role = UserRole.SELLER;
+        } else if (role.equals("courier")) {
+            this.role = UserRole.COURIER;
+        }
+        this.email = email;
+        this.photo = photo;
+        this.address = address;
+        this.bank_info = bank_info;
+        this.password = password;
     }
 
     public static User UserDtoToUser(UserDto userDto) {
@@ -41,7 +61,8 @@ public class User {
                 userDto.getEmail(),
                 userDto.getProfileImageBase64(),
                 userDto.getAddress(),
-                userDto.getBankInfo()
+                userDto.getBank_info(),
+                userDto.getPassword()
         );
     }
 
@@ -68,9 +89,9 @@ public class User {
     public String getRoleAsString() {
         return switch (role) {
             case ADMIN -> "admin";
-            case CUSTOMER -> "buyer";
+            case BUYER -> "buyer";
             case SELLER -> "seller";
-            case DELIVERY -> "courier";
+            case COURIER -> "courier";
         };
 
     }
@@ -103,12 +124,12 @@ public class User {
         this.address = address;
     }
 
-    public BankInfo getBankInfo() {
-        return bankInfo;
+    public Bank_info getBank_info() {
+        return bank_info;
     }
 
-    public void setBankInfo(BankInfo bankInfo) {
-        this.bankInfo = bankInfo;
+    public void setBank_info(Bank_info bank_info) {
+        this.bank_info = bank_info;
     }
 
     public String getPassword() {

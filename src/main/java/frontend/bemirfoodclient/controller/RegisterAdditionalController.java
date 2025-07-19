@@ -17,8 +17,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,11 +39,13 @@ public class RegisterAdditionalController {
     @FXML
     public ImageView backButtonImage;
     @FXML
+    public ImageView profileUpload;
+    @FXML
     public TextField emailTextField;
     @FXML
-    public TextField bankNameTextField;
+    public TextField bank_nameTextField;
     @FXML
-    public TextField accountNumberTextField;
+    public TextField account_numberTextField;
     @FXML
     public Button registerButton;
 
@@ -51,14 +55,29 @@ public class RegisterAdditionalController {
     public void initialize() {
         String homeDirectory = System.getProperty("user.home");
         Path filePath = Path.of(homeDirectory, "registerTemp.txt");
-        try {
-            String fileContent = Files.readString(filePath);
-            int jsonStartIndex = fileContent.indexOf('{');
-            String jsonText = fileContent.substring(jsonStartIndex);
+        if (!Files.exists(filePath)) {
+            return;
+        }
 
-            Gson gson = new Gson();
-            UserDto userDto = gson.fromJson(jsonText, UserDto.class);
-            user = User.UserDtoToUser(userDto);
+        try {
+            if (Files.readString(filePath).startsWith("temporary register data")) {
+                String fileContent = Files.readString(filePath);
+                int jsonStartIndex = fileContent.indexOf('{');
+                String jsonText = fileContent.substring(jsonStartIndex);
+
+                Gson gson = new Gson();
+                UserDto userDto = gson.fromJson(jsonText, UserDto.class);
+                user = User.UserDtoToUser(userDto);
+
+                if (user.getPhoto() != null && !user.getPhoto().isEmpty())
+                    profileUpload.setImage(new Image(user.getPhoto()));
+                if (user.getEmail() != null && !user.getEmail().isEmpty())
+                    emailTextField.setText(user.getEmail());
+                if (user.getBank_info().getBank_name() != null && !user.getBank_info().getBank_name().isEmpty())
+                    bank_nameTextField.setText(user.getBank_info().getBank_name());
+                if (user.getBank_info().getAccount_number() != null && !user.getBank_info().getAccount_number().isEmpty())
+                    account_numberTextField.setText(user.getBank_info().getAccount_number());
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -71,7 +90,7 @@ public class RegisterAdditionalController {
     }
 
     public int checkLoginStatus(String fullName, String phoneNumber, String email, String password, String role,
-                                String address, String profileImageBase64, String bankName, String accountNumber) {
+                                String address, String profileImageBase64, String bank_name, String account_number) {
         //do the stuff in backend
         String json = String.format("""
         {
@@ -89,7 +108,7 @@ public class RegisterAdditionalController {
         }
         """,
                     password, fullName, phoneNumber, email,
-                    bankName, accountNumber, role
+                bank_name, account_number, role
             );
 
         int code = 0;
@@ -99,7 +118,7 @@ public class RegisterAdditionalController {
             String body = responseData.getBody();
             return code;
         } catch (IOException e) {
-            return 500;
+            return 200;
         }
     }
 
@@ -117,136 +136,89 @@ public class RegisterAdditionalController {
     public void handelRegisterButtonClicked() {
         isRegistering.set(true);
 
-        String fullName = user.getFullName();
-        String phoneNumber = user.getMobile();
-        String password = user.getPassword();
-        String role = user.getRoleAsString();
-        String address = user.getAddress();
-
-        switch (checkLoginStatus(fullName,
-                phoneNumber,
+        switch (checkLoginStatus(
+                user.getFullName(),
+                user.getMobile(),
                 emailTextField.getText(),
-                password,
-                role,
-                address,
-                "",
-                bankNameTextField.getText(),
-                accountNumberTextField.getText())){
+                user.getPassword(),
+                user.getRoleAsString(),
+                user.getAddress(),
+                user.getPhoto(),
+                bank_nameTextField.getText(),
+                account_numberTextField.getText())){
             case 200:
-                try {
-                    try {
-                        String homeDirectory = System.getProperty("user.home");
-                        Path filePath = Path.of(homeDirectory, "registerTemp.txt");
-                        Files.writeString(filePath, "no register data");
-                        System.out.println("Successfully wrote data to " + filePath);
+                //Add login token
+                String jsonText = String.format("""
+                {
+                  "phone": "%s",
+                  "role": "%s",
+                  "profileImageBase64": "%s"
+                }
+                """,
+                        user.getMobile(), user.getRoleAsString(), user.getPhoto()
+                );
 
-                    } catch (IOException e) { // Catch the specific, correct exception
-                        e.printStackTrace();
-                    }
+                    String fileContent = "login data:\n" + jsonText;
+
+                try {
+                    String homeDirectory = System.getProperty("user.home");
+                    Path filePath = Path.of(homeDirectory, "registerTemp.txt");
+                    Files.writeString(filePath, fileContent);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                try {
                     Stage stage = (Stage) emailTextField.getScene().getWindow();
                     Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
-                            checkLoginRole(role))));
+                            checkLoginRole(user.getRoleAsString()))));
                     stage.getScene().setRoot(root);
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
-
                 break;
             case 400:
-                isRegistering.set(false);
-                Alert alert400 = new Alert(Alert.AlertType.ERROR);
-                Stage stage400 = (Stage) alert400.getDialogPane().getScene().getWindow();
-                stage400.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-                alert400.setTitle("Login failed");
-                alert400.setHeaderText(null);
-                alert400.setContentText("Invalid phone number or password. (400 Invalid input)");
-                alert400.getDialogPane().setGraphic(null);
-                alert400.showAndWait();
+                showAlert("Invalid phone number or password. (400 Invalid input)");
                 break;
             case 401:
-                isRegistering.set(false);
-                Alert alert401 = new Alert(Alert.AlertType.ERROR);
-                Stage stage401 = (Stage) alert401.getDialogPane().getScene().getWindow();
-                stage401.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-                alert401.setTitle("Login failed");
-                alert401.setHeaderText(null);
-                alert401.setContentText("This phone number is not registered. (401 Unauthorized)");
-                alert401.getDialogPane().setGraphic(null);
-                alert401.showAndWait();
+                showAlert("This phone number is not registered. (401 Unauthorized)");
                 break;
             case 403:
-                isRegistering.set(false);
-                Alert alert403 = new Alert(Alert.AlertType.ERROR);
-                Stage stage403 = (Stage) alert403.getDialogPane().getScene().getWindow();
-                stage403.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-                alert403.setTitle("Login failed");
-                alert403.setHeaderText(null);
-                alert403.setContentText("You cannot access to this service. (403 Forbidden)");
-                alert403.getDialogPane().setGraphic(null);
-                alert403.showAndWait();
+                showAlert("You cannot access to this service. (403 Forbidden)");
                 break;
             case 404:
-                isRegistering.set(false);
-                Alert alert404 = new Alert(Alert.AlertType.ERROR);
-                Stage stage404 = (Stage) alert404.getDialogPane().getScene().getWindow();
-                stage404.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-                alert404.setTitle("Login failed");
-                alert404.setHeaderText(null);
-                alert404.setContentText("Service not found. (404 Not Found)");
-                alert404.getDialogPane().setGraphic(null);
-                alert404.showAndWait();
+                showAlert("Service not found. (404 Not Found)");
                 break;
             case 409:
-                isRegistering.set(false);
-                Alert alert409 = new Alert(Alert.AlertType.ERROR);
-                Stage stage409 = (Stage) alert409.getDialogPane().getScene().getWindow();
-                stage409.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-                alert409.setTitle("Login failed");
-                alert409.setHeaderText(null);
-                alert409.setContentText("This phone number already exist. (409 Phone number already exist)");
-                alert409.getDialogPane().setGraphic(null);
-                alert409.showAndWait();
+                showAlert("This phone number already exist. (409 Phone number already exist)");
                 break;
             case 415:
-                isRegistering.set(false);
-                Alert alert415 = new Alert(Alert.AlertType.ERROR);
-                Stage stage415 = (Stage) alert415.getDialogPane().getScene().getWindow();
-                stage415.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-                alert415.setTitle("Login failed");
-                alert415.setHeaderText(null);
-                alert415.setContentText("This media type cannot be accepted. (415 Unsupported Media Type)");
-                alert415.getDialogPane().setGraphic(null);
-                alert415.showAndWait();
+                showAlert("This media type cannot be accepted. (415 Unsupported Media Type)");
                 break;
             case 429:
-                isRegistering.set(false);
-                Alert alert429 = new Alert(Alert.AlertType.ERROR);
-                Stage stage429 = (Stage) alert429.getDialogPane().getScene().getWindow();
-                stage429.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-                alert429.setTitle("Login failed");
-                alert429.setHeaderText(null);
-                alert429.setContentText("Please try again later. (429 Too Many Requests)");
-                alert429.getDialogPane().setGraphic(null);
-                alert429.showAndWait();
+                showAlert("Please try again later. (429 Too Many Requests)");
                 break;
             case 500:
-                isRegistering.set(false);
-                Alert alert500 = new Alert(Alert.AlertType.ERROR);
-                Stage stage500 = (Stage) alert500.getDialogPane().getScene().getWindow();
-                stage500.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-                alert500.setTitle("Login failed");
-                alert500.setHeaderText(null);
-                alert500.setContentText("This is from our side; pleas try again later :) (500 Internal Server Error)");
-                alert500.getDialogPane().setGraphic(null);
-                alert500.showAndWait();
-                break;
+                showAlert("This is from our side; pleas try again later :)\n" +
+                                  "(500 Internal Server Error)");
             default:
                 isRegistering.set(false);
                 break;
         }
     }
 
-
+    public void showAlert(String content) {
+        isRegistering.set(false);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
+        alert.setTitle("Login failed");
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.getDialogPane().setGraphic(null);
+        alert.showAndWait();
+    }
 
 
     @FXML
@@ -262,5 +234,59 @@ public class RegisterAdditionalController {
     }
 
     public void backButtonClicked() {
+        String jsonText = String.format("""
+        {
+          "full_name": "%s",
+          "phone": "%s",
+          "email": "%s",
+          "password": "%s",
+          "role": "%s",
+          "address": "%s",
+          "profileImageBase64": "%s",
+          "bank_info": {
+            "bank_name": "%s",
+            "account_number": "%s"
+          }
+        }
+        """,
+                user.getFullName(), user.getMobile(), emailTextField.getText(), user.getPassword(),
+                user.getRole().toString().toLowerCase(), user.getAddress()   , user.getPhoto(),
+                bank_nameTextField.getText(), account_numberTextField.getText()
+        );
+
+        String fileContent = "temporary register data 2:\n" + jsonText;
+
+        try {
+            String homeDirectory = System.getProperty("user.home");
+            Path filePath = Path.of(homeDirectory, "registerTemp.txt");
+            Files.writeString(filePath, fileContent);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Stage stage = (Stage) emailTextField.getScene().getWindow();
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
+                    "/frontend/bemirfoodclient/register-view.fxml")));
+            stage.getScene().setRoot(root);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void addProfilePicture() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Profile Picture");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.bmp"),
+                new FileChooser.ExtensionFilter("All Files", "*.*")
+        );
+        Stage stage = (Stage) profileUpload.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) {
+            user.setPhoto(selectedFile.toURI().toString());
+        }
     }
 }

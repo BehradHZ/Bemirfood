@@ -171,13 +171,13 @@ public class BuyerProfileDetailsController {
         return "Karaj"; //temporary
     }
 
-    //change this based on backend BankInfo Object
-    public static String getBankName() {
+    //change this based on backend Bank_info Object
+    public static String getBank_name() {
         //do the stuff in backend
         return "Saderat"; //temporary
     }
 
-    public static String getAccountNumber() {
+    public static String getAccount_number() {
         //do the stuff in backend
         return "12345"; //temporary
     }

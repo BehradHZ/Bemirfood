@@ -28,7 +28,7 @@ public class Transaction {
     private PaymentMethod paymentMethod;
     private LocalDateTime timestamp;
     private Status status;
-    private BankInfo bankInfo;
+    private Bank_info bank_info;
 
     public Transaction() {
         this.timestamp = LocalDateTime.now();

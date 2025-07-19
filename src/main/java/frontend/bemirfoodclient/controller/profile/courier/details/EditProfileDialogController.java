@@ -1,7 +1,7 @@
 package frontend.bemirfoodclient.controller.profile.courier.details;
 
 import frontend.bemirfoodclient.model.dto.UserDto;
-import frontend.bemirfoodclient.model.entity.BankInfo;
+import frontend.bemirfoodclient.model.entity.Bank_info;
 import frontend.bemirfoodclient.model.entity.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -20,17 +20,17 @@ public class EditProfileDialogController {
     @FXML
     public TextField editPopupAddressTextField;
     @FXML
-    public TextField editPopupBankNameTextField;
+    public TextField editPopupBank_nameTextField;
     @FXML
-    public TextField editPopupAccountNumberTextField;
+    public TextField editPopupAccount_numberTextField;
 
     public void initialize() {
         editPopupFullNameTextField.setPromptText(CourierProfileDetailsController.getFullName());
         editPopupPhoneNumberTextField.setPromptText(CourierProfileDetailsController.getPhoneNumber());
         editPopupEmailTextField.setPromptText(CourierProfileDetailsController.getEmail());
         editPopupAddressTextField.setPromptText(CourierProfileDetailsController.getAddress());
-        editPopupBankNameTextField.setPromptText(CourierProfileDetailsController.getBankName());
-        editPopupAccountNumberTextField.setPromptText(CourierProfileDetailsController.getAccountNumber());
+        editPopupBank_nameTextField.setPromptText(CourierProfileDetailsController.getBanK_name());
+        editPopupAccount_numberTextField.setPromptText(CourierProfileDetailsController.getAccount_number());
 
         UnaryOperator<TextFormatter.Change> filter = change -> {
             String newText = change.getControlNewText();
@@ -53,11 +53,11 @@ public class EditProfileDialogController {
         String phoneNumber = editPopupPhoneNumberTextField.getText();
         String email = editPopupEmailTextField.getText();
         String address = editPopupAddressTextField.getText();
-        String bankName = editPopupBankNameTextField.getText();
-        String accountNumber = editPopupAccountNumberTextField.getText();
-        BankInfo bankInfo = new BankInfo(bankName, accountNumber);
+        String bank_name = editPopupBank_nameTextField.getText();
+        String account_number = editPopupAccount_numberTextField.getText();
+        Bank_info bank_info = new Bank_info(bank_name, account_number);
 
         return new UserDto(
-                new User(fullName, phoneNumber, "courier", email, null, address, bankInfo));
+                new User(fullName, phoneNumber, "courier", email, null, address, bank_info));
     }
 }

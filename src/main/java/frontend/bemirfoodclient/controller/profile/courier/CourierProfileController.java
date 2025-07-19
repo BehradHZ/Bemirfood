@@ -194,7 +194,6 @@ public class CourierProfileController {
         try {
             dialog.getDialogPane().setContent(fxmlLoader.load());
         } catch (IOException ioe) {
-            System.out.println("Couldn't show new item dialog");
             ioe.printStackTrace();
         }
 
@@ -204,7 +203,6 @@ public class CourierProfileController {
         okButton.addEventFilter(ActionEvent.ACTION, event -> {
             EditProfileDialogController controller = fxmlLoader.getController();
             UserDto userDto = controller.updateCurrentUserProfile();
-            System.out.println(1);
             int code = 200;
             switch (/*do the stuff in backend*/ code /*temporary*/) {
                 case 200:

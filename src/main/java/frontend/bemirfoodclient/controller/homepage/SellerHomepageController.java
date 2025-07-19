@@ -73,88 +73,42 @@ public class SellerHomepageController {
                 }
                 break;
             case 400:
-                Alert alert400 = new Alert(Alert.AlertType.ERROR);
-                Stage stage400 = (Stage) alert400.getDialogPane().getScene().getWindow();
-                stage400.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-                alert400.setTitle("Login failed");
-                alert400.setHeaderText(null);
-                alert400.setContentText("Invalid phone number or password. (400 Invalid input)");
-                alert400.getDialogPane().setGraphic(null);
-                alert400.showAndWait();
+                showAlert("Invalid phone number or password. (400 Invalid input)");
                 break;
             case 401:
-                Alert alert401 = new Alert(Alert.AlertType.ERROR);
-                Stage stage401 = (Stage) alert401.getDialogPane().getScene().getWindow();
-                stage401.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-                alert401.setTitle("Login failed");
-                alert401.setHeaderText(null);
-                alert401.setContentText("This phone number is not registered. (401 Unauthorized)");
-                alert401.getDialogPane().setGraphic(null);
-                alert401.showAndWait();
+                showAlert("This phone number is not registered. (401 Unauthorized)");
                 break;
             case 403:
-                Alert alert403 = new Alert(Alert.AlertType.ERROR);
-                Stage stage403 = (Stage) alert403.getDialogPane().getScene().getWindow();
-                stage403.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-                alert403.setTitle("Login failed");
-                alert403.setHeaderText(null);
-                alert403.setContentText("You cannot access to this service. (403 Forbidden)");
-                alert403.getDialogPane().setGraphic(null);
-                alert403.showAndWait();
+                showAlert("You cannot access to this service. (403 Forbidden)");
                 break;
             case 404:
-                Alert alert404 = new Alert(Alert.AlertType.ERROR);
-                Stage stage404 = (Stage) alert404.getDialogPane().getScene().getWindow();
-                stage404.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-                alert404.setTitle("Login failed");
-                alert404.setHeaderText(null);
-                alert404.setContentText("Service not found. (404 Not Found)");
-                alert404.getDialogPane().setGraphic(null);
-                alert404.showAndWait();
+                showAlert("Service not found. (404 Not Found)");
                 break;
             case 409:
-                Alert alert409 = new Alert(Alert.AlertType.ERROR);
-                Stage stage409 = (Stage) alert409.getDialogPane().getScene().getWindow();
-                stage409.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-                alert409.setTitle("Login failed");
-                alert409.setHeaderText(null);
-                alert409.setContentText("There was a conflict for access to this service. (409 Conflict)");
-                alert409.getDialogPane().setGraphic(null);
-                alert409.showAndWait();
+                showAlert("There was a conflict for access to this service. (409 Conflict)");
                 break;
             case 415:
-                Alert alert415 = new Alert(Alert.AlertType.ERROR);
-                Stage stage415 = (Stage) alert415.getDialogPane().getScene().getWindow();
-                stage415.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-                alert415.setTitle("Login failed");
-                alert415.setHeaderText(null);
-                alert415.setContentText("This media type cannot be accepted. (415 Unsupported Media Type)");
-                alert415.getDialogPane().setGraphic(null);
-                alert415.showAndWait();
+                showAlert("This media type cannot be accepted. (415 Unsupported Media Type)");
                 break;
             case 429:
-                Alert alert429 = new Alert(Alert.AlertType.ERROR);
-                Stage stage429 = (Stage) alert429.getDialogPane().getScene().getWindow();
-                stage429.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-                alert429.setTitle("Login failed");
-                alert429.setHeaderText(null);
-                alert429.setContentText("Please try again later. (429 Too Many Requests)");
-                alert429.getDialogPane().setGraphic(null);
-                alert429.showAndWait();
+                showAlert("Please try again later. (429 Too Many Requests)");
                 break;
             case 500:
-                Alert alert500 = new Alert(Alert.AlertType.ERROR);
-                Stage stage500 = (Stage) alert500.getDialogPane().getScene().getWindow();
-                stage500.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-                alert500.setTitle("Login failed");
-                alert500.setHeaderText(null);
-                alert500.setContentText("This is from our side; pleas try again later :) (500 Internal Server Error)");
-                alert500.getDialogPane().setGraphic(null);
-                alert500.showAndWait();
-                break;
+                showAlert("This is from our side; pleas try again later :) (500 Internal Server Error)");
             default:
                 break;
         }
+    }
+
+    public void showAlert(String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
+        alert.setTitle("Loading profile failed");
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.getDialogPane().setGraphic(null);
+        alert.showAndWait();
     }
 
     @FXML

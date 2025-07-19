@@ -1,11 +1,16 @@
 package frontend.bemirfoodclient;
 
+import com.google.gson.Gson;
+import frontend.bemirfoodclient.model.dto.UserDto;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 
 public class BemirfoodApplication extends Application {
@@ -28,8 +33,8 @@ public class BemirfoodApplication extends Application {
             };
         } else {
             fxmlLoader = new FXMLLoader(BemirfoodApplication.class.getResource(
-//                    "login-view.fxml"
-                    "register-view.fxml"
+                    "login-view.fxml"
+//                    "register-view.fxml"
 //                    "register-additional-view.fxml"
 //                    "homepage/seller-homepage-view.fxml"
 //                    "profile/buyer/buyer-profile-view.fxml"
@@ -45,15 +50,76 @@ public class BemirfoodApplication extends Application {
         stage.show();
     }
 
+    @Override
+    public void stop() throws Exception {
+        try {
+            String homeDirectory = System.getProperty("user.home");
+            Path filePath = Path.of(homeDirectory, "registerTemp.txt");
+            if (Files.exists(filePath) && !Files.readString(filePath).startsWith("login data")) {
+                Files.writeString(filePath, "");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        super.stop();
+    }
+
     public static void main(String[] args) {
         launch();
     }
 
     public String isUserLoggedIn() {
-        return null; //returns user id for login
+        String homeDirectory = System.getProperty("user.home");
+        Path filePath = Path.of(homeDirectory, "registerTemp.txt");
+
+        if (!Files.exists(filePath)) {
+            return null;
+        }
+
+        try {
+            if (Files.readString(filePath).startsWith("login data")) {
+                String fileContent = Files.readString(filePath);
+                int jsonStartIndex = fileContent.indexOf('{');
+                String jsonText = fileContent.substring(jsonStartIndex);
+
+                Gson gson = new Gson();
+                UserDto userDto = gson.fromJson(jsonText, UserDto.class);
+                return userDto.getPhone();  //returns user mobile for login
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public String getUserRole() {
-        return "courier";
+        String homeDirectory = System.getProperty("user.home");
+        Path filePath = Path.of(homeDirectory, "registerTemp.txt");
+
+        if (!Files.exists(filePath)) {
+            return null;
+        }
+
+        try {
+            if (Files.readString(filePath).startsWith("login data")) {
+                String fileContent = Files.readString(filePath);
+                int jsonStartIndex = fileContent.indexOf('{');
+                String jsonText = fileContent.substring(jsonStartIndex);
+
+                Gson gson = new Gson();
+                UserDto userDto = gson.fromJson(jsonText, UserDto.class);
+                return userDto.getRole().toLowerCase();  //returns user role for login
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
