@@ -59,13 +59,10 @@ public class TransactionCardController {
         time.setText(getTime(transaction));
         date.setText(getDate(transaction));
         switch (getTransactionType(transaction)) {
-            case "PAYMENT":
+            case "payment":
                 title.setText("Order from " + getTitle(transaction));
                 break;
-            case "WITHDRAWAL":
-                title.setText("Withdrawal");
-                break;
-            case "WALLET_TOPUP":
+            case "wallet top up":
                 title.setText("Wallet Top up");
                 break;
             default:
@@ -87,24 +84,25 @@ public class TransactionCardController {
     }
 
     public String getTime(Transaction transaction) {
-        return "21:35"; //temporary
+        return transaction.getTimestamp().getHour() + ":" + transaction.getTimestamp().getMinute();
     }
     public String getDate(Transaction transaction) {
-        return "April 6, 2021"; //temporary
+        return transaction.getTimestamp().getMonth().name() + " " + transaction.getTimestamp().getDayOfMonth() + ", " +
+                transaction.getTimestamp().getYear();
     }
     public String getTitle(Transaction transaction) {
-        return "Starbucks"; //temporary
+        return transaction.getTitle();
     }
     public String getTransactionType(Transaction transaction) {
-        return "PAYMENT"; //temporary
+        return transaction.getTransactionType();
     }
     public String getAmount(Transaction transaction) {
-        return "5"; //temporary
+        return transaction.getAmount() + "";
     }
     public String getStatus(Transaction transaction) {
-        return "failure"; //temporary
+        return transaction.getStatus();
     }
     public String getPaymentMethod(Transaction transaction) {
-        return "online"; //temporary
+        return transaction.getPaymentMethod();
     }
 }

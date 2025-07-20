@@ -14,9 +14,9 @@
             <Insets top="10"/>
         </VBox.margin>
         <Button maxHeight="50" maxWidth="50" onAction="#addProfilePicture"
-                style="-fx-background-color: #dddddd; -fx-background-radius: 500">
+                style="-fx-background-color: #dddddd; -fx-background-radius: 12">
             <graphic>
-                <ImageView fx:id="profileUpload"/>
+                <ImageView fx:id="profileImageView"/>
             </graphic>
         </Button>
         <VBox alignment="CENTER_LEFT">

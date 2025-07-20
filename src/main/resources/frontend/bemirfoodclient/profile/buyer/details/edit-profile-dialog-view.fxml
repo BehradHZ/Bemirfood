@@ -66,7 +66,7 @@
                     <Insets bottom="5"/>
                 </padding>
             </Label>
-            <TextField fx:id="editPopupBankN_nameTextField">
+            <TextField fx:id="editPopupBank_nameTextField">
                 <VBox.margin>
                     <Insets bottom="15"/>
                 </VBox.margin>

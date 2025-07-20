@@ -20,7 +20,7 @@ public class EditProfileDialogController {
     @FXML
     public TextField editPopupAddressTextField;
     @FXML
-    public TextField editPopupBankN_nameTextField;
+    public TextField editPopupBank_nameTextField;
     @FXML
     public TextField editPopupAccount_numberTextField;
 
@@ -29,7 +29,7 @@ public class EditProfileDialogController {
         editPopupPhoneNumberTextField.setPromptText(BuyerProfileDetailsController.getPhoneNumber());
         editPopupEmailTextField.setPromptText(BuyerProfileDetailsController.getEmail());
         editPopupAddressTextField.setPromptText(BuyerProfileDetailsController.getAddress());
-        editPopupBankN_nameTextField.setPromptText(BuyerProfileDetailsController.getBank_name());
+        editPopupBank_nameTextField.setPromptText(BuyerProfileDetailsController.getBank_name());
         editPopupAccount_numberTextField.setPromptText(BuyerProfileDetailsController.getAccount_number());
 
         UnaryOperator<TextFormatter.Change> filter = change -> {
@@ -53,7 +53,7 @@ public class EditProfileDialogController {
         String phoneNumber = editPopupPhoneNumberTextField.getText();
         String email = editPopupEmailTextField.getText();
         String address = editPopupAddressTextField.getText();
-        String bank_name = editPopupBankN_nameTextField.getText();
+        String bank_name = editPopupBank_nameTextField.getText();
         String account_number = editPopupAccount_numberTextField.getText();
         Bank_info bank_info = new Bank_info(bank_name, account_number);
 

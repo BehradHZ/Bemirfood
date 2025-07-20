@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 enum TransactionType {
     PAYMENT,
-    WITHDRAWAL,
     WALLET_TOPUP
 }
 
@@ -44,6 +43,28 @@ public class Transaction {
         this.status = Status.SUCCESS;
     }
 
+    public Transaction(String title, double amount, String paymentMethod, String type, LocalDateTime timestamp,
+                       String status) {
+        this.title = title;
+        this.amount = amount;
+
+        if (paymentMethod.equals("online"))
+            this.paymentMethod = PaymentMethod.ONLINE;
+        else
+            this.paymentMethod = PaymentMethod.WALLET;
+
+        if (type.equalsIgnoreCase("payment"))
+            this.type = TransactionType.PAYMENT;
+        else
+            this.type = TransactionType.WALLET_TOPUP;
+
+        this.timestamp = timestamp;
+
+        if (status.equalsIgnoreCase("successful"))
+            this.status = Status.SUCCESS;
+        else
+            this.status = Status.FAILED;
+    }
 
     public Long getId() { return id; }
 
@@ -61,8 +82,12 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public PaymentMethod getPaymentMethod() {
-        return paymentMethod;
+    public String getPaymentMethod() {
+        if (paymentMethod == PaymentMethod.WALLET) {
+            return "wallet";
+        } else {
+            return "online";
+        }
     }
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
@@ -72,11 +97,27 @@ public class Transaction {
         return timestamp;
     }
 
-    public Status getStatus() {
-        return status;
+    public String getStatus() {
+        if (status == Status.SUCCESS) {
+            return "successful";
+        } else {
+            return "failure";
+        }
     }
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getTransactionType() {
+        if (type == TransactionType.PAYMENT) {
+            return "payment";
+        } else {
+            return "wallet top up";
+        }
     }
 }

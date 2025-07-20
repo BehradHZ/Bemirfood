@@ -1,6 +1,5 @@
 package frontend.bemirfoodclient.controller.profile.seller.details;
 
-import frontend.bemirfoodclient.controller.profile.buyer.details.BuyerProfileDetailsController;
 import frontend.bemirfoodclient.model.dto.UserDto;
 import frontend.bemirfoodclient.model.entity.Bank_info;
 import frontend.bemirfoodclient.model.entity.User;
@@ -9,7 +8,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 
 import java.util.function.UnaryOperator;
-
 
 public class EditProfileDialogController {
     @FXML
@@ -26,12 +24,12 @@ public class EditProfileDialogController {
     public TextField editPopupAccount_numberTextField;
 
     public void initialize() {
-        editPopupFullNameTextField.setPromptText(BuyerProfileDetailsController.getFullName());
-        editPopupPhoneNumberTextField.setPromptText(BuyerProfileDetailsController.getPhoneNumber());
-        editPopupEmailTextField.setPromptText(BuyerProfileDetailsController.getEmail());
-        editPopupAddressTextField.setPromptText(BuyerProfileDetailsController.getAddress());
-        editPopupBank_nameTextField.setPromptText(BuyerProfileDetailsController.getBank_name());
-        editPopupAccount_numberTextField.setPromptText(BuyerProfileDetailsController.getAccount_number());
+        editPopupFullNameTextField.setPromptText(SellerProfileDetailsController.getFullName());
+        editPopupPhoneNumberTextField.setPromptText(SellerProfileDetailsController.getPhoneNumber());
+        editPopupEmailTextField.setPromptText(SellerProfileDetailsController.getEmail());
+        editPopupAddressTextField.setPromptText(SellerProfileDetailsController.getAddress());
+        editPopupBank_nameTextField.setPromptText(SellerProfileDetailsController.getBank_name());
+        editPopupAccount_numberTextField.setPromptText(SellerProfileDetailsController.getAccount_number());
 
         UnaryOperator<TextFormatter.Change> filter = change -> {
             String newText = change.getControlNewText();

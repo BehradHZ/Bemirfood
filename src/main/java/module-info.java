@@ -1,11 +1,13 @@
     module frontend.bemirfoodclient {
     requires javafx.controls;
     requires javafx.fxml;
-
+    requires javafx.swing;
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires com.google.gson;
+    requires java.desktop;
+
     opens frontend.bemirfoodclient to javafx.fxml;
     exports frontend.bemirfoodclient;
     exports frontend.bemirfoodclient.controller;

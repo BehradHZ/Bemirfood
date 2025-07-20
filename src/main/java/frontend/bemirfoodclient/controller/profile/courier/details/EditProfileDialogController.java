@@ -29,7 +29,7 @@ public class EditProfileDialogController {
         editPopupPhoneNumberTextField.setPromptText(CourierProfileDetailsController.getPhoneNumber());
         editPopupEmailTextField.setPromptText(CourierProfileDetailsController.getEmail());
         editPopupAddressTextField.setPromptText(CourierProfileDetailsController.getAddress());
-        editPopupBank_nameTextField.setPromptText(CourierProfileDetailsController.getBanK_name());
+        editPopupBank_nameTextField.setPromptText(CourierProfileDetailsController.getBank_name());
         editPopupAccount_numberTextField.setPromptText(CourierProfileDetailsController.getAccount_number());
 
         UnaryOperator<TextFormatter.Change> filter = change -> {

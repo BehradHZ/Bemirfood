@@ -112,7 +112,7 @@ public class BemirfoodApplication extends Application {
 
                 Gson gson = new Gson();
                 UserDto userDto = gson.fromJson(jsonText, UserDto.class);
-                return userDto.getRole().toLowerCase();  //returns user role for login
+                return userDto.getRole();  //returns user role for login
             } else {
                 return null;
             }

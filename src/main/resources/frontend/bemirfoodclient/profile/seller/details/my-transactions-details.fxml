@@ -1,6 +1,41 @@
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane fx:id="mainBorderPane" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="frontend.bemirfoodclient.controller.profile.seller.details.SellerTransactionsController">
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER">
-    <Label text="My transactions Details Section" style="-fx-font-size: 24px;" />
-</VBox>
+    <top>
+        <VBox>
+            <HBox style="-fx-background-color: #ffffff; -fx-background-radius: 12;
+                -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4)" alignment="CENTER" spacing="15">
+                <VBox.margin>
+                    <Insets bottom="20"/>
+                </VBox.margin>
+                <VBox>
+                    <HBox.margin>
+                        <Insets top="5" bottom="15" left="15"/>
+                    </HBox.margin>
+                    <Label text="Balance:" style="-fx-font-size: 24; -fx-font-weight: bold"/>
+                    <Label fx:id="balance" style="-fx-font-size: 24; -fx-font-weight: bold"/>
+                </VBox>
+                <Region fx:id="balanceSpacer"/>
+                <Button prefHeight="55" style="-fx-background-color: #ffffff; -fx-background-radius: 20; -fx-font-weight: bold;
+                                        ">
+                    <HBox.margin>
+                        <Insets right="15"/>
+                    </HBox.margin>
+                </Button>
+            </HBox>
+            <Separator>
+                <VBox.margin>
+                    <Insets bottom="20"/>
+                </VBox.margin>
+            </Separator>
+        </VBox>
+    </top>
+    <center>
+        <ScrollPane fitToHeight="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;  -fx-padding: 0;">
+            <VBox fx:id="transactionsCardsSection" spacing="10" prefWidth="440"/>
+        </ScrollPane>
+    </center>
+</BorderPane>
