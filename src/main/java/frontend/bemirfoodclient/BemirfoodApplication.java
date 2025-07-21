@@ -53,7 +53,7 @@ public class BemirfoodApplication extends Application {
     @Override
     public void stop() throws Exception {
         try {
-            String homeDirectory = System.getProperty("user.home");
+            String homeDirectory = System.getProperty("user.dir");
             Path filePath = Path.of(homeDirectory, "registerTemp.txt");
             if (Files.exists(filePath) && !Files.readString(filePath).startsWith("login data")) {
                 Files.writeString(filePath, "");
@@ -74,7 +74,7 @@ public class BemirfoodApplication extends Application {
         //save some kind of token so if user session is valid, they don't have to login again
 
         //temporary
-        String homeDirectory = System.getProperty("user.home");
+        String homeDirectory = System.getProperty("user.dir");
         Path filePath = Path.of(homeDirectory, "registerTemp.txt");
 
         if (!Files.exists(filePath)) {
@@ -104,7 +104,7 @@ public class BemirfoodApplication extends Application {
         //do the stuff in backend
         //save some kind of token so without login they can reach right view
 
-        String homeDirectory = System.getProperty("user.home");
+        String homeDirectory = System.getProperty("user.dir");
         Path filePath = Path.of(homeDirectory, "registerTemp.txt");
 
         if (!Files.exists(filePath)) {

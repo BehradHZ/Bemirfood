@@ -1,6 +1,7 @@
 package frontend.bemirfoodclient.controller;
 
 import HttpClientHandler.HttpClientHandler;
+import HttpClientHandler.HttpRequest;
 import HttpClientHandler.HttpResponseData;
 import com.google.gson.Gson;
 import frontend.bemirfoodclient.BemirfoodApplication;
@@ -25,7 +26,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
-
 
 public class RegisterAdditionalController {
     User user;
@@ -53,7 +53,7 @@ public class RegisterAdditionalController {
 
     @FXML
     public void initialize() {
-        String homeDirectory = System.getProperty("user.home");
+        String homeDirectory = System.getProperty("user.dir");
         Path filePath = Path.of(homeDirectory, "registerTemp.txt");
         if (Files.exists(filePath)) {
             try {
@@ -101,8 +101,8 @@ public class RegisterAdditionalController {
           "full_name": "%s",
           "mobile": "%s",
           "email": "%s",
-          "address": "",
-          "profileImageBase64": "",
+          "address": "%s",
+          "profileImageBase64": "%s",
           "bank_info": {
             "bank_name": "%s",
             "account_number": "%s"
@@ -110,18 +110,18 @@ public class RegisterAdditionalController {
           "role": "%s"
         }
         """,
-                    password, fullName, phoneNumber, email,
+                    password, fullName, phoneNumber, email,address,profileImageBase64,
                 bank_name, account_number, role
             );
 
         int code = 0;
         try {
-            HttpResponseData responseData = HttpClientHandler.sendPostRequest("http://localhost:4567/auth/register", json);
+            HttpResponseData responseData = HttpClientHandler
+                    .sendRequest("auth/register",HttpRequest.POST,json);
             code = responseData.getStatusCode();
-            String body = responseData.getBody();
             return code;
         } catch (IOException e) {
-            return 200;
+            return 500;
         }
     }
 
@@ -163,7 +163,7 @@ public class RegisterAdditionalController {
                     String fileContent = "login data:\n" + jsonText;
 
                 try {
-                    String homeDirectory = System.getProperty("user.home");
+                    String homeDirectory = System.getProperty("user.dir");
                     Path filePath = Path.of(homeDirectory, "registerTemp.txt");
                     Files.writeString(filePath, fileContent);
 

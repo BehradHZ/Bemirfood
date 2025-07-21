@@ -92,7 +92,7 @@ public class RegisterController {
 
         nextButton.disableProperty().bind(allFieldsFilled.or(isNextClicking));
 
-        String homeDirectory = System.getProperty("user.home");
+        String homeDirectory = System.getProperty("user.dir");
         Path filePath = Path.of(homeDirectory, "registerTemp.txt");
 
         if (!Files.exists(filePath)) {
@@ -140,7 +140,7 @@ public class RegisterController {
         role = ((RadioButton) selectedToggle).getText().toLowerCase();
 
         try {
-            String homeDirectory = System.getProperty("user.home");
+            String homeDirectory = System.getProperty("user.dir");
             Path filePath = Path.of(homeDirectory, "registerTemp.txt");
             String jsonText;
 

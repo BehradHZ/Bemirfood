@@ -1,5 +1,10 @@
 package frontend.bemirfoodclient.controller;
 
+import HttpClientHandler.HttpRequest;
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
@@ -14,10 +19,20 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
 
+import static Exception.exp.expHandler;
+import static HttpClientHandler.HttpClientHandler.sendRequest;
+
 public class LoginController {
+
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).serializeNulls()
+            .create();
+
     @FXML
     public BorderPane mainBorderPane;
     @FXML
@@ -68,14 +83,21 @@ public class LoginController {
         loginButton.disableProperty().bind(allFieldsFilled.or(isLoggingIn));
     }
 
-    public int checkLoginStatus(String phoneNumber, String password) {
-        //do the stuff in backend
-        return 200; //temporary
+    public HttpResponseData checkLoginStatus(String phoneNumber, String password) {
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            "auth/login", HttpRequest.POST, gson.toJson(Map.of("mobile", phoneNumber,
+                                    "password", password))
+                    );
+            return responseData;
+        }catch (IOException e){
+
+            return new HttpResponseData(500, "Internal Server Error");
+        }
     }
 
-    public String checkLoginRole(String username){
-        //do the stuff in backend
-        String role = "courier"; //temporary
+    public String checkLoginRole(String role){
         switch (role){
             case "buyer":
                 return "/frontend/bemirfoodclient/border/buyer-border-view.fxml";
@@ -93,45 +115,24 @@ public class LoginController {
     @FXML
     public void loginButtonClicked() {
         isLoggingIn.set(true);
-        switch (checkLoginStatus(phoneNumberTextField.getText(), passwordField.getText())){
-            case 200:
-                try {
-                    Stage stage = (Stage) phoneNumberTextField.getScene().getWindow();
-                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
-                            checkLoginRole(phoneNumberTextField.getText()))));
-                    stage.getScene().setRoot(root);
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
-                isLoggingIn.set(false);
-                break;
-            case 400:
-                showAlert("Invalid phone number or password. (400 Invalid input)");
-                break;
-            case 401:
-                showAlert("This phone number is not registered. (401 Unauthorized)");
-                break;
-            case 403:
-                showAlert("You cannot access to this service. (403 Forbidden)");
-                break;
-            case 404:
-                showAlert("Service not found. (404 Not Found)");
-                break;
-            case 409:
-                showAlert("There was a conflict for access to this service. (409 Conflict)");
-                break;
-            case 415:
-                showAlert("This media type cannot be accepted. (415 Unsupported Media Type)");
-                break;
-            case 429:
-                showAlert("Please try again later. (429 Too Many Requests)");
-                break;
-            case 500:
-                showAlert("This is from our side; pleas try again later :) (500 Internal Server Error)");
-            default:
-                isLoggingIn.set(false);
-                break;
+        HttpResponseData response = checkLoginStatus(phoneNumberTextField.getText(), passwordField.getText());
+        int code = response.getStatusCode();
+        if(code == 200){
+            try {
+                String role = response.getBody().getAsJsonObject("user").get("role").getAsString();
+
+                Stage stage = (Stage) phoneNumberTextField.getScene().getWindow();
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
+                        checkLoginRole(role))));
+                stage.getScene().setRoot(root);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+            isLoggingIn.set(false);
+        }else {
+            expHandler(response, "Login failed",isLoggingIn);
         }
+
     }
 
     public void showAlert(String content) {

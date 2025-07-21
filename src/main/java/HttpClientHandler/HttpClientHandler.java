@@ -5,10 +5,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpClientHandler {
-    public static HttpResponseData sendPostRequest(String urlStr, String jsonInputString) throws IOException {
-        URL url = new URL(urlStr);
+    private static final String baseUrl = "http://localhost:4567";
+    public static HttpResponseData sendRequest(String urlStr, HttpRequest method,String jsonInputString) throws IOException {
+        String completeUrl = String.format("%s/%s", baseUrl, urlStr);
+        URL url = new URL(completeUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("POST");
+        conn.setRequestMethod(method.toString());
         conn.setRequestProperty("Content-Type", "application/json; utf-8");
         conn.setRequestProperty("Accept", "application/json");
         conn.setDoOutput(true);

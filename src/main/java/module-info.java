@@ -7,8 +7,10 @@
     requires org.kordamp.bootstrapfx.core;
     requires com.google.gson;
     requires java.desktop;
+        requires java.net.http;
+        requires jdk.httpserver;
 
-    opens frontend.bemirfoodclient to javafx.fxml;
+        opens frontend.bemirfoodclient to javafx.fxml;
     exports frontend.bemirfoodclient;
     exports frontend.bemirfoodclient.controller;
     opens frontend.bemirfoodclient.controller to javafx.fxml;
