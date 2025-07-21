@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.controller.homepage.AdminHomepageController"
+            fx:controller="frontend.bemirfoodclient.controller.border.AdminBorderController"
             prefHeight="400.0" prefWidth="600.0">
 
 </AnchorPane>

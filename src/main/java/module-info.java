@@ -12,8 +12,8 @@
     exports frontend.bemirfoodclient;
     exports frontend.bemirfoodclient.controller;
     opens frontend.bemirfoodclient.controller to javafx.fxml;
-    exports frontend.bemirfoodclient.controller.homepage;
-    opens frontend.bemirfoodclient.controller.homepage to javafx.fxml;
+    exports frontend.bemirfoodclient.controller.border;
+    opens frontend.bemirfoodclient.controller.border to javafx.fxml;
     exports frontend.bemirfoodclient.controller.profile.buyer;
     exports frontend.bemirfoodclient.controller.profile.buyer.details;
     exports frontend.bemirfoodclient.controller.profile.admin;

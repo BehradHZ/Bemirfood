@@ -23,12 +23,12 @@ public class BemirfoodApplication extends Application {
 
         if (isUserLoggedIn() != null) {
             fxmlLoader = switch (getUserRole()) {
-                case "admin" -> new FXMLLoader(BemirfoodApplication.class.getResource("homepage/admin-homepage-view.fxml"));
-                case "buyer" -> new FXMLLoader(BemirfoodApplication.class.getResource("homepage/buyer-homepage-view.fxml"));
+                case "admin" -> new FXMLLoader(BemirfoodApplication.class.getResource("border/admin-border-view.fxml"));
+                case "buyer" -> new FXMLLoader(BemirfoodApplication.class.getResource("border/buyer-border-view.fxml"));
                 case "seller" ->
-                        new FXMLLoader(BemirfoodApplication.class.getResource("homepage/seller-homepage-view.fxml"));
+                        new FXMLLoader(BemirfoodApplication.class.getResource("border/seller-border-view.fxml"));
                 case "courier" ->
-                        new FXMLLoader(BemirfoodApplication.class.getResource("homepage/courier-homepage-view.fxml"));
+                        new FXMLLoader(BemirfoodApplication.class.getResource("border/courier-border-view.fxml"));
                 default -> new FXMLLoader(BemirfoodApplication.class.getResource("login-view.fxml"));
             };
         } else {
@@ -36,7 +36,7 @@ public class BemirfoodApplication extends Application {
 //                    "login-view.fxml"
                     "register-view.fxml"
 //                    "register-additional-view.fxml"
-//                    "homepage/seller-homepage-view.fxml"
+//                    "border/seller-border-view.fxml"
 //                    "profile/buyer/buyer-profile-view.fxml"
 //                    "profile/seller/seller-profile-view.fxml"
 //                    "profile/courier/courier-profile-view.fxml"

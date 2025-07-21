@@ -11,12 +11,12 @@
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.controller.homepage.BuyerHomepageController">
+            fx:controller="frontend.bemirfoodclient.controller.border.SellerBorderController">
     <top>
         <HBox alignment="CENTER" style="-fx-background-color: #ffffff">
-            <Button prefHeight="40" style="-fx-background-color: #ffffff" onAction="#homepageBemirfoodLogoClicked">
+            <Button prefHeight="40" style="-fx-background-color: #ffffff" onAction="#borderBemirfoodLogoClicked">
                 <graphic>
-                    <ImageView fx:id="homepageBemirfoodLogo">
+                    <ImageView fx:id="borderBemirfoodLogo">
                         <Image url="@../assets/Bemirfood_Logo.png" />
                     </ImageView>
                 </graphic>
@@ -52,7 +52,7 @@
         <VBox style="-fx-background-color: #ffffff">
 
         </VBox>
-        <Label text="this is buyer homepage"/>
+        <Label text="this is seller homepage"/>
     </center>
 
 </BorderPane>

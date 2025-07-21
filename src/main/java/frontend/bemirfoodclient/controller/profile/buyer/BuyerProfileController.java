@@ -210,7 +210,7 @@ public class BuyerProfileController {
         try {
             Stage stage = (Stage) backButton.getScene().getWindow();
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
-                    "/frontend/bemirfoodclient/homepage/buyer-homepage-view.fxml")));
+                    "/frontend/bemirfoodclient/border/buyer-border-view.fxml")));
             stage.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();

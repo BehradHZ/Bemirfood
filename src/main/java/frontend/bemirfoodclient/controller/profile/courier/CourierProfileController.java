@@ -180,7 +180,7 @@ public class CourierProfileController {
         try {
             Stage stage = (Stage) backButton.getScene().getWindow();
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
-                    "/frontend/bemirfoodclient/homepage/courier-homepage-view.fxml")));
+                    "/frontend/bemirfoodclient/border/courier-border-view.fxml")));
             stage.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();

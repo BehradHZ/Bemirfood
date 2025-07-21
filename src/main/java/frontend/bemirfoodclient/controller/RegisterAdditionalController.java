@@ -128,9 +128,9 @@ public class RegisterAdditionalController {
     public String checkLoginRole(String role){
         return switch (role) {
             case "admin" -> "";
-            case "buyer" -> "/frontend/bemirfoodclient/homepage/buyer-homepage-view.fxml";
-            case "seller" -> "/frontend/bemirfoodclient/homepage/seller-homepage-view.fxml";
-            case "courier" -> "/frontend/bemirfoodclient/homepage/courier-homepage-view.fxml";
+            case "buyer" -> "/frontend/bemirfoodclient/border/buyer-border-view.fxml";
+            case "seller" -> "/frontend/bemirfoodclient/border/seller-border-view.fxml";
+            case "courier" -> "/frontend/bemirfoodclient/border/courier-border-view.fxml";
             default -> "";
         };
     }

@@ -1,4 +1,4 @@
-package frontend.bemirfoodclient.controller.homepage;
+package frontend.bemirfoodclient.controller.border;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
 import javafx.fxml.FXML;
@@ -16,9 +16,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 
-public class SellerHomepageController {
+public class CourierBorderController {
     @FXML
-    public ImageView homepageBemirfoodLogo;
+    public ImageView borderBemirfoodLogo;
     @FXML
     public TextField searchTextField;
     @FXML
@@ -29,8 +29,8 @@ public class SellerHomepageController {
     public Region toolbarSpacer;
 
     public void initialize() {
-        homepageBemirfoodLogo.setPreserveRatio(true);
-        homepageBemirfoodLogo.setFitHeight(40);
+        borderBemirfoodLogo.setPreserveRatio(true);
+        borderBemirfoodLogo.setFitHeight(40);
 
         searchIcon.setPreserveRatio(true);
         searchIcon.setFitHeight(17);
@@ -43,11 +43,11 @@ public class SellerHomepageController {
     }
 
     @FXML
-    public void homepageBemirfoodLogoClicked() {
+    public void borderBemirfoodLogoClicked() {
         try {
             Stage stage = (Stage) profileIcon.getScene().getWindow();
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
-                    "/frontend/bemirfoodclient/homepage/seller-homepage-view.fxml")));
+                    "/frontend/bemirfoodclient/border/courier-border-view.fxml")));
             stage.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,7 +66,7 @@ public class SellerHomepageController {
                 try {
                     Stage stage = (Stage) profileIcon.getScene().getWindow();
                     Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
-                            "/frontend/bemirfoodclient/profile/seller/seller-profile-view.fxml")));
+                            "/frontend/bemirfoodclient/profile/courier/courier-profile-view.fxml")));
                     stage.getScene().setRoot(root);
                 } catch (IOException e) {
                     e.printStackTrace();

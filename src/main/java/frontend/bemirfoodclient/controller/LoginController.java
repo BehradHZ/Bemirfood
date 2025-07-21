@@ -1,7 +1,6 @@
 package frontend.bemirfoodclient.controller;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
-import javafx.animation.PauseTransition;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -13,7 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -80,13 +78,13 @@ public class LoginController {
         String role = "courier"; //temporary
         switch (role){
             case "buyer":
-                return "/frontend/bemirfoodclient/homepage/buyer-homepage-view.fxml";
+                return "/frontend/bemirfoodclient/border/buyer-border-view.fxml";
             case "seller":
-                return "/frontend/bemirfoodclient/homepage/seller-homepage-view.fxml";
+                return "/frontend/bemirfoodclient/border/seller-border-view.fxml";
             case "courier":
-                return "/frontend/bemirfoodclient/homepage/courier-homepage-view.fxml";
+                return "/frontend/bemirfoodclient/border/courier-border-view.fxml";
             case "admin":
-                return "/frontend/bemirfoodclient/homepage/admin-homepage-view.fxml";
+                return "/frontend/bemirfoodclient/border/admin-border-view.fxml";
             default:
                 return "";
         }
@@ -97,20 +95,15 @@ public class LoginController {
         isLoggingIn.set(true);
         switch (checkLoginStatus(phoneNumberTextField.getText(), passwordField.getText())){
             case 200:
-                PauseTransition delay = new PauseTransition(Duration.seconds(5));
-                delay.setOnFinished(event -> {
-                    try {
-                        Stage stage = (Stage) phoneNumberTextField.getScene().getWindow();
-                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
-                                checkLoginRole(phoneNumberTextField.getText()))));
-                        stage.getScene().setRoot(root);
-                    } catch (IOException ioe) {
-                        ioe.printStackTrace();
-                    }
-                    isLoggingIn.set(false);
-                });
-                delay.play();
-
+                try {
+                    Stage stage = (Stage) phoneNumberTextField.getScene().getWindow();
+                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
+                            checkLoginRole(phoneNumberTextField.getText()))));
+                    stage.getScene().setRoot(root);
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+                isLoggingIn.set(false);
                 break;
             case 400:
                 showAlert("Invalid phone number or password. (400 Invalid input)");
@@ -146,7 +139,7 @@ public class LoginController {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-        alert.setTitle("Loading profile failed");
+        alert.setTitle("Login failed");
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.getDialogPane().setGraphic(null);
