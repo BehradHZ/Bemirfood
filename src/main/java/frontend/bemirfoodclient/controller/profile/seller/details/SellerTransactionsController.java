@@ -29,7 +29,8 @@ public class SellerTransactionsController {
         List<Transaction> transactions = getTransactions();
         for (Transaction transaction : transactions) {
             try {
-                FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource("transaction-card.fxml"));
+                FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(
+                        "/frontend/bemirfoodclient/profile/transaction-card.fxml"));
                 Pane card = loader.load();
                 TransactionCardController controller = loader.getController();
                 controller.setData(transaction);
@@ -48,6 +49,8 @@ public class SellerTransactionsController {
         //create suitable Transaction() constructors
         //if transaction is a payment, it needs a title
         //amount, payment method, status, time are also required
+
+//        transactions.add(new Transaction("starbucks", 65, "online", "payment", LocalDateTime.now(), "successfull"));
 
         return transactions;
     }

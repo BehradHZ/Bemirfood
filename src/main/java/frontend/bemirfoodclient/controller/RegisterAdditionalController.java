@@ -55,38 +55,41 @@ public class RegisterAdditionalController {
     public void initialize() {
         String homeDirectory = System.getProperty("user.home");
         Path filePath = Path.of(homeDirectory, "registerTemp.txt");
-        if (!Files.exists(filePath)) {
-            return;
-        }
+        if (Files.exists(filePath)) {
+            try {
+                if (Files.readString(filePath).startsWith("temporary register data")) {
+                    String fileContent = Files.readString(filePath);
+                    int jsonStartIndex = fileContent.indexOf('{');
+                    String jsonText = fileContent.substring(jsonStartIndex);
 
-        try {
-            if (Files.readString(filePath).startsWith("temporary register data")) {
-                String fileContent = Files.readString(filePath);
-                int jsonStartIndex = fileContent.indexOf('{');
-                String jsonText = fileContent.substring(jsonStartIndex);
+                    Gson gson = new Gson();
+                    UserDto userDto = gson.fromJson(jsonText, UserDto.class);
+                    user = User.UserDtoToUser(userDto);
 
-                Gson gson = new Gson();
-                UserDto userDto = gson.fromJson(jsonText, UserDto.class);
-                user = User.UserDtoToUser(userDto);
+                    if (user.getPhoto() != null && !user.getPhoto().isEmpty())
+                        profileUpload.setImage(new Image(user.getPhoto()));
+                    if (user.getEmail() != null && !user.getEmail().isEmpty())
+                        emailTextField.setText(user.getEmail());
+                    if (user.getBank_info().getBank_name() != null && !user.getBank_info().getBank_name().isEmpty())
+                        bank_nameTextField.setText(user.getBank_info().getBank_name());
+                    if (user.getBank_info().getAccount_number() != null && !user.getBank_info().getAccount_number().isEmpty())
+                        account_numberTextField.setText(user.getBank_info().getAccount_number());
+                }
 
-                if (user.getPhoto() != null && !user.getPhoto().isEmpty())
-                    profileUpload.setImage(new Image(user.getPhoto()));
-                if (user.getEmail() != null && !user.getEmail().isEmpty())
-                    emailTextField.setText(user.getEmail());
-                if (user.getBank_info().getBank_name() != null && !user.getBank_info().getBank_name().isEmpty())
-                    bank_nameTextField.setText(user.getBank_info().getBank_name());
-                if (user.getBank_info().getAccount_number() != null && !user.getBank_info().getAccount_number().isEmpty())
-                    account_numberTextField.setText(user.getBank_info().getAccount_number());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         firstPageImage.fitHeightProperty().bind(mainBorderPane.heightProperty());
 
         backButtonImage.setPreserveRatio(true);
         backButtonImage.setFitHeight(20);
+
+        profileUpload.setPreserveRatio(true);
+        profileUpload.setFitHeight(120);
+        profileUpload.setImage(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream(
+                "/frontend/bemirfoodclient/assets/icons/profileUpload.png"))));
     }
 
     public int checkLoginStatus(String fullName, String phoneNumber, String email, String password, String role,
@@ -151,11 +154,10 @@ public class RegisterAdditionalController {
                 String jsonText = String.format("""
                 {
                   "phone": "%s",
-                  "role": "%s",
-                  "profileImageBase64": "%s"
+                  "role": "%s"
                 }
                 """,
-                        user.getMobile(), user.getRoleAsString(), user.getPhoto()
+                        user.getMobile(), user.getRoleAsString()
                 );
 
                     String fileContent = "login data:\n" + jsonText;
@@ -288,5 +290,6 @@ public class RegisterAdditionalController {
         if (selectedFile != null) {
             user.setPhoto(selectedFile.toURI().toString());
         }
+        profileUpload.setImage(new Image(selectedFile.toURI().toString()));
     }
 }

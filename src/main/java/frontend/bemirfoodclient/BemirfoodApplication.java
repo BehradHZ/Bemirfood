@@ -33,8 +33,8 @@ public class BemirfoodApplication extends Application {
             };
         } else {
             fxmlLoader = new FXMLLoader(BemirfoodApplication.class.getResource(
-                    "login-view.fxml"
-//                    "register-view.fxml"
+//                    "login-view.fxml"
+                    "register-view.fxml"
 //                    "register-additional-view.fxml"
 //                    "homepage/seller-homepage-view.fxml"
 //                    "profile/buyer/buyer-profile-view.fxml"
@@ -70,6 +70,10 @@ public class BemirfoodApplication extends Application {
     }
 
     public String isUserLoggedIn() {
+        //do the stuff in backend
+        //save some kind of token so if user session is valid, they don't have to login again
+
+        //temporary
         String homeDirectory = System.getProperty("user.home");
         Path filePath = Path.of(homeDirectory, "registerTemp.txt");
 
@@ -97,6 +101,9 @@ public class BemirfoodApplication extends Application {
     }
 
     public String getUserRole() {
+        //do the stuff in backend
+        //save some kind of token so without login they can reach right view
+
         String homeDirectory = System.getProperty("user.home");
         Path filePath = Path.of(homeDirectory, "registerTemp.txt");
 

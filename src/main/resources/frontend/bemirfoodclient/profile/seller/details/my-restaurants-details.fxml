@@ -1,6 +1,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER">
-    <Label text="My Restaurants Details Section" style="-fx-font-size: 24px;" />
-</VBox>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.ScrollPane?>
+<BorderPane fx:id="mainBorderPane" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="frontend.bemirfoodclient.controller.profile.seller.details.MyRestaurantsController">
+    <center>
+        <ScrollPane fitToHeight="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;  -fx-padding: 0;">
+            <VBox fx:id="restaurantCardsSection" spacing="15" prefWidth="440"/>
+        </ScrollPane>
+    </center>
+</BorderPane>

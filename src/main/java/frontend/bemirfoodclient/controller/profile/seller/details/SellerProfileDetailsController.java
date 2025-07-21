@@ -1,6 +1,7 @@
 package frontend.bemirfoodclient.controller.profile.seller.details;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
+import frontend.bemirfoodclient.model.ImageLoader;
 import frontend.bemirfoodclient.model.entity.Bank_info;
 import frontend.bemirfoodclient.model.entity.User;
 import javafx.embed.swing.SwingFXUtils;
@@ -41,31 +42,7 @@ public class SellerProfileDetailsController {
         setUser();
         profileImageView.setPreserveRatio(true);
         profileImageView.setFitHeight(120);
-
-        //fix base64image
-        String uri = getProfileImageBase64();
-        if (uri == null) {
-            uri = "/frontend/bemirfoodclient/assets/icons/profileUpload.png";
-            profileImageView.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(uri))));
-        } else {
-            // 1. Load the image from the URI
-            Image originalImage = new Image(uri);
-
-            // 2. Add a listener to wait for the image to load
-            originalImage.widthProperty().addListener((obs, oldWidth, newWidth) -> {
-                if (newWidth.doubleValue() > 0) {
-                    // 3. Once loaded, calculate the crop rectangle
-                    double originalHeight = originalImage.getHeight();
-                    double cropSize = Math.min(newWidth.doubleValue(), originalHeight);
-                    double cropX = (newWidth.doubleValue() - cropSize) / 2;
-                    double cropY = (originalHeight - cropSize) / 2;
-
-                    // 4. Apply the viewport to display the cropped area
-                    profileImageView.setViewport(new Rectangle2D(cropX, cropY, cropSize, cropSize));
-                }
-            });
-            profileImageView.setImage(originalImage);
-        }
+        setProfileImageBase64(profileImageView);
 
         fullNameLabel.setText(getFullName());
         phoneNumberLabel.setText(getPhoneNumber());
@@ -131,7 +108,6 @@ public class SellerProfileDetailsController {
                     case 200:
                         profileImageView.setImage(originalImage);
                         profileImageView.setViewport(cropRectangle);
-                        System.out.println(base64String);
 
                         break;
                     case 400:
@@ -189,12 +165,15 @@ public class SellerProfileDetailsController {
         return seller.getEmail();
     }
 
-    public static String getProfileImageBase64() {
+    public void setProfileImageBase64(ImageView profileImageView) {
         //do the stuff in backend
-        if (true /*profile picture is added (temporary)*/) {
-            return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoA2AfURogAAAAJ3RFWHRkYXRlOmNyZWF0ZQAyMDIzLTA3LTIwVDEzOjE0OjQ2KzAyOjAwCnaixQAAACd0RVh0ZGF0ZTptb2RpZnkAMjAyMy0wNy0yMFQxMzoxNDo0NiswMjowME9PqWwAAASjSURBVHic7ZtPaBxlHMc/n3emk3Y2myQpMStpWjGJIbXqxSlIDy2i4FG8eFGSgwdBLz79R/TQRxBERQ8ePAgqOFgECx5qC4GgiJZaAn2k1VotSburmTTJzGSSSWb2fN4HZ/a9bGaTdLrJzL7zeZ/Pe5/n/T7zPj/vA+A9WlVTB1QVcFZp1gC9+mNZeunFK1/N8+f/vS3j90oHhJ4iYp/SgB9r8q+l4zVf04HwBwT2SgE+l2B/DkgnBI4iYj8n4A/Q+gI4U4GvS4DXbv8OOKeCzxCwBxTwZQE/L+A/xfk8s/o+Y8Azy/g5/M4EPoBgX0S+LgAvw/gK/L9A/q+SbwBfz7A70vgiwjYJwJ/K+D3Cvg1A//2+N9Dhm8+sL8FfCuAXzTw42n4wXy+5sP7v9PzHgi8DIFbEfDdBHwBga8i4PMI/HyAH/d+f6L+9Xb+KACP4fAHBO5CwCkT+LoAn0Xgxwg8vG9v9/fv/346f/8Cvr8P//Y/A2+WwM0IfFLApwD8ngL/sYd/N9D//r3/PgV8A4H/E/APBPg0Aq8C4GcF/v7g35+bT/5jAX4Vgf8u4DcCfE8CDyHwSgS+jICvIfBtBP4eAb+LgF8k8JMI/DOCfyrgLwD43xTwb/8b4D8P+F3APwfwfw/4fwP+XwD/D+B/R8A3EfAnBP5CwPt1+w9MvP8n8PMAfgjAPyHgnwj4XwL+3wz8f/7+LwL/KODvKfDfA/7rD/5fgP/k9L+f+f4bAP4fgH8g4B8K+E0CPkvArxA4CgErhSA0hQBVGkCjHkC1PjG/qA3uXwIqfAIqfAKq5xKoeQhUfAQaHgK1T0DtU6D5Eaj5KDT/BGo+A83nw0DVg0D1INB8CjQ/As2HQPWRgNpHQPMT0PwEah4C1YdA9SFQ/QhU/wI1HwLNI6D5CFR/As1voOYzUH0I1HwINP+l/xCo+b/x7/9f/p/k7f8ANb8Hmp+Bmg+h5gPzH2O+f4Oa/8P/+z8Gah4ENQ+C5l+g5t/g7d8ANQ9C3cNQ9+D/DwBVB6D+P1AD/j8E6h4E6h4Eah4ENQ9C1YNA1YNA1YNA9RAg9e/g7d8AFQ8C1YNA1YNA1YNA1YNA1YNA1YNA9RAg9Q0g9Y0g9Y0g9Weg6jNQdRgk/zoo3gMlH0LJH2Oyfwpq/g00n4Oa/8w3fwdqvgM1H4Ka/wI1/wZqPqg4H1ScDysOB9UH1fdB1f3o77+BqneA6j1gukcMuoeA7iGgexDoHgS6hwDuIUA7BNAOAd2DgO5BQHcg0B0IdAdy7YFcB3JtB3L9BHL9BLJ/BNk/guyfQLZPITsEsnME2U6B7BhBNhGgTQQokwCFCZCkAbSJQHMKUKcBlEmAsAxgHwew9wD2nsHeA9h7APsewL4HsO8B7HuA/R7Afg/g/Q7wvgZ4nwM8xwEOccA+DuAcAThBAE4QgFME4BwBOMcBxjHAPQ7gHgdxDwM4hwHucYDzHOD8DvC+B3jfA9z3APc9wP0B8H4AeA8A3gOADwDgewD4HgA+BMCHAOgBADoAgA4AIAcAyAEAMgCAjAFgYwAYGMCWAbBlAFwZgAsDYGEAFgZgZQAuDMAFAbgQABcCIALAiABcEEARECCyASLNAIg0g0gTyDQDyDQByAgAyAAYyACYYAAWBgDDACgYAAWBAVAQAIUAUAgABVEA+EBEB0QEQERARDsCcSMQEwcxMYFIEIgEAYkQkBgBCQiQSAgQECAQAAICxIRAJAQIJECQgAQECAgQEAABIjEAJiYQMyEGMSMAcSMQEQERERARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARARAR-g/a-s7wS2T8yAAAAAASUVORK5CYII=";
+        boolean profilePhotoExists = false;
+        if (profilePhotoExists) {
+            String base64Uri = null;
+            ImageLoader.displayBase64Image(base64Uri, profileImageView);
         } else {
-            return null; //don't change this!
+            profileImageView.setImage(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("" +
+                    "/frontend/bemirfoodclient/assets/icons/profileUpload.png"))));
         }
     }
 

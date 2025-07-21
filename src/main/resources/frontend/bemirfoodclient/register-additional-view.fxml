@@ -14,7 +14,7 @@
         <VBox alignment="TOP_CENTER" style="-fx-background-color: #ffffff">
             <HBox alignment="CENTER_LEFT" style="-fx-background-color: #ffffff">
                 <VBox.margin>
-                    <Insets top="10" left="10" bottom="80"/>
+                    <Insets top="10" left="10" bottom="10"/>
                 </VBox.margin>
                 <Button fx:id="backButton" style="-fx-background-color: #ffffff" onAction="#backButtonClicked">
                     <graphic>
@@ -35,16 +35,19 @@
                     <Label text="Register" style="-fx-font-weight: bold; -fx-font-size: 36;"/>
 
                     <Label text="You can add your additional details here."/>
-                </VBox>
 
-                <VBox alignment="CENTER_LEFT" spacing="5">
-                    <Button maxHeight="50" maxWidth="50" onAction="#addProfilePicture"
-                            style="-fx-background-color: #dddddd; -fx-background-radius: 500">
+                    <Button minHeight="120" minWidth="120" onAction="#addProfilePicture"
+                            style="-fx-background-color: #dddddd; -fx-background-radius: 15">
+                        <VBox.margin>
+                            <Insets top="30"/>
+                        </VBox.margin>
                         <graphic>
                             <ImageView fx:id="profileUpload"/>
                         </graphic>
                     </Button>
+                </VBox>
 
+                <VBox alignment="CENTER_LEFT" spacing="5">
                     <Label text="Email Address" style="-fx-font-weight: bold; -fx-font-size: 16">
                         <VBox.margin>
                             <Insets top="20" left="30"/>

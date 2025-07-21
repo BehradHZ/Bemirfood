@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<DialogPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.profile.seller.details.AddRestaurantDialogController"
+            prefHeight="250.0" prefWidth="600.0">
+    <content>
+        <HBox spacing="20" alignment="CENTER">
+            <Button fx:id="addLogoButton" maxHeight="200" minWidth="200" onAction="#addLogoButtonClicked"
+                    style="-fx-background-radius: 15">
+                <HBox.margin>
+                    <Insets left="30"/>
+                </HBox.margin>
+                <graphic>
+                    <ImageView fx:id="addLogoImageView"/>
+                </graphic>
+            </Button>
+
+            <VBox>
+                <Label text="Restaurant name*" style="-fx-font-size: 14">
+                    <padding>
+                        <Insets bottom="5"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="nameTextField"/>
+
+                <Label text="Restaurant Address*" style="-fx-font-size: 14">
+                    <padding>
+                        <Insets top="15" bottom="5"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="addressTextField"/>
+
+                <Label text="Restaurant Phone*" style="-fx-font-size: 14">
+                    <padding>
+                        <Insets top="15" bottom="5"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="phoneTextField"/>
+            </VBox>
+            <VBox>
+                <Label text="Tax fee" style="-fx-font-size: 14">
+                    <padding>
+                        <Insets bottom="5"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="taxFeeTextField"/>
+
+                <Label text="Additional fee" style="-fx-font-size: 14">
+                    <padding>
+                        <Insets top="15" bottom="5"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="additionalFeeTextField"/>
+            </VBox>
+        </HBox>
+    </content>
+
+</DialogPane>

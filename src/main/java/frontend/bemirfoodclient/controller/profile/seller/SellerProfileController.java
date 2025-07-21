@@ -1,8 +1,10 @@
 package frontend.bemirfoodclient.controller.profile.seller;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
+import frontend.bemirfoodclient.controller.profile.seller.details.AddRestaurantDialogController;
 import frontend.bemirfoodclient.controller.profile.seller.details.EditProfileDialogController;
 import frontend.bemirfoodclient.model.dto.UserDto;
+import frontend.bemirfoodclient.model.entity.Restaurant;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,6 +25,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class SellerProfileController {
     @FXML
@@ -58,6 +61,11 @@ public class SellerProfileController {
     public Button editButton;
     @FXML
     public ImageView editButtonImage;
+    @FXML
+    public Button addRestaurantButton;
+    @FXML
+    public ImageView addRestaurantImage;
+    @FXML
     public Region profileSpacer;
 
     @FXML
@@ -71,6 +79,9 @@ public class SellerProfileController {
 
         editButtonImage.setPreserveRatio(true);
         editButtonImage.setFitHeight(20);
+
+        addRestaurantImage.setPreserveRatio(true);
+        addRestaurantImage.setFitHeight(25);
     }
 
     @FXML
@@ -81,6 +92,7 @@ public class SellerProfileController {
         myTransactionsLarge.setVisible(false);
         logoutLarge.setVisible(false);
         editButton.setVisible(true);
+        addRestaurantButton.setVisible(false);
 
         try {
             Parent view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
@@ -99,6 +111,7 @@ public class SellerProfileController {
         myTransactionsLarge.setVisible(false);
         logoutLarge.setVisible(false);
         editButton.setVisible(false);
+        addRestaurantButton.setVisible(true);
 
         try {
             Parent view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
@@ -117,6 +130,7 @@ public class SellerProfileController {
         myTransactionsLarge.setVisible(true);
         logoutLarge.setVisible(false);
         editButton.setVisible(false);
+        addRestaurantButton.setVisible(false);
 
         try {
             Parent view = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
@@ -172,6 +186,21 @@ public class SellerProfileController {
                     break;
             }
         }
+    }
+
+    public void showAlert(String content, ActionEvent event) {
+        if (event != null) {
+            event.consume();
+        }
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream(
+                "assets/icons/error.png"))));
+        alert.setTitle("Login failed");
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.getDialogPane().setGraphic(null);
+        alert.showAndWait();
     }
 
     @FXML
@@ -248,15 +277,69 @@ public class SellerProfileController {
         dialog.showAndWait();
     }
 
-    public void showAlert(String content, ActionEvent event) {
-        event.consume();
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-        alert.setTitle("Login failed");
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.getDialogPane().setGraphic(null);
-        alert.showAndWait();
+    private int addRestaurant(Restaurant restaurant) {
+        //do the stuff in backend
+        return 200;
+    }
+
+    public void addRestaurantButtonClicked() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Add Restaurant");
+        dialog.initOwner(mainBorderPane.getScene().getWindow());
+        FXMLLoader fxmlLoader = new FXMLLoader(BemirfoodApplication.class.getResource(
+                "/frontend/bemirfoodclient/profile/seller/details/add-restaurant-dialog-view.fxml"
+        ));
+        try {
+            dialog.getDialogPane().setContent(fxmlLoader.load());
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
+
+        AtomicReference<Restaurant> restaurant = new AtomicReference<>();
+        Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+        okButton.addEventFilter(ActionEvent.ACTION, event -> {
+           AddRestaurantDialogController controller = fxmlLoader.getController();
+            restaurant.set(controller.addRestaurant(/*fix later*/""));
+
+            if (restaurant.get() == null) {
+                event.consume();
+            }
+        });
+
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            switch (addRestaurant(restaurant.get())) {
+                case 200:
+                    myRestaurantsButtonClicked();
+                    break;
+                case 400:
+                    showAlert("Invalid phone number or password. (400 Invalid input)", null);
+                    break;
+                case 401:
+                    showAlert("This phone number is not registered. (401 Unauthorized)", null);
+                    break;
+                case 403:
+                    showAlert("You cannot access to this service. (403 Forbidden)", null);
+                    break;
+                case 404:
+                    showAlert("Service not found. (404 Not Found)", null);
+                    break;
+                case 409:
+                    showAlert("There was a conflict for access to this service. (409 Conflict)", null);
+                    break;
+                case 415:
+                    showAlert("This media type cannot be accepted. (415 Unsupported Media Type)", null);
+                    break;
+                case 429:
+                    showAlert("Please try again later. (429 Too Many Requests)", null);
+                    break;
+                case 500:
+                    showAlert("This is from our side; pleas try again later :) (500 Internal Server Error)", null);
+                default:
+                    break;
+            }
+        }
     }
 }

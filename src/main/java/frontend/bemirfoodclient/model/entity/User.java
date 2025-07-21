@@ -53,6 +53,10 @@ public class User {
         this.password = password;
     }
 
+    public User(String mobile) {
+        this.mobile = mobile;
+    }
+
     public static User UserDtoToUser(UserDto userDto) {
         return new User(
                 userDto.getFullName(),

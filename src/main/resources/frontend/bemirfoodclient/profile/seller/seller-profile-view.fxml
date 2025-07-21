@@ -31,13 +31,22 @@
                 </graphic>
             </Button>
             <Region fx:id="profileSpacer"/>
-            <Button fx:id="editButton" style="-fx-background-color: #f4f4f4" onAction="#editButtonClicked">
-                <graphic>
-                    <ImageView fx:id="editButtonImage">
-                        <Image url="@../../assets/icons/edit.png"/>
-                    </ImageView>
-                </graphic>
-            </Button>
+            <StackPane>
+                <Button fx:id="editButton" style="-fx-background-color: #f4f4f4" onAction="#editButtonClicked">
+                    <graphic>
+                        <ImageView fx:id="editButtonImage">
+                            <Image url="@../../assets/icons/edit.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button fx:id="addRestaurantButton" style="-fx-background-color: #f4f4f4" onAction="#addRestaurantButtonClicked">
+                    <graphic>
+                        <ImageView fx:id="addRestaurantImage">
+                            <Image url="@../../assets/icons/addRestaurant.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </StackPane>
         </HBox>
     </top>
     <left>
