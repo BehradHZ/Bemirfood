@@ -1,5 +1,6 @@
 package frontend.bemirfoodclient.controller.profile.seller.details;
 
+import HttpClientHandler.HttpResponseData;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.ImageLoader;
 import frontend.bemirfoodclient.model.entity.Bank_info;
@@ -24,6 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Objects;
+
+import static HttpClientHandler.Requests.getCurrentUserProfile;
 
 public class SellerProfileDetailsController {
     @FXML
@@ -51,12 +54,21 @@ public class SellerProfileDetailsController {
 
     public void setUser() {
         //do the stuff in backend
-        //set "" if null
-        //YAML: Get current seller profile
 
-        //temporary
-        seller = new User("Behrad Hozouri", "09220866912", "seller", "bhvsrt2006@gmail.com",
-                null, "Karaj", new Bank_info("Saderat", "12345"));
+        HttpResponseData responseData = getCurrentUserProfile();
+
+        seller = new User(
+                responseData.getString("full_name"),
+                responseData.getString("phone"),
+                responseData.getString("role"),
+                responseData.getString("email"),
+                responseData.getString("profileImageBase64"),
+                responseData.getString("address"),
+                new Bank_info(
+                        responseData.getBody().getAsJsonObject("bank_info").get("bank_name").getAsString(),
+                        responseData.getBody().getAsJsonObject("bank_info").get("account_number").getAsString()
+                )
+        );
     }
 
     public static int updateCurrentUserProfile(String full_name, String phoneNumber, String email, String address, String profileImageBase64, Object bank_info) {

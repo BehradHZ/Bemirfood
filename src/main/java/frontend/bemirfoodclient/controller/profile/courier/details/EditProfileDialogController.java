@@ -1,5 +1,9 @@
 package frontend.bemirfoodclient.controller.profile.courier.details;
 
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.model.dto.UserDto;
 import frontend.bemirfoodclient.model.entity.Bank_info;
 import frontend.bemirfoodclient.model.entity.User;
@@ -7,10 +11,21 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.function.UnaryOperator;
+
+import static Exception.exp.expHandler;
+import static HttpClientHandler.Requests.updateUserProfile;
 
 
 public class EditProfileDialogController {
+
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).serializeNulls()
+            .create();
+
     @FXML
     public TextField editPopupFullNameTextField;
     @FXML
@@ -56,6 +71,21 @@ public class EditProfileDialogController {
         String bank_name = editPopupBank_nameTextField.getText();
         String account_number = editPopupAccount_numberTextField.getText();
         Bank_info bank_info = new Bank_info(bank_name, account_number);
+
+        Map<String, Object> request = new LinkedHashMap<>();
+        if(fullName != null && !fullName.isBlank()) request.put("full_name", fullName);
+        if(phoneNumber != null && !phoneNumber.isBlank()) request.put("phone_number", phoneNumber);
+        if(email != null && !email.isBlank()) request.put("email", email);
+        if(address != null && !address.isBlank()) request.put("address", address);
+        if(bank_info != null) request.put("bank_info", bank_info);
+
+        HttpResponseData responseData = updateUserProfile(gson.toJson(request));
+        if(responseData.getStatusCode() == 200){
+
+        }else{
+            expHandler(responseData, "Failed to update profile", null);
+        }
+
 
         return new UserDto(
                 new User(fullName, phoneNumber, "courier", email, null, address, bank_info));

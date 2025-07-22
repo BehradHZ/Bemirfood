@@ -3,7 +3,9 @@ package frontend.bemirfoodclient.controller;
 import HttpClientHandler.HttpClientHandler;
 import HttpClientHandler.HttpRequest;
 import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.dto.UserDto;
 import frontend.bemirfoodclient.model.entity.User;
@@ -25,9 +27,18 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static Exception.exp.expHandler;
+
+
 public class RegisterAdditionalController {
+
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).serializeNulls()
+            .create();
+
     User user;
 
     @FXML
@@ -50,11 +61,12 @@ public class RegisterAdditionalController {
     public Button registerButton;
 
     private BooleanProperty isRegistering = new SimpleBooleanProperty(false);
+    Path filePath;
 
     @FXML
     public void initialize() {
         String homeDirectory = System.getProperty("user.dir");
-        Path filePath = Path.of(homeDirectory, "registerTemp.txt");
+        filePath = Path.of(homeDirectory, "registerTemp.txt");
         if (Files.exists(filePath)) {
             try {
                 if (Files.readString(filePath).startsWith("temporary register data")) {
@@ -92,10 +104,22 @@ public class RegisterAdditionalController {
                 "/frontend/bemirfoodclient/assets/icons/profileUpload.png"))));
     }
 
-    public int checkLoginStatus(String fullName, String phoneNumber, String email, String password, String role,
+    public HttpResponseData checkLoginStatus(String fullName, String phoneNumber, String email, String password, String role,
                                 String address, String profileImageBase64, String bank_name, String account_number) {
         //do the stuff in backend
-        String json = String.format("""
+//        Map<String, Object> responseBody = new LinkedHashMap<>();
+//        Map<String, String> bank_info = new LinkedHashMap<>();
+//        bank_info.put("bank_name", bank_name);
+//        bank_info.put("account_number", account_number);
+//        responseBody.put("password", password);
+//        responseBody.put("fullName", fullName);
+//        responseBody.put("phoneNumber", phoneNumber);
+//        responseBody.put("email", email);
+//        responseBody.put("address", address);
+//        responseBody.put("bank_info", bank_info);
+//        responseBody.put("role", role);
+//        String body =  gson.toJson(responseBody);
+        String body = String.format("""
         {
           "password": "%s",
           "full_name": "%s",
@@ -114,14 +138,11 @@ public class RegisterAdditionalController {
                 bank_name, account_number, role
             );
 
-        int code = 0;
         try {
-            HttpResponseData responseData = HttpClientHandler
-                    .sendRequest("auth/register",HttpRequest.POST,json);
-            code = responseData.getStatusCode();
-            return code;
+            return HttpClientHandler
+                    .sendRequest("auth/register",HttpRequest.POST,body);
         } catch (IOException e) {
-            return 500;
+            return new HttpResponseData(500, "Internal Server Error");
         }
     }
 
@@ -139,7 +160,7 @@ public class RegisterAdditionalController {
     public void handelRegisterButtonClicked() {
         isRegistering.set(true);
 
-        switch (checkLoginStatus(
+        HttpResponseData response = checkLoginStatus(
                 user.getFullName(),
                 user.getMobile(),
                 emailTextField.getText(),
@@ -148,9 +169,16 @@ public class RegisterAdditionalController {
                 user.getAddress(),
                 user.getPhoto(),
                 bank_nameTextField.getText(),
-                account_numberTextField.getText())){
-            case 200:
-                //Add login token
+                account_numberTextField.getText());
+
+        int code = response.getStatusCode();
+        if(code == 200) {
+            //Add login token
+//            Map<String, Object> body = new LinkedHashMap<>();
+//            body.put("phone", user.getMobile());
+//            body.put("role", user.getRoleAsString());
+//            String jsonText = gson.toJson(body);
+
                 String jsonText = String.format("""
                 {
                   "phone": "%s",
@@ -159,54 +187,25 @@ public class RegisterAdditionalController {
                 """,
                         user.getMobile(), user.getRoleAsString()
                 );
+            String fileContent = "login data:\n" + jsonText;
 
-                    String fileContent = "login data:\n" + jsonText;
+            try {
+                Files.writeString(filePath, fileContent);
 
-                try {
-                    String homeDirectory = System.getProperty("user.dir");
-                    Path filePath = Path.of(homeDirectory, "registerTemp.txt");
-                    Files.writeString(filePath, fileContent);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    Stage stage = (Stage) emailTextField.getScene().getWindow();
-                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
-                            checkLoginRole(user.getRoleAsString()))));
-                    stage.getScene().setRoot(root);
-                } catch (IOException ioe) {
-                    ioe.printStackTrace();
-                }
-                break;
-            case 400:
-                showAlert("Invalid phone number or password. (400 Invalid input)");
-                break;
-            case 401:
-                showAlert("This phone number is not registered. (401 Unauthorized)");
-                break;
-            case 403:
-                showAlert("You cannot access to this service. (403 Forbidden)");
-                break;
-            case 404:
-                showAlert("Service not found. (404 Not Found)");
-                break;
-            case 409:
-                showAlert("This phone number already exist. (409 Phone number already exist)");
-                break;
-            case 415:
-                showAlert("This media type cannot be accepted. (415 Unsupported Media Type)");
-                break;
-            case 429:
-                showAlert("Please try again later. (429 Too Many Requests)");
-                break;
-            case 500:
-                showAlert("This is from our side; pleas try again later :)\n" +
-                                  "(500 Internal Server Error)");
-            default:
-                isRegistering.set(false);
-                break;
+            try {
+                Stage stage = (Stage) emailTextField.getScene().getWindow();
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
+                        checkLoginRole(user.getRoleAsString()))));
+                stage.getScene().setRoot(root);
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }else{
+            expHandler(response, "Registration failed", isRegistering);
         }
     }
 
@@ -259,8 +258,6 @@ public class RegisterAdditionalController {
         String fileContent = "temporary register data 2:\n" + jsonText;
 
         try {
-            String homeDirectory = System.getProperty("user.home");
-            Path filePath = Path.of(homeDirectory, "registerTemp.txt");
             Files.writeString(filePath, fileContent);
 
         } catch (IOException e) {

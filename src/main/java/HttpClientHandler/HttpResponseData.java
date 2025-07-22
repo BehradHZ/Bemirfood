@@ -1,7 +1,9 @@
 package HttpClientHandler;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import exception.NotFoundException;
 
 public class HttpResponseData {
     private final int statusCode;
@@ -22,6 +24,11 @@ public class HttpResponseData {
 
     // Optional: Convenience method
     public String getString(String key) {
-        return body.has(key) ? body.get(key).getAsString() : null;
+        if(!body.has(key)) throw new NotFoundException("key " + key + " not found");
+        JsonElement element = body.get(key);
+        if (element == null || element.isJsonNull()) {
+            return null;
+        }
+        return element.getAsString();
     }
 }

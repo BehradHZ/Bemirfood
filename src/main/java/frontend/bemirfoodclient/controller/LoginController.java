@@ -3,6 +3,7 @@ package frontend.bemirfoodclient.controller;
 import HttpClientHandler.HttpRequest;
 import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.LocalDateTimeAdapter;
+import Util.Token;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
@@ -120,7 +121,8 @@ public class LoginController {
         if(code == 200){
             try {
                 String role = response.getBody().getAsJsonObject("user").get("role").getAsString();
-
+                String token =  response.getBody().get("token").getAsString();
+                Token.addToken(token);
                 Stage stage = (Stage) phoneNumberTextField.getScene().getWindow();
                 Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
                         checkLoginRole(role))));

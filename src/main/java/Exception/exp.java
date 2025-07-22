@@ -32,7 +32,7 @@ public class exp {
     }
 
     private static void showAlert(String title, String content, BooleanProperty page) {
-        page.set(false);
+        if(page != null) page.set(false);
         Alert alert = new Alert(Alert.AlertType.ERROR);
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));

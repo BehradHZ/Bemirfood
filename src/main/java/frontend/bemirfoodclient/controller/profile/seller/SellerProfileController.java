@@ -23,6 +23,8 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -278,7 +280,11 @@ public class SellerProfileController {
     }
 
     private int addRestaurant(Restaurant restaurant) {
-        //do the stuff in backend
+        Map<String, String> requestBody = new LinkedHashMap<>();
+        requestBody.put("name", restaurant.getName());
+        requestBody.put("address", restaurant.getAddress());
+        requestBody.put("phone", restaurant.getPhone());
+        requestBody.put("logoBase64", restaurant.getLogo());
         return 200;
     }
 
