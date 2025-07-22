@@ -1,5 +1,10 @@
 package frontend.bemirfoodclient.controller.profile.seller.details;
 
+import Deserializer.RestaurantDeserializer;
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
+import HttpClientHandler.Requests;
+import com.google.gson.*;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.border.SellerBorderController;
 import frontend.bemirfoodclient.controller.restaurant.seller.SellerRestaurantViewController;
@@ -13,10 +18,16 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyRestaurantsController {
+
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).serializeNulls()
+            .create();
+
     @FXML
     public BorderPane mainBorderPane;
     @FXML
@@ -48,8 +59,20 @@ public class MyRestaurantsController {
     }
 
     public List<Restaurant> getRestaurants() {
+        Gson g = new GsonBuilder()
+                .registerTypeAdapter(Restaurant.class, new RestaurantDeserializer())
+                .create();
+
+        HttpResponseData responseData = Requests.getSellerRestaurants();
+        JsonObject jsonObject = responseData.getBody().getAsJsonObject();
+        JsonArray restaurantArray = jsonObject.getAsJsonArray("List of restaurants");
+
         List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(new Restaurant("Starbucks", "کرج، گوهردشت، خیابان یازدهم اصلی فاز دو، پلاک 33", "0922", null));
+
+        for (JsonElement restaurantElement : restaurantArray) {
+            Restaurant restaurant = g.fromJson(restaurantElement, Restaurant.class);
+            restaurants.add(restaurant);
+        }
 
         return restaurants;
     }

@@ -40,6 +40,18 @@ public class Restaurant {
         this.additionalFee = additionalFee;
     }
 
+    public Restaurant(Long id, String name, String address, String phone, String logo,
+                      Double taxFee, Double additionalFee) {
+        this.id =  id;
+        this.name = name;
+        this.seller = null;
+        this.address = address;
+        this.phone = phone;
+        this.logo = logo;
+        this.taxFee = taxFee;
+        this.additionalFee = additionalFee;
+    }
+
     private Long id;
 
     private String name;
@@ -60,6 +72,10 @@ public class Restaurant {
     private List<Item> items;
 
     private List<Menu> menus ;
+
+    public Long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;

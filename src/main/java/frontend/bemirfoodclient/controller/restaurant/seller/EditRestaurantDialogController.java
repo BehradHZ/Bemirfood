@@ -122,7 +122,7 @@ public class EditRestaurantDialogController {
             }
         }
 
-        return new Restaurant(
+        return new Restaurant((long)restaurant.getId(),
                 name,
                 restaurant.getSeller(),
                 address,
