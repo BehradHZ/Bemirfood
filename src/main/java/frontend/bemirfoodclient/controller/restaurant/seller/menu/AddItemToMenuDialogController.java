@@ -1,4 +1,4 @@
-package frontend.bemirfoodclient.controller.restaurant.seller;
+package frontend.bemirfoodclient.controller.restaurant.seller.menu;
 
 import frontend.bemirfoodclient.model.entity.Item;
 import javafx.fxml.FXML;
@@ -22,7 +22,7 @@ public class AddItemToMenuDialogController {
         for (Item item : allItems) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                        "/frontend/bemirfoodclient/restaurant/seller/selectable-item-card.fxml"
+                        "/frontend/bemirfoodclient/restaurant/seller/menu/selectable-item-card.fxml"
                 ));
                 Pane card = loader.load();
                 SelectableItemCardController cardController = loader.getController();

@@ -1,4 +1,4 @@
-package frontend.bemirfoodclient.controller.restaurant.seller;
+package frontend.bemirfoodclient.controller.restaurant.seller.item;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.entity.Item;

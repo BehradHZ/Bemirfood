@@ -1,4 +1,4 @@
-package frontend.bemirfoodclient.controller.restaurant.seller;
+package frontend.bemirfoodclient.controller.restaurant.seller.menu;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.entity.Item;
@@ -61,7 +61,7 @@ public class SellerMenuCardController {
         for (Item item : items) {
             try {
                 FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(
-                        "/frontend/bemirfoodclient/restaurant/seller/item-card-small-menu.fxml"
+                        "/frontend/bemirfoodclient/restaurant/seller/menu/item-card-small-menu.fxml"
                 ));
                 Pane smallCard = loader.load();
                 SellerMenuItemCardController smallCardController = loader.getController();
@@ -92,7 +92,7 @@ public class SellerMenuCardController {
         dialog.initOwner(menuTitle.getScene().getWindow());
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-                "/frontend/bemirfoodclient/restaurant/seller/add-item-to-menu-dialog.fxml"
+                "/frontend/bemirfoodclient/restaurant/seller/menu/add-item-to-menu-dialog.fxml"
         ));
         try {
             dialog.getDialogPane().setContent(fxmlLoader.load());
@@ -101,11 +101,10 @@ public class SellerMenuCardController {
             return;
         }
 
-        // Get the dialog controller
         AddItemToMenuDialogController dialogController = fxmlLoader.getController();
 
-//        List<Item> allItems = menu.getRestaurant().getItems(); // Assuming this method exists
-        List<Item> allItems = menu.getItems(); //temporary
+        List<Item> allItems = menu.getRestaurant().getItems(); // Assuming this method exists
+//        List<Item> allItems = menu.getItems(); //temporary
         dialogController.populateItems(allItems);
 
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
@@ -113,7 +112,6 @@ public class SellerMenuCardController {
         Optional<ButtonType> result = dialog.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            // Get the list of items the user checked in the dialog
             List<Item> itemsToAdd = dialogController.getSelectedItems();
 
             switch (addItemsToMenu(itemsToAdd)) {

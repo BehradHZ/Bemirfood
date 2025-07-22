@@ -11,7 +11,7 @@
 <?import javafx.scene.image.Image?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.SellerMenuItemCardController">
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.menu.SellerMenuItemCardController">
     <center>
         <VBox spacing="15">
             <HBox style="-fx-background-color: white; -fx-background-radius: 15;  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);"
@@ -33,7 +33,7 @@
                     </HBox.margin>
                     <graphic>
                         <ImageView fx:id="deleteItemImageView">
-                            <Image url="@../../assets/icons/deleteRed.png"/>
+                            <Image url="@../../../assets/icons/deleteRed.png"/>
                         </ImageView>
                     </graphic>
                 </Button>

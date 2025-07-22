@@ -1,4 +1,4 @@
-package frontend.bemirfoodclient.controller.restaurant.seller;
+package frontend.bemirfoodclient.controller.restaurant.seller.menu;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;

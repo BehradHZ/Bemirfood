@@ -1,6 +1,11 @@
 package frontend.bemirfoodclient.controller.restaurant.seller;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
+import frontend.bemirfoodclient.controller.restaurant.seller.item.AddItemDialogController;
+import frontend.bemirfoodclient.controller.restaurant.seller.item.EditItemDialogController;
+import frontend.bemirfoodclient.controller.restaurant.seller.item.SellerItemCardController;
+import frontend.bemirfoodclient.controller.restaurant.seller.menu.AddMenuDialogController;
+import frontend.bemirfoodclient.controller.restaurant.seller.menu.SellerMenuCardController;
 import frontend.bemirfoodclient.model.ImageLoader;
 import frontend.bemirfoodclient.model.entity.Item;
 import frontend.bemirfoodclient.model.entity.Order;
@@ -192,7 +197,7 @@ public class SellerRestaurantViewController {
         for (Item item : items) {
             try {
                 FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(
-                        "/frontend/bemirfoodclient/restaurant/seller/item-card.fxml"
+                        "/frontend/bemirfoodclient/restaurant/seller/item/item-card.fxml"
                 ));
                 Pane card = loader.load();
                 SellerItemCardController controller = loader.getController();
@@ -224,7 +229,7 @@ public class SellerRestaurantViewController {
         dialog.initOwner(restaurantLogo.getScene().getWindow());
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-                "/frontend/bemirfoodclient/restaurant/seller/add-item-dialog-view.fxml"
+                "/frontend/bemirfoodclient/restaurant/seller/item/add-item-dialog-view.fxml"
         ));
         try {
             dialog.getDialogPane().setContent(fxmlLoader.load());
@@ -287,7 +292,7 @@ public class SellerRestaurantViewController {
         dialog.initOwner(restaurantLogo.getScene().getWindow());
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-                "/frontend/bemirfoodclient/restaurant/seller/edit-item-dialog-view.fxml"
+                "/frontend/bemirfoodclient/restaurant/seller/item/edit-item-dialog-view.fxml"
         ));
         try {
             dialog.getDialogPane().setContent(fxmlLoader.load());
@@ -356,7 +361,7 @@ public class SellerRestaurantViewController {
         for (Menu menu : menus) {
             try {
                 FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(
-                        "/frontend/bemirfoodclient/restaurant/seller/menu-card.fxml"
+                        "/frontend/bemirfoodclient/restaurant/seller/menu/menu-card.fxml"
                 ));
                 Pane card = loader.load();
                 SellerMenuCardController controller = loader.getController();
@@ -385,7 +390,7 @@ public class SellerRestaurantViewController {
         dialog.initOwner(addMenuButton.getScene().getWindow());
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-                "/frontend/bemirfoodclient/restaurant/seller/add-menu-dialog-view.fxml"
+                "/frontend/bemirfoodclient/restaurant/seller/menu/add-menu-dialog-view.fxml"
         ));
         try {
             dialog.getDialogPane().setContent(fxmlLoader.load());

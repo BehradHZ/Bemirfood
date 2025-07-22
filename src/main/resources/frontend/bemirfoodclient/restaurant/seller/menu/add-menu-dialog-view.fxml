@@ -8,7 +8,7 @@
 
 <DialogPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.AddMenuDialogController"
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.menu.AddMenuDialogController"
             prefHeight="100.0" minWidth="200.0">
     <content>
         <VBox spacing="10">

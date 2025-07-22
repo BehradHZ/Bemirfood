@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <DialogPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.EditItemDialogController"
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.item.AddItemDialogController"
             prefHeight="250.0" prefWidth="600.0">
 
     <content>
@@ -23,21 +23,21 @@
             </Button>
 
             <VBox alignment="CENTER">
-                <Label text="Item name" style="-fx-font-size: 14">
+                <Label text="Item name*" style="-fx-font-size: 14">
                     <padding>
                         <Insets bottom="5"/>
                     </padding>
                 </Label>
                 <TextField fx:id="nameTextField"/>
 
-                <Label text="Item description" style="-fx-font-size: 14">
+                <Label text="Item description*" style="-fx-font-size: 14">
                     <padding>
                         <Insets top="15" bottom="5"/>
                     </padding>
                 </Label>
                 <TextField fx:id="descriptionTextField"/>
 
-                <Label text="Item supply" style="-fx-font-size: 14">
+                <Label text="Item supply*" style="-fx-font-size: 14">
                     <padding>
                         <Insets top="15" bottom="5"/>
                     </padding>
@@ -52,7 +52,7 @@
                 </Label>
                 <TextField fx:id="keywordTextField"/>
 
-                <Label text="Price" style="-fx-font-size: 14">
+                <Label text="Price*" style="-fx-font-size: 14">
                     <padding>
                         <Insets top="15" bottom="5"/>
                     </padding>

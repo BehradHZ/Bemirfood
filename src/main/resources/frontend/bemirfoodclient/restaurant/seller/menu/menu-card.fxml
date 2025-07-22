@@ -11,7 +11,7 @@
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.SellerMenuCardController">
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.menu.SellerMenuCardController">
     <center>
         <VBox style="-fx-background-color: white;
             -fx-effect-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 4);"
@@ -27,7 +27,7 @@
                     <Button fx:id="addItemToMenuButton" onAction="#addItemToMenuButtonClicked">
                         <graphic>
                             <ImageView fx:id="addItemToMenuButtonImageView">
-                                <Image url="@../../assets/icons/addItem.png"/>
+                                <Image url="@../../../assets/icons/addItem.png"/>
                             </ImageView>
                         </graphic>
                     </Button>
@@ -37,7 +37,7 @@
                         </HBox.margin>
                         <graphic>
                             <ImageView fx:id="deleteMenuButtonImageView">
-                                <Image url="@../../assets/icons/deleteWhite.png"/>
+                                <Image url="@../../../assets/icons/deleteWhite.png"/>
                             </ImageView>
                         </graphic>
                     </Button>

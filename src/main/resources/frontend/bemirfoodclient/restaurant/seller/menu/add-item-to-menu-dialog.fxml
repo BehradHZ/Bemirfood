@@ -9,7 +9,7 @@
 <?import javafx.geometry.Insets?>
 <DialogPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.AddItemToMenuDialogController"
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.menu.AddItemToMenuDialogController"
             prefHeight="600.0" prefWidth="600.0">
     <content>
         <VBox alignment="TOP_CENTER" spacing="10">
