@@ -26,11 +26,13 @@ public class Order {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    private double courierFee;
+
     private boolean paid;
 
     public Order(List<CartItem> cartItems, String deliveryAddress,
                  Customer customer, Restaurant restaurant,
-                 LocalDateTime createdAt, LocalDateTime updatedAt, OrderStatus status) {
+                 LocalDateTime createdAt, LocalDateTime updatedAt, OrderStatus status, double courierFee) {
         this.cartItems = cartItems;
         this.deliveryAddress = deliveryAddress;
         this.customer = customer;
@@ -42,11 +44,12 @@ public class Order {
         this.status = status;
         this.paid = false;
         rating = null;
+        this.courierFee = courierFee;
     }
 
     public Order(List<CartItem> cartItems, String deliveryAddress,
                  Customer customer, Restaurant restaurant,
-                 LocalDateTime createdAt, LocalDateTime updatedAt, Coupon coupon, OrderStatus status) {
+                 LocalDateTime createdAt, LocalDateTime updatedAt, Coupon coupon, OrderStatus status, double courierFee) {
         this.cartItems = cartItems;
         this.deliveryAddress = deliveryAddress;
         this.customer = customer;
@@ -58,9 +61,62 @@ public class Order {
         this.status = status;
         this.paid = false;
         rating = null;
+        this.courierFee = courierFee;
     }
 
     public Order() {}
+
+    public Long getId() {
+        return id;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public Delivery getDelivery() {
+        return delivery;
+    }
+
+    public Coupon getCoupon() {
+        return coupon;
+    }
+
+    public OrderRating getRating() {
+        return rating;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public double getCourierFee() {
+        return courierFee;
+    }
 
     public Long getRawPrice() {
         return (long) cartItems.stream()
@@ -89,5 +145,9 @@ public class Order {
                 return (long)(price * (1 - value));
             }
         }
+    }
+
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
     }
 }

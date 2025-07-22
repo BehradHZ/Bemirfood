@@ -88,6 +88,7 @@ public class EditRestaurantDialogController {
     }
 
     public Restaurant editRestaurant() {
+
         String name = restaurant.getName();
         String address = restaurant.getAddress();
         String phone = restaurant.getPhone();

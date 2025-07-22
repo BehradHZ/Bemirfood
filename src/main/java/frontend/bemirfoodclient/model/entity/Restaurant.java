@@ -28,6 +28,18 @@ public class Restaurant {
         this.additionalFee = additionalFee;
     }
 
+    public Restaurant(Long id, String name, Seller seller, String address, String phone, String logo,
+                      Double taxFee, Double additionalFee) {
+        this.id = id;
+        this.name = name;
+        this.seller = seller;
+        this.address = address;
+        this.phone = phone;
+        this.logo = logo;
+        this.taxFee = taxFee;
+        this.additionalFee = additionalFee;
+    }
+
     private Long id;
 
     private String name;

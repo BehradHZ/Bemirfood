@@ -43,5 +43,13 @@ public class Coupon {
         return type;
     }
 
+    @Override
+    public String toString() {
+        if (type == CouponType.fixed) {
+            return String.valueOf(value);
+        } else {
+            return "%" + value;
+        }
+    }
 
 }

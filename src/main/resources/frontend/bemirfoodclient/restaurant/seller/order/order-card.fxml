@@ -6,49 +6,69 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.order.SellerOrderCardController">
 
     <center>
-        <VBox>
-            <Label fx:id="orderId"/>
-            <Label fx:id="dateTime"/>
-        </VBox>
-        <VBox fx:id="itemsSection"/>
-        <VBox>
-            <Label fx:id="orderDescription"/>
-            <Label fx:id="orderBuyerName"/>
-            <Label fx:id="orderAddress"/>
-            <Label fx:id="orderCourierName"/>
+        <VBox style="-fx-background-color: white; -fx-background-radius: 15;
+            -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 4);">
             <HBox>
-                <Label text="Raw Price"/>
-                <Label fx:id="rawPrice"/>
+                <VBox.margin>
+                    <Insets top="15" bottom="15" left="15" right="15"/>
+                </VBox.margin>
+                <Label fx:id="orderId"/>
+                <Region fx:id="idTimeSpacer"/>
+                <Label fx:id="dateTime"/>
             </HBox>
-            <HBox>
-                <Label text="Tax Fee"/>
-                <Label fx:id="taxFee"/>
-            </HBox>
-            <HBox>
-                <Label text="Additional Fee"/>
-                <Label fx:id="additionalFee"/>
-            </HBox>
-            <HBox>
-                <Label text="Courier Fee"/>
-                <Label fx:id="courierFee"/>
-            </HBox>
-            <HBox>
-                <Label text="Coupon"/>
-                <Label fx:id="couponDetails"/>
-            </HBox>
-            <HBox>
-                <Label text="Total Price"/>
-                <Label fx:id="totalPrice"/>
-            </HBox>
-            <HBox>
-                <Button fx:id="orderStatusButton"/>
-                <Label fx:id="lastUpdate"/>
-            </HBox>
+
+            <ScrollPane>
+                <VBox fx:id="itemsSection"/>
+            </ScrollPane>
+
+            <VBox>
+                <Label fx:id="orderDescription" wrapText="true" style="-fx-font-size: 15"/>
+                <Label fx:id="orderBuyerName" style="-fx-font-size: 15"/>
+                <Label fx:id="orderAddress" style="-fx-font-size: 15"/>
+                <Label fx:id="orderCourierName" style="-fx-font-size: 15"/>
+
+                <HBox>
+                    <Label text="Raw Price"/>
+                    <Region fx:id="rawPriceSpacer"/>
+                    <Label fx:id="rawPrice"/>
+                </HBox>
+                <HBox>
+                    <Label text="Tax Fee"/>
+                    <Region fx:id="taxFeeSpacer"/>
+                    <Label fx:id="taxFee"/>
+                </HBox>
+                <HBox>
+                    <Label text="Additional Fee"/>
+                    <Region fx:id="additionalFeeSpacer"/>
+                    <Label fx:id="additionalFee"/>
+                </HBox>
+                <HBox>
+                    <Label text="Courier Fee"/>
+                    <Region fx:id="courierFeeSpacer"/>
+                    <Label fx:id="courierFee"/>
+                </HBox>
+                <HBox>
+                    <Label text="Coupon"/>
+                    <Region fx:id="couponDetailsSpacer"/>
+                    <Label fx:id="couponDetails"/>
+                </HBox>
+                <HBox>
+                    <Label text="Total Price"/>
+                    <Region fx:id="totalPriceSpacer"/>
+                    <Label fx:id="totalPrice"/>
+                </HBox>
+                <HBox>
+                    <Button fx:id="orderStatusButton"/>
+                    <Region fx:id="lastUpdateSpacer"/>
+                    <Label fx:id="lastUpdate"/>
+                </HBox>
+            </VBox>
         </VBox>
     </center>
 
