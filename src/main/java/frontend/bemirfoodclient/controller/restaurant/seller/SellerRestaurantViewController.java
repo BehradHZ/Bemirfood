@@ -1,5 +1,9 @@
 package frontend.bemirfoodclient.controller.restaurant.seller;
 
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.restaurant.seller.item.AddItemDialogController;
 import frontend.bemirfoodclient.controller.restaurant.seller.item.EditItemDialogController;
@@ -8,9 +12,9 @@ import frontend.bemirfoodclient.controller.restaurant.seller.menu.AddMenuDialogC
 import frontend.bemirfoodclient.controller.restaurant.seller.menu.SellerMenuCardController;
 import frontend.bemirfoodclient.model.ImageLoader;
 import frontend.bemirfoodclient.model.entity.Item;
+import frontend.bemirfoodclient.model.entity.Menu;
 import frontend.bemirfoodclient.model.entity.Order;
 import frontend.bemirfoodclient.model.entity.Restaurant;
-import frontend.bemirfoodclient.model.entity.Menu;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,14 +22,21 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static Exception.exp.expHandler;
+import static HttpClientHandler.Requests.editSellerRestaurant;
+
 public class SellerRestaurantViewController {
+
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).serializeNulls()
+            .create();
+
     @FXML
     public ImageView restaurantLogo;
     @FXML
@@ -159,21 +170,27 @@ public class SellerRestaurantViewController {
         Optional<ButtonType> result = dialog.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            switch (editRestaurant(updatedRestaurant.get())) {
-                case 200:
-                    this.restaurant = updatedRestaurant.get();
-                    setScene();
-                    break;
-                //show alerts
+            HttpResponseData response = editRestaurant(updatedRestaurant.get());
+            if(response.getStatusCode() == 200) {
+                this.restaurant = updatedRestaurant.get();
+                setScene();
+            }else{
+                expHandler(response, "Failed update restaurant info", null);
             }
         }
 
     }
 
-    private int editRestaurant(Restaurant restaurant) {
-        //do the stuff in backend
+    private HttpResponseData editRestaurant(Restaurant restaurant) {
+        Map<String, Object> request = new LinkedHashMap<>();
+        request.put("name", restaurant.getName());
+        request.put("address", restaurant.getAddress());
+        request.put("phone", restaurant.getPhone());
+        request.put("logo", restaurant.getLogo());
+        request.put("tax-fee",  restaurant.getTaxFee());
+        request.put("additional_fee",  restaurant.getAdditionalFee());
 
-        return 200; //temporary
+        return editSellerRestaurant(gson.toJson(request), (long)restaurant.getId());
     }
 
     public void itemsButtonClicked() {

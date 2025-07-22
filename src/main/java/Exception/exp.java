@@ -19,13 +19,21 @@ public class exp {
     static Gson prettyGson = new GsonBuilder().setPrettyPrinting().create();
 
     public static void expHandler(HttpResponseData response, String title, BooleanProperty page) {
-        int statusCode = response.getStatusCode();
-        String message =  response.getBody().get("message").getAsString();
-        String error = response.getBody().get("error").getAsString();
         Map<String, Object> responseBody = new LinkedHashMap<>();
+        String message = "This is our side";
+        String error = "Internal Server Error";
+        Integer statusCode =  response.getStatusCode();
+
+        if(response.getBody().get("message") != null) {
+            message =  response.getBody().get("message").getAsString();
+        }
+        if(response.getBody().get("error") != null) {
+            error =  response.getBody().get("error").getAsString();
+        }
+
         responseBody.put("code", statusCode);
-        responseBody.put("error", error);
         responseBody.put("message", message);
+        responseBody.put("error", error);
 
         String content = prettyGson.toJson(responseBody);
         showAlert(title, content, page);

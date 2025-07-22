@@ -1,5 +1,10 @@
 package frontend.bemirfoodclient.controller.profile.seller;
 
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
+import HttpClientHandler.Requests;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.profile.seller.details.AddRestaurantDialogController;
 import frontend.bemirfoodclient.controller.profile.seller.details.EditProfileDialogController;
@@ -23,13 +28,21 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static Exception.exp.expHandler;
+
 public class SellerProfileController {
+
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).serializeNulls()
+            .create();
+
     @FXML
     public BorderPane mainBorderPane;
 
@@ -279,13 +292,16 @@ public class SellerProfileController {
         dialog.showAndWait();
     }
 
-    private int addRestaurant(Restaurant restaurant) {
-        Map<String, String> requestBody = new LinkedHashMap<>();
+    private HttpResponseData addRestaurant(Restaurant restaurant) {
+        Map<String, Object> requestBody = new LinkedHashMap<>();
         requestBody.put("name", restaurant.getName());
         requestBody.put("address", restaurant.getAddress());
         requestBody.put("phone", restaurant.getPhone());
         requestBody.put("logoBase64", restaurant.getLogo());
-        return 200;
+        requestBody.put("tax_fee", restaurant.getTaxFee());
+        requestBody.put("additional_fee", restaurant.getAdditionalFee());
+
+        return Requests.addRestaurant(gson.toJson(requestBody));
     }
 
     public void addRestaurantButtonClicked() {
@@ -317,35 +333,11 @@ public class SellerProfileController {
 
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            switch (addRestaurant(restaurant.get())) {
-                case 200:
-                    myRestaurantsButtonClicked();
-                    break;
-                case 400:
-                    showAlert("Invalid phone number or password. (400 Invalid input)", null);
-                    break;
-                case 401:
-                    showAlert("This phone number is not registered. (401 Unauthorized)", null);
-                    break;
-                case 403:
-                    showAlert("You cannot access to this service. (403 Forbidden)", null);
-                    break;
-                case 404:
-                    showAlert("Service not found. (404 Not Found)", null);
-                    break;
-                case 409:
-                    showAlert("There was a conflict for access to this service. (409 Conflict)", null);
-                    break;
-                case 415:
-                    showAlert("This media type cannot be accepted. (415 Unsupported Media Type)", null);
-                    break;
-                case 429:
-                    showAlert("Please try again later. (429 Too Many Requests)", null);
-                    break;
-                case 500:
-                    showAlert("This is from our side; pleas try again later :) (500 Internal Server Error)", null);
-                default:
-                    break;
+            HttpResponseData response = addRestaurant(restaurant.get());
+            if(response.getStatusCode() == 200) {
+                myRestaurantsButtonClicked();
+            }else{
+                expHandler(response, "Failed to add restaurant", null);
             }
         }
     }
