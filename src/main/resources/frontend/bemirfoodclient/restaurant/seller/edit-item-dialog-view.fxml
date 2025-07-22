@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<DialogPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.EditItemDialogController"
+            prefHeight="250.0" prefWidth="600.0">
+
+    <content>
+        <HBox spacing="20" alignment="CENTER">
+            <Button fx:id="addPhotoButton" maxHeight="200" minWidth="200" onAction="#addPhotoButtonClicked"
+                    style="-fx-background-radius: 15">
+                <HBox.margin>
+                    <Insets left="30"/>
+                </HBox.margin>
+                <graphic>
+                    <ImageView fx:id="addPhotoImageView"/>
+                </graphic>
+            </Button>
+
+            <VBox alignment="CENTER">
+                <Label text="Item name" style="-fx-font-size: 14">
+                    <padding>
+                        <Insets bottom="5"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="nameTextField"/>
+
+                <Label text="Item description" style="-fx-font-size: 14">
+                    <padding>
+                        <Insets top="15" bottom="5"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="descriptionTextField"/>
+
+                <Label text="Item supply" style="-fx-font-size: 14">
+                    <padding>
+                        <Insets top="15" bottom="5"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="supplyTextField"/>
+            </VBox>
+            <VBox alignment="CENTER">
+                <Label text="Keywords" style="-fx-font-size: 14">
+                    <padding>
+                        <Insets bottom="5"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="keywordTextField"/>
+
+                <Label text="Price" style="-fx-font-size: 14">
+                    <padding>
+                        <Insets top="15" bottom="5"/>
+                    </padding>
+                </Label>
+                <TextField fx:id="priceTextField"/>
+            </VBox>
+        </HBox>
+    </content>
+</DialogPane>

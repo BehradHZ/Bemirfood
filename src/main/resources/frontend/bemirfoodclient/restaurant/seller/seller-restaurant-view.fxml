@@ -6,9 +6,132 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.skin.ProgressIndicatorSkin.IndeterminateSpinner.IndicatorPaths?>
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.profile.seller.details.SellerViewForRestaurant"
-            prefHeight="400.0" prefWidth="600.0">
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.SellerRestaurantViewController">
+    <top>
+        <HBox fx:id="restaurantHeader" style="-fx-background-color: #ffffff; -fx-background-radius: 25;
+                                        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);"
+              minHeight="150" alignment="CENTER">
+            <BorderPane.margin>
+                <Insets top="15" left="15" right="15"/>
+            </BorderPane.margin>
+            <ImageView fx:id="restaurantLogo" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);">
+                <HBox.margin>
+                    <Insets left="15"/>
+                </HBox.margin>
+            </ImageView>
+            <VBox alignment="CENTER_LEFT">
+                <padding>
+                    <Insets left="15"/>
+                </padding>
+                <Label fx:id="restaurantName" style="-fx-font-size: 24; -fx-font-weight: bold"/>
+                <Label fx:id="restaurantAddress" style="-fx-font-size: 16"/>
+                <Label fx:id="restaurantPhone" style="-fx-font-size: 12"/>
+            </VBox>
+            <Region fx:id="headerSpacer"/>
+            <VBox alignment="CENTER" spacing="15">
+                <HBox.margin>
+                    <Insets right="15"/>
+                </HBox.margin>
+                <Button style="-fx-background-color: transparent; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);"
+                    onAction="#editRestaurantButtonClicked">
+                    <graphic>
+                        <ImageView fx:id="editRestaurantDetails">
+                            <Image url="@../../assets/icons/edit.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
 
-</AnchorPane>
+            </VBox>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox style="-fx-background-color: #ffffff; -fx-background-radius: 25;
+                                        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);" spacing="30">
+            <BorderPane.margin>
+                <Insets top="15" bottom="15" left="15" right="15"/>
+            </BorderPane.margin>
+
+            <HBox fx:id="tab" alignment="CENTER">
+                <VBox.margin>
+                    <Insets top="15" left="15" right="15"/>
+                </VBox.margin>
+
+                <StackPane>
+                    <Button fx:id="itemsSmall"  text="Items" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-background-color: white;"
+                        onAction="#itemsButtonClicked"/>
+                    <Button fx:id="itemsLarge" text="Items" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-background-color: white; -fx-text-fill: #0066ff"
+                        onAction="#itemsButtonClicked"/>
+                </StackPane>
+
+                <StackPane>
+                    <Button fx:id="menusSmall" text="Menus" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-background-color: white;"
+                        onAction="#menusButtonClicked"/>
+                    <Button fx:id="menusLarge" text="Menus" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-background-color: white; -fx-text-fill: #0066ff"
+                        onAction="#menusButtonClicked"/>
+                </StackPane>
+
+                <StackPane>
+
+                    <Button fx:id="ordersSmall" text="Orders" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-background-color: white;"
+                        onAction="#ordersButtonClicked"/>
+                    <Button fx:id="ordersLarge" text="Orders" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-background-color: white; -fx-text-fill: #0066ff"
+                        onAction="#ordersButtonClicked"/>
+                </StackPane>
+
+                <Region fx:id="tabSpacer"/>
+
+                <StackPane>
+                    <Button fx:id="addItemButton" style="-fx-background-color: transparent" onAction="#addItemButtonClicked">
+                        <graphic>
+                            <ImageView fx:id="addItemButtonImage">
+                                <Image url="@../../assets/icons/addItem.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Button fx:id="addMenuButton" style="-fx-background-color: transparent" onAction="#addMenuButtonClicked">
+                        <graphic>
+                            <ImageView fx:id="addMenuButtonImage">
+                                <Image url="@../../assets/icons/addMenu.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </StackPane>
+            </HBox>
+
+            <StackPane fx:id="sections" style="-fx-background-color: white">
+
+                <ScrollPane fx:id="itemsSectionScrollPane" fitToWidth="true" hbarPolicy="NEVER"
+                            style="-fx-background-color: white; -fx-padding: 0;">
+                    <StackPane.margin>
+                        <Insets left="15" right="15" bottom="15"/>
+                    </StackPane.margin>
+                    <VBox fx:id="itemsSection" style="-fx-background-color: white"/>
+                </ScrollPane>
+
+                <ScrollPane fx:id="menusSectionScrollPane" fitToWidth="true" hbarPolicy="NEVER"
+                            style="-fx-background-color: white; -fx-padding: 0;">
+                    <StackPane.margin>
+                        <Insets left="15" right="15" bottom="15"/>
+                    </StackPane.margin>
+                    <VBox fx:id="menusSection" style="-fx-background-color: white"/>
+                </ScrollPane>
+
+                <ScrollPane fx:id="ordersSectionScrollPane" fitToWidth="true" hbarPolicy="NEVER"
+                            style="-fx-background-color: white; -fx-padding: 0;">
+                    <StackPane.margin>
+                        <Insets left="15" right="15" bottom="15"/>
+                    </StackPane.margin>
+                    <VBox fx:id="ordersSection" style="-fx-background-color: white"/>
+                </ScrollPane>
+
+            </StackPane>
+        </VBox>
+    </center>
+</BorderPane>

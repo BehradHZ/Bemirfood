@@ -1,0 +1,8 @@
+Database user pass:
+devuser
+#40331411Bemirfood
+
+MySQL root password:
+Database#rootpass3
+
+Kamalinezhadmn@gmail.com

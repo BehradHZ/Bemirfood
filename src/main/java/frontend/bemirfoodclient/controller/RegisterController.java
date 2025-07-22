@@ -141,6 +141,7 @@ public class RegisterController {
 
         try {
             String homeDirectory = System.getProperty("user.home");
+            System.out.println(homeDirectory);
             Path filePath = Path.of(homeDirectory, "registerTemp.txt");
             String jsonText;
 

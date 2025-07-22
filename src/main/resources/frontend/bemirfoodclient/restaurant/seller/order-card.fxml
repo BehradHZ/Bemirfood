@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.SellerOrderCardController">
+
+    <center>
+        <VBox>
+            <Label fx:id="orderId"/>
+            <Label fx:id="dateTime"/>
+        </VBox>
+        <VBox fx:id="itemsSection"/>
+        <VBox>
+            <Label fx:id="orderDescription"/>
+            <Label fx:id="orderBuyerName"/>
+            <Label fx:id="orderAddress"/>
+            <Label fx:id="orderCourierName"/>
+            <HBox>
+                <Label text="Raw Price"/>
+                <Label fx:id="rawPrice"/>
+            </HBox>
+            <HBox>
+                <Label text="Tax Fee"/>
+                <Label fx:id="taxFee"/>
+            </HBox>
+            <HBox>
+                <Label text="Additional Fee"/>
+                <Label fx:id="additionalFee"/>
+            </HBox>
+            <HBox>
+                <Label text="Courier Fee"/>
+                <Label fx:id="courierFee"/>
+            </HBox>
+            <HBox>
+                <Label text="Coupon"/>
+                <Label fx:id="couponDetails"/>
+            </HBox>
+            <HBox>
+                <Label text="Total Price"/>
+                <Label fx:id="totalPrice"/>
+            </HBox>
+            <HBox>
+                <Button fx:id="orderStatusButton"/>
+                <Label fx:id="lastUpdate"/>
+            </HBox>
+        </VBox>
+    </center>
+
+</BorderPane>

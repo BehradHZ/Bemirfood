@@ -1,8 +1,0 @@
-temporary register data:
-{
-    "full_name": "0",
-    "mobile": "0",
-    "password": "0",
-    "role": "buyer",
-    "address": "0"
-}

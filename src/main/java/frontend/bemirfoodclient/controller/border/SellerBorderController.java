@@ -3,11 +3,13 @@ package frontend.bemirfoodclient.controller.border;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -17,6 +19,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class SellerBorderController {
+    @FXML
+    public BorderPane mainBorderpane;
     @FXML
     public ImageView borderBemirfoodLogo;
     @FXML
@@ -40,6 +44,10 @@ public class SellerBorderController {
         profileIcon.setPreserveRatio(true);
         profileIcon.setFitHeight(27);
 
+    }
+
+    public void setCenterContent(Node content) {
+        mainBorderpane.setCenter(content);
     }
 
     @FXML

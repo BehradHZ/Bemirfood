@@ -24,6 +24,17 @@ public class Item {
 
     public Item() {}
 
+    public Item(String name, String photo, String description, Double price, Integer supply, List<String> keywords) {
+        if(name != null) this.name = name;
+        if(photo != null) this.photo = photo;
+        if(description != null) this.description = description;
+        if(price != null) this.price = price;
+        if(supply != null) this.supply = supply;
+        if(keywords != null) this.keywords = keywords;
+        this.restaurant = null;
+        this.rating = 0.0;
+    }
+
     public Item(String name, String photo, String description, Double price, Integer supply, List<String> keywords, Restaurant restaurant, Double rating) {
         if(name != null) this.name = name;
         if(photo != null) this.photo = photo;
@@ -35,4 +46,39 @@ public class Item {
         if(rating != null) this.rating = rating;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public Integer getSupply() {
+        return supply;
+    }
+
+    public List<String> getKeywords() {
+        return keywords;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
 }
