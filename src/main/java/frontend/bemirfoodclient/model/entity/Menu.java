@@ -1,5 +1,6 @@
 package frontend.bemirfoodclient.model.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Menu {
@@ -18,6 +19,12 @@ public class Menu {
         this.restaurant = restaurant;
     }
 
+    public Menu(String title, Restaurant restaurant, List<Item> items) {
+        this.title = title;
+        this.restaurant = restaurant;
+        this.items = items;
+    }
+
     public void addItem(Item item) {
         if (items == null) {
             items = new java.util.ArrayList<>();
@@ -29,5 +36,25 @@ public class Menu {
         if (item != null) {
             items.remove(item);
         }
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public List<Item> getItems() {
+        List<String> keywords = new ArrayList<>();
+        keywords.add("kebab");
+        keywords.add("irani");
+        keywords.add("madagascar");
+
+        List<Item> items = new java.util.ArrayList<>();
+        items.add(new Item("berenj", null, "berenje shomal!", 65.50, 5, keywords, restaurant, 1.2));
+        items.add(new Item("berenj", null, "berenje shomal!", 65.50, 5, keywords, restaurant, 1.2));
+        return items;
     }
 }

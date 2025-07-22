@@ -7,14 +7,14 @@ public class Restaurant {
 
     public Restaurant() {}
 
-    public Restaurant(String name, String address, String logo) {
+    public Restaurant(String name, String address, String phone, String logo) {
         this.name = name;
         this.seller = null;
         this.address = address;
-        this.phone = null;
+        this.phone = phone;
         this.logo = logo;
-        this.taxFee = null;
-        this.additionalFee = null;
+        this.taxFee = 0.0;
+        this.additionalFee = 0.0;
     }
 
     public Restaurant(String name, Seller seller, String address, String phone, String logo,

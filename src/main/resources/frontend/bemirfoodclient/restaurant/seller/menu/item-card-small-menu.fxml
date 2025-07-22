@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.menu.SellerMenuItemCardController">
+    <center>
+        <VBox spacing="15">
+            <HBox style="-fx-background-color: white; -fx-background-radius: 15;  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);"
+                  alignment="CENTER" spacing="15">
+                <VBox.margin>
+                    <Insets top="15" left="15" right="15"/>
+                </VBox.margin>
+                <ImageView fx:id="itemImage">
+                    <HBox.margin>
+                        <Insets top="10" bottom="10" left="10"/>
+                    </HBox.margin>
+                </ImageView>
+                <Label fx:id="itemName" style="-fx-font-size: 24; -fx-font-weight: bold"/>
+                <Region fx:id="spacer"/>
+                <Button fx:id="deleteItem" style="-fx-background-color: transparent; -fx-background-radius: 10;"
+                        onAction="#deleteItemButtonClicked">
+                    <HBox.margin>
+                        <Insets right="15"/>
+                    </HBox.margin>
+                    <graphic>
+                        <ImageView fx:id="deleteItemImageView">
+                            <Image url="@../../../assets/icons/deleteRed.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </HBox>
+
+            <Separator>
+                <VBox.margin>
+                    <Insets left="15" right="15"/>
+                </VBox.margin>
+            </Separator>
+        </VBox>
+    </center>
+
+</BorderPane>

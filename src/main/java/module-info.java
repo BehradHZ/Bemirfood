@@ -28,5 +28,13 @@
     opens frontend.bemirfoodclient.controller.profile.seller.details to javafx.fxml;
     opens frontend.bemirfoodclient.model.dto to com.google.gson;
     opens frontend.bemirfoodclient.model.entity to com.google.gson;
+    exports frontend.bemirfoodclient.controller.restaurant.seller;
+    opens frontend.bemirfoodclient.controller.restaurant.seller to javafx.fxml;
+        exports frontend.bemirfoodclient.controller.restaurant.seller.item;
+        opens frontend.bemirfoodclient.controller.restaurant.seller.item to javafx.fxml;
+        exports frontend.bemirfoodclient.controller.restaurant.seller.menu;
+        opens frontend.bemirfoodclient.controller.restaurant.seller.menu to javafx.fxml;
+        exports frontend.bemirfoodclient.controller.restaurant.seller.order;
+        opens frontend.bemirfoodclient.controller.restaurant.seller.order to javafx.fxml;
 
     }

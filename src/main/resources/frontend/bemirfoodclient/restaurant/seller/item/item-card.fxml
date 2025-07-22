@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.item.SellerItemCardController">
+    <center>
+        <VBox spacing="15">
+            <HBox style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);"
+                alignment="CENTER_LEFT">
+                <VBox.margin>
+                    <Insets top="15" left="15" right="15"/>
+                </VBox.margin>
+
+                <ImageView fx:id="itemImage">
+                    <HBox.margin>
+                        <Insets top="10" bottom="10" left="10"/>
+                    </HBox.margin>
+                </ImageView>
+
+                <VBox alignment="CENTER_LEFT" minWidth="500" minHeight="200" spacing="5">
+                    <HBox.margin>
+                        <Insets top="10" bottom="10" left="30" right="10"/>
+                    </HBox.margin>
+
+                    <Label fx:id="itemName" style="-fx-font-size: 16; -fx-font-weight: bold"/>
+
+                    <Label fx:id="itemDescription" style="-fx-font-size: 14;"/>
+
+                    <Label text="keywords:">
+                        <padding>
+                            <Insets top="10"/>
+                        </padding>
+                    </Label>
+                    <ScrollPane style="-fx-background-color: white">
+                        <HBox style="-fx-background-color: white">
+                            <Label fx:id="itemKeywords" style="-fx-font-size: 14"/>
+                        </HBox>
+                    </ScrollPane>
+
+                    <VBox spacing="5">
+                        <HBox spacing="5" alignment="CENTER_RIGHT">
+                            <ImageView fx:id="ratingStarImage">
+                                <Image url="@../../../assets/icons/star.png"/>
+                            </ImageView>
+                            <Label fx:id="itemRating" style="-fx-font-size: 18"/>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT">
+                            <Label fx:id="itemPrice" style="-fx-font-size: 18; -fx-font-weight: bold" />
+                            <padding>
+                                <Insets bottom="20"/>
+                            </padding>
+                        </HBox>
+                    </VBox>
+
+
+                    <HBox alignment="CENTER_RIGHT" spacing="15">
+                        <VBox.margin>
+                            <Insets bottom="10"/>
+                        </VBox.margin>
+                        <Button fx:id="editItem" text="Edit" style="-fx-background-color: #0066ff;
+                            -fx-text-fill: white; -fx-font-size: 18; -fx-font-weight: bold; -fx-background-radius: 10;
+                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 0);"
+                            onAction="#editItemButtonClicked"/>
+                        <Button fx:id="deleteItem" text="Delete" style="-fx-background-color: #bb0000;
+                            -fx-text-fill: white; -fx-font-size: 18; -fx-font-weight: bold; -fx-background-radius: 10;
+                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 0);"
+                            onAction="#deleteItemButtonClicked"/>
+                    </HBox>
+
+                </VBox>
+            </HBox>
+
+            <Separator>
+                <VBox.margin>
+                    <Insets left="15" right="15"/>
+                </VBox.margin>
+            </Separator>
+        </VBox>
+    </center>
+
+</BorderPane>

@@ -292,6 +292,7 @@ public class SellerProfileController {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Add Restaurant");
         dialog.initOwner(mainBorderPane.getScene().getWindow());
+
         FXMLLoader fxmlLoader = new FXMLLoader(BemirfoodApplication.class.getResource(
                 "/frontend/bemirfoodclient/profile/seller/details/add-restaurant-dialog-view.fxml"
         ));
