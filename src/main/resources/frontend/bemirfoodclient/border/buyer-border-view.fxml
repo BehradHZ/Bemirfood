@@ -39,6 +39,14 @@
 
             <Region fx:id="toolbarSpacer"/>
 
+            <Button style="-fx-background-color: #ffffff" onAction="#cartButtonClicked">
+                <graphic>
+                    <ImageView fx:id="cartIcon">
+                        <Image url="@../assets/icons/cart.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+
             <Button style="-fx-background-color: #ffffff" onAction="#profileButtonClicked">
                 <graphic>
                     <ImageView fx:id="profileIcon">

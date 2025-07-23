@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.restaurant.buyer.item.BuyerItemCardController;
-import frontend.bemirfoodclient.controller.restaurant.seller.menu.SellerMenuCardController;
+import frontend.bemirfoodclient.controller.restaurant.buyer.menu.BuyerMenuCardController;
 import frontend.bemirfoodclient.model.ImageLoader;
 import frontend.bemirfoodclient.model.entity.Item;
 import frontend.bemirfoodclient.model.entity.Menu;
@@ -66,9 +66,9 @@ public class BuyerRestaurantViewController {
 
     private Restaurant restaurant;
 
-    private List<String> keywords = new ArrayList<>();
+    private List<String> keywords = new ArrayList<>(); //temporary
 
-    List<Menu> menus = new ArrayList<>();
+    List<Menu> menus = new ArrayList<>(); //temporary
 
     public void setRestaurantData(Restaurant restaurant) {
         this.restaurant = restaurant;
@@ -157,6 +157,8 @@ public class BuyerRestaurantViewController {
 
     public List<Item> getItems() {
         //do the sstuff in backend
+
+        //temporary
         List<Item> items = new ArrayList<>();
         items.add(new Item("Kebab", null, "Kebab koobide asl ghafghaz!", 65.50, 5, keywords, restaurant, 5.0));
         items.add(new Item("joojeh", null, "joojeh kabab bahal!", 75.50, 55, keywords, restaurant, 3.2));
@@ -181,10 +183,10 @@ public class BuyerRestaurantViewController {
         for (Menu menu : menus) {
             try {
                 FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(
-                        "/frontend/bemirfoodclient/restaurant/seller/menu/menu-card.fxml"
+                        "/frontend/bemirfoodclient/restaurant/buyer/menu/menu-card.fxml"
                 ));
                 Pane card = loader.load();
-                SellerMenuCardController controller = loader.getController();
+                BuyerMenuCardController controller = loader.getController();
                 controller.setMenuData(menu);
 
                 menusSection.getChildren().add(card);
@@ -196,6 +198,7 @@ public class BuyerRestaurantViewController {
     }
 
     public List<Menu> getMenus() {
+//        List<Menu> menus = new ArrayList<>();
         menus.add(new Menu("menu1", restaurant, getItems()));
         menus.add(new Menu("menu2", restaurant, getItems()));
         menus.add(new Menu("menu3", restaurant, getItems()));

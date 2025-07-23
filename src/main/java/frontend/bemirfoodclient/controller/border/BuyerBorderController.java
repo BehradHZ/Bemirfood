@@ -45,6 +45,8 @@ public class BuyerBorderController {
     public Region toolbarSpacer;
     @FXML
     public VBox recommendedVendorList;
+    @FXML
+    public ImageView cartIcon;
 
     public void initialize() {
         borderBemirfoodLogo.setPreserveRatio(true);
@@ -54,6 +56,9 @@ public class BuyerBorderController {
         searchIcon.setFitHeight(17);
 
         HBox.setHgrow(toolbarSpacer, Priority.ALWAYS);
+
+        cartIcon.setPreserveRatio(true);
+        cartIcon.setFitHeight(30);
 
         profileIcon.setPreserveRatio(true);
         profileIcon.setFitHeight(27);
@@ -93,14 +98,14 @@ public class BuyerBorderController {
 
     @FXML
     public void profileButtonClicked() {
-            try {
-                Stage stage = (Stage) profileIcon.getScene().getWindow();
-                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
-                        "/frontend/bemirfoodclient/profile/buyer/buyer-profile-view.fxml")));
-                stage.getScene().setRoot(root);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            Stage stage = (Stage) profileIcon.getScene().getWindow();
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
+                    "/frontend/bemirfoodclient/profile/buyer/buyer-profile-view.fxml")));
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void showAlert(String content) {
@@ -158,5 +163,19 @@ public class BuyerBorderController {
 
     public void showAllVendors() {
 
+    }
+
+    public void cartButtonClicked() {
+        try {
+            FXMLLoader restaurantPageLoader = new FXMLLoader(getClass().getResource(
+                    "/frontend/bemirfoodclient/restaurant/buyer/cart-view.fxml"
+            ));
+            Parent cartPageView = restaurantPageLoader.load();
+
+            mainBorderPane.setCenter(cartPageView);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

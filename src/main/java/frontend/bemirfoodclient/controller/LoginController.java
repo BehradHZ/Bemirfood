@@ -20,6 +20,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
@@ -123,6 +125,27 @@ public class LoginController {
                 String role = response.getBody().getAsJsonObject("user").get("role").getAsString();
                 String token =  response.getBody().get("token").getAsString();
                 Token.addToken(token);
+
+                String homeDirectory = System.getProperty("user.dir");
+                Path filePath = Path.of(homeDirectory, "registerTemp.txt");
+
+                String jsonText = String.format("""
+                {
+                  "phone": "%s",
+                  "role": "%s"
+                }
+                """,
+                        phoneNumberTextField.getText(), role
+                );
+                String fileContent = "login data:\n" + jsonText;
+
+                try {
+                    Files.writeString(filePath, fileContent);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 Stage stage = (Stage) phoneNumberTextField.getScene().getWindow();
                 Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
                         checkLoginRole(role))));

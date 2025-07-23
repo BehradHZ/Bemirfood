@@ -11,38 +11,17 @@
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.menu.SellerMenuCardController">
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.buyer.menu.BuyerMenuCardController">
     <center>
         <VBox style="-fx-background-color: white;
             -fx-effect-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 4);"
-            spacing="15">
-            <StackPane>
-                <HBox alignment="CENTER">
-                    <VBox.margin>
-                        <Insets top="15"/>
-                    </VBox.margin>
-                   <Label fx:id="menuTitle" style="-fx-font-size: 24; -fx-font-weight: bold"/>
-                </HBox>
-                <HBox alignment="CENTER_RIGHT" spacing="10">
-                    <Button fx:id="addItemToMenuButton" onAction="#addItemToMenuButtonClicked">
-                        <graphic>
-                            <ImageView fx:id="addItemToMenuButtonImageView">
-                                <Image url="@../../../assets/icons/addItem.png"/>
-                            </ImageView>
-                        </graphic>
-                    </Button>
-                    <Button fx:id="deleteMenuButton" style="-fx-background-color: #bb0000" onAction="#deleteMenuButtonClicked">
-                        <HBox.margin>
-                            <Insets right="15"/>
-                        </HBox.margin>
-                        <graphic>
-                            <ImageView fx:id="deleteMenuButtonImageView">
-                                <Image url="@../../../assets/icons/deleteWhite.png"/>
-                            </ImageView>
-                        </graphic>
-                    </Button>
-                </HBox>
-            </StackPane>
+            spacing="15" alignment="TOP_CENTER">
+
+            <Label fx:id="menuTitle" style="-fx-font-size: 24; -fx-font-weight: bold">
+                <VBox.margin>
+                    <Insets top="15"/>
+                </VBox.margin>
+            </Label>
 
             <VBox fx:id="menuItemsSection" style="-fx-effect-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 0);">
                 <VBox.margin>

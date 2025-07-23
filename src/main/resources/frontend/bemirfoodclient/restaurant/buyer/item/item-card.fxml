@@ -61,7 +61,6 @@
                         </HBox>
                     </VBox>
 
-
                     <StackPane>
                         <VBox.margin>
                             <Insets bottom="10"/>

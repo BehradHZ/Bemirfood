@@ -28,6 +28,8 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -177,6 +179,17 @@ public class SellerProfileController {
 
             //do the stuff in backend
             //YAML: Logout User
+
+            String homeDirectory = System.getProperty("user.dir");
+            Path filePath = Path.of(homeDirectory, "registerTemp.txt");
+
+            try {
+                if (Files.exists(filePath)) {
+                    Files.writeString(filePath, "");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             try {
                 Stage mainWindow = (Stage) profileSmall.getScene().getWindow();
