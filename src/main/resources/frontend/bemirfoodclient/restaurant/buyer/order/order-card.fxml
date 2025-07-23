@@ -9,7 +9,7 @@
 <?import javafx.geometry.Insets?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.order.SellerOrderCardController">
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.buyer.order.BuyerOrderCardController">
 
     <center>
         <VBox style="-fx-background-color: white; -fx-background-radius: 15;
