@@ -1,9 +1,9 @@
 package frontend.bemirfoodclient.controller.restaurant.seller;
 
+import Deserializer.RestaurantDeserializer;
 import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.LocalDateTimeAdapter;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.restaurant.seller.item.AddItemDialogController;
 import frontend.bemirfoodclient.controller.restaurant.seller.item.EditItemDialogController;
@@ -12,8 +12,8 @@ import frontend.bemirfoodclient.controller.restaurant.seller.menu.AddMenuDialogC
 import frontend.bemirfoodclient.controller.restaurant.seller.menu.SellerMenuCardController;
 import frontend.bemirfoodclient.controller.restaurant.seller.order.SellerOrderCardController;
 import frontend.bemirfoodclient.model.ImageLoader;
-import frontend.bemirfoodclient.model.entity.Menu;
 import frontend.bemirfoodclient.model.entity.*;
+import frontend.bemirfoodclient.model.entity.Menu;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,13 +21,14 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static Exception.exp.expHandler;
-import static HttpClientHandler.Requests.editSellerRestaurant;
+import static HttpClientHandler.Requests.*;
 
 public class SellerRestaurantViewController {
 
@@ -224,11 +225,12 @@ public class SellerRestaurantViewController {
                 });
 
                 controller.setOnDelete(itemToDelete -> {
-                    switch (deleteItem(item)) {
-                        case 200:
-                            itemsSection.getChildren().remove(card);
-                            break;
-                        //show alerts
+
+                    HttpResponseData response = deleteItem(item);
+                    if(response.getStatusCode() == 200) {
+                        itemsSection.getChildren().remove(card);
+                    }else{
+                        expHandler(response, "Failed delete item", null);
                     }
                 });
 
@@ -273,33 +275,48 @@ public class SellerRestaurantViewController {
         Optional<ButtonType> result = dialog.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            switch (addItem(newItem.get())) {
-                case 200:
-                    itemsButtonClicked();
-                    break;
-                //show alerts
+            HttpResponseData response = addItem(newItem.get());
+            if(response.getStatusCode() == 200) {
+                itemsButtonClicked();
+            }else{
+                expHandler(response, "Failed add item to restaurant", null);
             }
         }
 
         itemsButtonClicked();
     }
 
+
+    private HttpResponseData addItem(Item item) {
+        Map<String, Object> request = new LinkedHashMap<>();
+        request.put("name", item.getName());
+        request.put("imageBase64", item.getPhoto());
+        request.put("description", item.getDescription());
+        request.put("price", item.getPrice());
+        request.put("supply", item.getSupply());
+        request.put("keywords", item.getKeywords());
+
+        return addRestaurantItem(gson.toJson(request), restaurant.getId());
+
+    }
+
     public List<Item> getItems() {
+
+        Gson g = new GsonBuilder()
+                .registerTypeAdapter(Restaurant.class, new RestaurantDeserializer())
+                .create();
+
+        HttpResponseData response = getRestaurantItems(restaurant.getId());
+        JsonArray itemArray = response.getBody().getAsJsonArray("Restaurant items");
         List<Item> items = new ArrayList<>();
-//        items.addAll(restaurant.getItems());
-        items.add(new Item("Kebab", null, "Kebab koobide asl ghafghaz!", 65.50, 5, keywords, restaurant, 5.0));
-        items.add(new Item("joojeh", null, "joojeh kabab bahal!", 75.50, 55, keywords, restaurant, 3.2));
-//              items.add(new Item("berenj", null, "berenje shomal!", 65.50, 5, keywords, restaurant, 1.2));
-//        items.add(new Item("berenj", null, "berenje shomal!", 65.50, 5, keywords, restaurant, 1.2));
+        for(JsonElement itemElement : itemArray) {
+            Item item = g.fromJson(itemElement, Item.class);
+            items.add(item);
+        }
 
         return items;
     }
 
-    private int addItem(Item item) {
-        //de the stuff in backend
-
-        return 200; //temporary
-    }
 
     public void editItemButtonClicked(Item item, SellerItemCardController cardController) {
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -332,27 +349,30 @@ public class SellerRestaurantViewController {
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
             Item updatedItem = dialogController.editItem();
-
-            switch (editItem(updatedItem)) {
-                case 200:
-                    cardController.setItemData(updatedItem);
-                    itemsButtonClicked();
-                    break;
-                //show alerts
+            HttpResponseData response = editItem(updatedItem);
+            if(response.getStatusCode() == 200) {
+                cardController.setItemData(updatedItem);
+                itemsButtonClicked();
+            }else{
+                expHandler(response, "Failed edit item to restaurant", null);
             }
         }
     }
 
-    private int editItem(Item item) {
-        //do the stuff in backend
+    private HttpResponseData editItem(Item item) {
+        Map<String, Object> request = new LinkedHashMap<>();
+        if(item.getName() != null) request.put("name", item.getName());
+        if(item.getPhoto() != null) request.put("imageBase64", item.getPhoto());
+        if(item.getDescription() != null) request.put("description", item.getDescription());
+        if(item.getPrice() != 0) request.put("price", item.getPrice());
+        if(item.getSupply() != null) request.put("supply", item.getSupply());
+        if(item.getKeywords() != null) request.put("keywords", item.getKeywords());
 
-        return 200;
+        return editRestaurantItem(gson.toJson(request), restaurant.getId(), item.getId());
     }
 
-    private int deleteItem(Item item) {
-        //do the stuff in backend
-
-        return 200; //temporary
+    private HttpResponseData deleteItem(Item item) {
+        return deleteRestaurantItem(restaurant.getId(), item.getId());
     }
 
     public void menusButtonClicked() {
@@ -383,11 +403,11 @@ public class SellerRestaurantViewController {
                 controller.setMenuData(menu);
 
                 controller.setOnDelete(menuToDelete -> {
-                    switch (deleteMenu(menu)) {
-                        case 200:
-                            menusSection.getChildren().remove(card);
-                            break;
-                        //show alerts
+                    HttpResponseData response = deleteMenu(menu);
+                    if(response.getStatusCode() == 200) {
+                        menusSection.getChildren().remove(card);
+                    }else{
+                        expHandler(response, "Failed delete menu from restaurant", null);
                     }
                 });
 
@@ -432,33 +452,68 @@ public class SellerRestaurantViewController {
         Optional<ButtonType> result = dialog.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            switch (addNewMenu(newMenuName.get())){
-                case 200:
+            HttpResponseData response = addNewMenu(newMenuName.get());
+            if (response.getStatusCode() == 200) {
                 menusButtonClicked();
-                break;
-                //show alerts
+            }else {
+                expHandler(response, "Failed to add new menu", null);
             }
         }
     }
 
     public List<Menu> getMenus() {
-        menus.add(new Menu("menu1", restaurant, getItems()));
-        menus.add(new Menu("menu2", restaurant, getItems()));
-        menus.add(new Menu("menu3", restaurant, getItems()));
+
+        menus = new ArrayList<>();
+
+        Gson g = new GsonBuilder()
+                .registerTypeAdapter(Restaurant.class, new RestaurantDeserializer())
+                .create();
+
+        HttpResponseData response = getRestaurantMenus(restaurant.getId());
+        JsonObject body = response.getBody();
+        JsonArray restaurantMenus = body.getAsJsonArray("Restaurant menus");
+
+        for (JsonElement menuElement : restaurantMenus) {
+            JsonObject menuObj = menuElement.getAsJsonObject();
+            String title = menuObj.get("title").getAsString();
+
+            List<Item> menuItems = new ArrayList<>();
+
+            JsonArray items = menuObj.getAsJsonArray("items");
+
+            for (JsonElement itemElement : items) {
+                JsonObject item = itemElement.getAsJsonObject();
+                int id = item.get("id").getAsInt();
+                String name = item.get("name").getAsString();
+                String image = null;
+                if(item.get("imageBase64") != null && !item.get("imageBase64").isJsonNull()) image = item.get("imageBase64").getAsString();
+                String description = item.get("description").getAsString();
+                double price = item.get("price").getAsDouble();
+                int supply = item.get("supply").getAsInt();
+                JsonArray keywords = item.getAsJsonArray("keywords");
+
+                List<String> keywordList = new ArrayList<>();
+                for (JsonElement keyword : keywords) {
+                    keywordList.add(keyword.getAsString());
+                }
+
+                menuItems.add(new Item((long)id, name, image, description, price, supply, keywordList));
+            }
+
+            menus.add(new Menu(title, restaurant, menuItems));
+        }
 
         return menus;
     }
 
-    private int addNewMenu(String menuName) {
-        //do the stuff in backend
-
-        return 200; //temporary
+    private HttpResponseData addNewMenu(String menuName) {
+        Map<String, String> request = new LinkedHashMap<>();
+        if(menuName != null) request.put("title", menuName);
+        return addRestaurantMenus(restaurant.getId(),gson.toJson(request));
     }
 
-    private int deleteMenu(Menu menu) {
-        //do the stuff in backend
-
-        return 200; //temporary
+    private HttpResponseData deleteMenu(Menu menu) {
+         return removeRestaurantMenus(restaurant.getId(), menu.getTitle());
     }
 
 

@@ -39,6 +39,29 @@ public class exp {
         showAlert(title, content, page);
     }
 
+    public static void expHandler(HttpResponseData response, String title, BooleanProperty page, Exception ex) {
+        ex.printStackTrace();
+
+        Map<String, Object> responseBody = new LinkedHashMap<>();
+        String message = "This is our side";
+        String error = "Internal Server Error";
+        Integer statusCode =  response.getStatusCode();
+
+        if(response.getBody().get("message") != null) {
+            message =  response.getBody().get("message").getAsString();
+        }
+        if(response.getBody().get("error") != null) {
+            error =  response.getBody().get("error").getAsString();
+        }
+
+        responseBody.put("code", statusCode);
+        responseBody.put("message", message);
+        responseBody.put("error", error);
+
+        String content = prettyGson.toJson(responseBody);
+        showAlert(title, content, page);
+    }
+
     private static void showAlert(String title, String content, BooleanProperty page) {
         if(page != null) page.set(false);
         Alert alert = new Alert(Alert.AlertType.ERROR);

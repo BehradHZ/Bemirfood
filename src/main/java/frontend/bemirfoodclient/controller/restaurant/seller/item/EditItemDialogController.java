@@ -119,6 +119,7 @@ public class EditItemDialogController {
 
         System.out.printf("%s %s %s %s %s", name, description, supply, price, keywordsList);
         return new Item(
+                item.getId(),
                 name,
                 imageUri,
                 description,

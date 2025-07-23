@@ -46,6 +46,18 @@ public class Item {
         if(rating != null) this.rating = rating;
     }
 
+    public Item(Long id, String name, String photo, String description, Double price, Integer supply, List<String> keywords) {
+        this.id = id;
+        if(name != null) this.name = name;
+        if(photo != null) this.photo = photo;
+        if(description != null) this.description = description;
+        if(price != null) this.price = price;
+        if(supply != null) this.supply = supply;
+        if(keywords != null) this.keywords = keywords;
+        this.restaurant = null;
+        this.rating = 0.0;
+    }
+
     public Long getId() {
         return id;
     }

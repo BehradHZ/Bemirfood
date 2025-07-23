@@ -1,5 +1,11 @@
 package frontend.bemirfoodclient.controller.profile.seller.details;
 
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.TransactionCardController;
 import frontend.bemirfoodclient.model.entity.Transaction;
@@ -9,10 +15,18 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static HttpClientHandler.Requests.getSellerTransaction;
+
 public class SellerTransactionsController {
+
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).serializeNulls()
+            .create();
+
 
     @FXML
     public BorderPane mainBorderPane;
@@ -45,14 +59,13 @@ public class SellerTransactionsController {
 
     private List<Transaction> getTransactions() {
         List<Transaction> transactions = new ArrayList<>();
-        //do the stuff in backend
-        //Get user's transaction history
+        HttpResponseData response = getSellerTransaction();
+        JsonArray jsonArray = response.getBody().getAsJsonArray("List of transactions");
+        transactions = gson.fromJson(jsonArray, new TypeToken<List<Transaction>>(){}.getType());
 
-        //create suitable Transaction() constructors
-        //if transaction is a payment, it needs a title
-        //amount, payment method, status, time are also required
-
-//        transactions.add(new Transaction("starbucks", 65, "online", "payment", LocalDateTime.now(), "successfull"));
+        for (Transaction t : transactions) {
+            System.out.println("Transaction ID: " + t.getId() + ", Status: " + t.getStatus());
+        }
 
         return transactions;
     }
