@@ -21,6 +21,8 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -149,6 +151,17 @@ public class CourierProfileController {
 
             //do the stuff in backend
             //YAML: Logout User
+
+            String homeDirectory = System.getProperty("user.dir");
+            Path filePath = Path.of(homeDirectory, "registerTemp.txt");
+
+            try {
+                if (Files.exists(filePath)) {
+                    Files.writeString(filePath, "");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             try {
                 Stage mainWindow = (Stage) profileSmall.getScene().getWindow();

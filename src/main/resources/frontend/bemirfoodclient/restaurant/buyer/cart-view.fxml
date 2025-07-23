@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.buyer.CartViewController">
+    <center>
+        <VBox style="-fx-background-color: #f4f4f4">
+            <BorderPane.margin>
+                <Insets top="30" bottom="30" left="30" right="30"/>
+            </BorderPane.margin>
+            <VBox style="-fx-background-color: white; -fx-background-radius: 25;" spacing="30">
+                <padding>
+                    <Insets top="30" bottom="30" left="30" right="30"/>
+                </padding>
+                <Label text="Carts" style="-fx-font-size: 24; -fx-font-weight: bold; "/>
+                <ScrollPane>
+                    <VBox>
+
+                    </VBox>
+                </ScrollPane>
+            </VBox>
+        </VBox>
+    </center>
+
+</BorderPane>

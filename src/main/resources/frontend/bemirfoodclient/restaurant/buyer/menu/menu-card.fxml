@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.buyer.menu.BuyerMenuCardController">
+    <center>
+        <VBox style="-fx-background-color: white;
+            -fx-effect-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 4);"
+            spacing="15" alignment="TOP_CENTER">
+
+            <Label fx:id="menuTitle" style="-fx-font-size: 24; -fx-font-weight: bold">
+                <VBox.margin>
+                    <Insets top="15"/>
+                </VBox.margin>
+            </Label>
+
+            <VBox fx:id="menuItemsSection" style="-fx-effect-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 0);">
+                <VBox.margin>
+                    <Insets left="15" right="15"/>
+                </VBox.margin>
+            </VBox>
+
+            <Separator>
+                <VBox.margin>
+                    <Insets left="15" right="15" bottom="15"/>
+                </VBox.margin>
+            </Separator>
+        </VBox>
+    </center>
+</BorderPane>

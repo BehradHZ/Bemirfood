@@ -40,7 +40,9 @@ public class SellerTransactionsController {
     public void initialize() {
         balance.setText(getBalance());
         HBox.setHgrow(balanceSpacer, Priority.ALWAYS);
+
         List<Transaction> transactions = getTransactions();
+
         for (Transaction transaction : transactions) {
             try {
                 FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(

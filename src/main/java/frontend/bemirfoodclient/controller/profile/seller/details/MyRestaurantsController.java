@@ -34,7 +34,9 @@ public class MyRestaurantsController {
     public VBox restaurantCardsSection;
 
     public void initialize() {
+
         List<Restaurant> restaurants = getRestaurants();
+
         for (Restaurant restaurant : restaurants) {
             try {
                 FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(

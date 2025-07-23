@@ -149,9 +149,9 @@ public class RegisterAdditionalController {
     public String checkLoginRole(String role){
         return switch (role) {
             case "admin" -> "";
-            case "buyer" -> "/frontend/bemirfoodclient/border/buyer-border-view.fxml";
+            case "customer" -> "/frontend/bemirfoodclient/border/buyer-border-view.fxml";
             case "seller" -> "/frontend/bemirfoodclient/border/seller-border-view.fxml";
-            case "courier" -> "/frontend/bemirfoodclient/border/courier-border-view.fxml";
+            case "delivery" -> "/frontend/bemirfoodclient/border/courier-border-view.fxml";
             default -> "";
         };
     }
@@ -199,12 +199,12 @@ public class RegisterAdditionalController {
             try {
                 Stage stage = (Stage) emailTextField.getScene().getWindow();
                 Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
-                        checkLoginRole(user.getRoleAsString()))));
+                        checkLoginRole(response.getBody().get("role").getAsString().toLowerCase()))));
                 stage.getScene().setRoot(root);
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
-        }else{
+        } else {
             expHandler(response, "Registration failed", isRegistering);
         }
     }

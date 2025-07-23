@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.buyer.menu.BuyerMenuItemCardController">
+    <center>
+        <VBox spacing="15">
+            <HBox style="-fx-background-color: white; -fx-background-radius: 15;  -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);"
+                  alignment="CENTER_LEFT" spacing="15">
+                <VBox.margin>
+                    <Insets top="15" left="15" right="15"/>
+                </VBox.margin>
+                <ImageView fx:id="itemImage">
+                    <HBox.margin>
+                        <Insets top="10" bottom="10" left="10"/>
+                    </HBox.margin>
+                </ImageView>
+                <Label fx:id="itemName" style="-fx-font-size: 24; -fx-font-weight: bold"/>
+                <Region fx:id="spacer"/>
+                <Label fx:id="itemPrice" style="-fx-font-size: 16;"/>
+                <StackPane>
+                    <VBox.margin>
+                        <Insets bottom="10"/>
+                    </VBox.margin>
+                    <HBox fx:id="minusQuantityPlus" alignment="CENTER_RIGHT" spacing="20">
+                        <padding>
+                            <Insets right="30"/>
+                        </padding>
+                        <Button fx:id="minus" text="-" style="-fx-background-color: #bb0000;
+                            -fx-text-fill: white; -fx-font-size: 18; -fx-font-weight: bold; -fx-background-radius: 10;
+                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 0);"
+                                onAction="#minusButtonClicked" minWidth="40"/>
+
+                        <Label fx:id="quantity" style="-fx-text-fill: black; -fx-font-size: 18; -fx-font-weight: bold;
+                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 0);"/>
+
+                        <Button fx:id="plus" text="+" style="-fx-background-color: #0066ff;
+                            -fx-text-fill: white; -fx-font-size: 18; -fx-font-weight: bold; -fx-background-radius: 10;
+                            -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 0);"
+                                onAction="#plusButtonClicked" minWidth="40"/>
+                    </HBox>
+                    <HBox fx:id="addToCart" alignment="CENTER_RIGHT">
+                        <padding>
+                            <Insets right="30"/>
+                        </padding>
+                        <Button fx:id="addToCartButton" text="Add to cart" style="-fx-font-size: 18; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-color: #0066ff; -fx-background-radius: 10;
+                                -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 0);" onAction="#addItemToCart"
+                                minWidth="130"/>
+                    </HBox>
+                </StackPane>
+            </HBox>
+
+            <Separator>
+                <VBox.margin>
+                    <Insets left="15" right="15"/>
+                </VBox.margin>
+            </Separator>
+        </VBox>
+    </center>
+
+</BorderPane>
