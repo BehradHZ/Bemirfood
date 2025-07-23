@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.buyer.RestaurantCardController">
+
+    <center>
+        <VBox>
+            <HBox prefWidth="440" minHeight="150" spacing="20" alignment="CENTER_LEFT"
+                  style="-fx-background-color: #ffffff; -fx-background-radius: 15;
+                       -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);">
+                <VBox style="-fx-background-color: #ffffff; -fx-background-radius: 15;"
+                      alignment="CENTER">
+                    <HBox.margin>
+                        <Insets left="15"/>
+                    </HBox.margin>
+                    <ImageView fx:id="restaurantLogo" style="-fx-background-radius: 15"/>
+                </VBox>
+                <VBox spacing="5" alignment="CENTER_LEFT">
+                    <HBox.margin>
+                        <Insets left="10"/>
+                    </HBox.margin>
+                    <Label fx:id="nameButton" style="-fx-font-size: 16; -fx-font-weight: bold"/>
+                    <Label fx:id="address" style="-fx-font-size: 14"/>
+                </VBox>
+            </HBox>
+            <Separator>
+                <VBox.margin>
+                    <Insets top="15" bottom="15"/>
+                </VBox.margin>
+            </Separator>
+        </VBox>
+    </center>
+</BorderPane>

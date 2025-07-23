@@ -1,6 +1,8 @@
-package frontend.bemirfoodclient.controller.restaurant.seller.order;
+package frontend.bemirfoodclient.controller.restaurant.buyer.order;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
+import frontend.bemirfoodclient.controller.restaurant.seller.order.ChangeOrderStatusDialogController;
+import frontend.bemirfoodclient.controller.restaurant.seller.order.SellerOrderItemCardController;
 import frontend.bemirfoodclient.model.entity.CartItem;
 import frontend.bemirfoodclient.model.entity.Order;
 import frontend.bemirfoodclient.model.entity.OrderStatus;
@@ -19,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class SellerOrderCardController {
+public class BuyerOrderCardController {
     @FXML
     public Label orderId;
     @FXML

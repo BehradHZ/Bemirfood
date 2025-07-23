@@ -1,0 +1,5 @@
+login data:
+{
+    "phone": "09222211111",
+    "role": "buyer"
+}

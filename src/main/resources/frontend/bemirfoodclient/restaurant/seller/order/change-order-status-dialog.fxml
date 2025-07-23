@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.order.ChangeOrderStatusDialogController" alignment="CENTER" spacing="10">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Change Order Status to" />
+    <HBox>
+        <fx:define>
+            <ToggleGroup fx:id="statusToggleGroup"/>
+        </fx:define>
+        <VBox>
+            <RadioButton toggleGroup="statusToggleGroup" text="accepted" style="-fx-background-color: #b5e61d; -fx-text-fill: black; -fx-background-radius: 10; -fx-font-size: 16; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);"/>
+            <RadioButton toggleGroup="statusToggleGroup" text="rejected" style="-fx-background-color: #b5e61d; -fx-text-fill: black; -fx-background-radius: 10; -fx-font-size: 16; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);"/>
+            <RadioButton toggleGroup="statusToggleGroup" text="served" style="-fx-background-color: #b5e61d; -fx-text-fill: black; -fx-background-radius: 10; -fx-font-size: 16; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);"/>
+            <RadioButton toggleGroup="statusToggleGroup" text="cancelled" style="-fx-background-color: #b5e61d; -fx-text-fill: black; -fx-background-radius: 10; -fx-font-size: 16; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);"/>
+            <RadioButton toggleGroup="statusToggleGroup" text="" style="-fx-background-color: #b5e61d; -fx-text-fill: black; -fx-background-radius: 10; -fx-font-size: 16; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);"/>
+        </VBox>
+        <VBox>
+            <RadioButton toggleGroup="statusToggleGroup" text="" style="-fx-background-color: #b5e61d; -fx-text-fill: black; -fx-background-radius: 10; -fx-font-size: 16; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);"/>
+            <RadioButton toggleGroup="statusToggleGroup" text="" style="-fx-background-color: #b5e61d; -fx-text-fill: black; -fx-background-radius: 10; -fx-font-size: 16; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);"/>
+            <RadioButton toggleGroup="statusToggleGroup" text="" style="-fx-background-color: #b5e61d; -fx-text-fill: black; -fx-background-radius: 10; -fx-font-size: 16; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);"/>
+            <RadioButton toggleGroup="statusToggleGroup" text="" style="-fx-background-color: #b5e61d; -fx-text-fill: black; -fx-background-radius: 10; -fx-font-size: 16; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);"/>
+            <RadioButton toggleGroup="statusToggleGroup" text="" style="-fx-background-color: #b5e61d; -fx-text-fill: black; -fx-background-radius: 10; -fx-font-size: 16; -fx-font-weight: bold; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);"/>
+
+        </VBox>
+    </HBox>
+</VBox>

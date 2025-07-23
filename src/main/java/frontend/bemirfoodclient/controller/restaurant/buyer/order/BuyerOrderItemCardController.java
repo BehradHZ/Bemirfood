@@ -1,4 +1,4 @@
-package frontend.bemirfoodclient.controller.restaurant.seller.order;
+package frontend.bemirfoodclient.controller.restaurant.buyer.order;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.ImageLoader;
@@ -13,7 +13,7 @@ import javafx.scene.layout.Region;
 
 import java.util.Objects;
 
-public class SellerOrderItemCardController {
+public class BuyerOrderItemCardController {
 
     @FXML
     public ImageView itemImage;

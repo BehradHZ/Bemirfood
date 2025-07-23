@@ -9,7 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.geometry.Insets?>
-<BorderPane xmlns="http://javafx.com/javafx"
+<BorderPane fx:id="mainBorderPane" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="frontend.bemirfoodclient.controller.border.BuyerBorderController">
     <top>
@@ -49,10 +49,38 @@
         </HBox>
     </top>
     <center>
-        <VBox style="-fx-background-color: #ffffff">
+        <ScrollPane fitToWidth="true">
+            <VBox style="-fx-background-color: #f4f4f4">
+                <VBox style="-fx-background-color: white; -fx-background-radius: 25">
+                    <VBox.margin>
+                        <Insets top="30" bottom="30" left="30" right="30"/>
+                    </VBox.margin>
+                    <VBox fx:id="recommendedVendorSection" style="-fx-background-color: white; -fx-background-radius: 25;
+                    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0)"
+                          prefHeight="400">
 
-        </VBox>
-        <Label text="this is buyer homepage"/>
+                        <VBox.margin>
+                            <Insets top="30" bottom="30" left="30" right="30"/>
+                        </VBox.margin>
+                        <Label text="Vendors:" style="-fx-font-size: 24; -fx-font-weight: bold"  onMouseClicked="#showAllVendors">
+                            <VBox.margin>
+                                <Insets top="30" left="30"/>
+                            </VBox.margin>
+                        </Label>
+                        <ScrollPane fitToWidth="true">
+                            <VBox.margin>
+                                <Insets top="30" bottom="30" left="30" right="30"/>
+                            </VBox.margin>
+                            <VBox fx:id="recommendedVendorList">
+                                <padding>
+                                    <Insets top="30" bottom="30" left="30" right="30"/>
+                                </padding>
+                            </VBox>
+                        </ScrollPane>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
     </center>
 
 </BorderPane>

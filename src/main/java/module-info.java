@@ -36,5 +36,8 @@
         opens frontend.bemirfoodclient.controller.restaurant.seller.menu to javafx.fxml;
         exports frontend.bemirfoodclient.controller.restaurant.seller.order;
         opens frontend.bemirfoodclient.controller.restaurant.seller.order to javafx.fxml;
-
+        exports frontend.bemirfoodclient.controller.restaurant.buyer;
+        opens frontend.bemirfoodclient.controller.restaurant.buyer to javafx.fxml;
+        exports frontend.bemirfoodclient.controller.restaurant.buyer.item;
+        opens frontend.bemirfoodclient.controller.restaurant.buyer.item to javafx.fxml;
     }

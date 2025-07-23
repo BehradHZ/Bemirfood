@@ -81,6 +81,7 @@ public class SellerRestaurantViewController {
     public ScrollPane menusSectionScrollPane;
     @FXML
     public ScrollPane ordersSectionScrollPane;
+    public ImageView favoriteRestaurantStar;
 
     private Restaurant restaurant;
 
@@ -281,7 +282,6 @@ public class SellerRestaurantViewController {
         }
 
         itemsButtonClicked();
-
     }
 
     public List<Item> getItems() {
@@ -542,7 +542,7 @@ public class SellerRestaurantViewController {
         List<CartItem> order1Items = List.of(new CartItem(pepperoniPizza, 1), new CartItem(veggiePizza, 1));
         Order order1 = new Order(order1Items, customer1.getAddress(), customer1, pizzaPalace,
                 LocalDateTime.now().minusDays(2), LocalDateTime.now().minusDays(1),
-                fixedDiscount, OrderStatus.completed, 15000.0);
+                fixedDiscount, OrderStatus.waiting_vendor, 15000.0);
         order1.setDelivery(delivery1); // Manually set the delivery person
         orders.add(order1);
 
