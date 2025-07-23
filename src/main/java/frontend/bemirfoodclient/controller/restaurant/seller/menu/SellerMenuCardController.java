@@ -1,8 +1,13 @@
 package frontend.bemirfoodclient.controller.restaurant.seller.menu;
 
+import Deserializer.RestaurantDeserializer;
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
+import com.google.gson.*;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.entity.Item;
 import frontend.bemirfoodclient.model.entity.Menu;
+import frontend.bemirfoodclient.model.entity.Restaurant;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
@@ -16,12 +21,19 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.function.Consumer;
 
+import static Exception.exp.expHandler;
+import static HttpClientHandler.Requests.*;
+
 public class SellerMenuCardController {
+
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).serializeNulls()
+            .create();
+
 
     @FXML
     public Label menuTitle;
@@ -56,6 +68,35 @@ public class SellerMenuCardController {
 
         menuItemsSection.getChildren().clear();
 
+        HttpResponseData response = getRestaurantMenu(menu.getRestaurant().getId(), menu.getTitle());
+        JsonObject menuObj = response.getBody().getAsJsonObject("menu");
+        String title = menuObj.get("title").getAsString();
+
+        List<Item> menuItems = new ArrayList<>();
+
+        JsonArray its = menuObj.getAsJsonArray("items");
+
+        for (JsonElement itemElement : its) {
+            JsonObject item = itemElement.getAsJsonObject();
+            int id = item.get("id").getAsInt();
+            String name = item.get("name").getAsString();
+            String image = null;
+            if(item.get("imageBase64") != null && !item.get("imageBase64").isJsonNull()) image = item.get("imageBase64").getAsString();
+            String description = item.get("description").getAsString();
+            double price = item.get("price").getAsDouble();
+            int supply = item.get("supply").getAsInt();
+            JsonArray keywords = item.getAsJsonArray("keywords");
+
+            List<String> keywordList = new ArrayList<>();
+            for (JsonElement keyword : keywords) {
+                keywordList.add(keyword.getAsString());
+            }
+
+            menuItems.add(new Item((long)id, name, image, description, price, supply, keywordList));
+        }
+
+        menu = new Menu(title, menu.getRestaurant(), menuItems);
+
         List<Item> items = menu.getItems();
 
         for (Item item : items) {
@@ -68,11 +109,11 @@ public class SellerMenuCardController {
                 smallCardController.setItemData(item);
 
                 smallCardController.setOnDelete(itemToRemove -> {
-                    switch (deleteItemFromMenu(item)) {
-                        case 200:
-                            menuItemsSection.getChildren().remove(smallCard);
-                            break;
-                        //show alerts
+                    HttpResponseData res = deleteItemFromMenu(item);
+                    if(res.getStatusCode() == 200) {
+                        menuItemsSection.getChildren().remove(smallCard);
+                    }else{
+                        expHandler(res, "Failed to delete item from menu", null);
                     }
                 });
 
@@ -103,8 +144,23 @@ public class SellerMenuCardController {
 
         AddItemToMenuDialogController dialogController = fxmlLoader.getController();
 
-        List<Item> allItems = menu.getRestaurant().getItems(); // Assuming this method exists
+        //List<Item> allItems = menu.getRestaurant().getItems(); // Assuming this method exists
 //        List<Item> allItems = menu.getItems(); //temporary
+
+        Gson g = new GsonBuilder()
+                .registerTypeAdapter(Restaurant.class, new RestaurantDeserializer())
+                .create();
+
+        HttpResponseData response = getRestaurantItems(menu.getRestaurant().getId());
+
+        JsonArray itemArray = response.getBody().getAsJsonArray("Restaurant items");
+        List<Item> allItems = new ArrayList<>();
+
+        for(JsonElement itemElement : itemArray) {
+            Item item = g.fromJson(itemElement, Item.class);
+            allItems.add(item);
+        }
+
         dialogController.populateItems(allItems);
 
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
@@ -113,27 +169,33 @@ public class SellerMenuCardController {
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
             List<Item> itemsToAdd = dialogController.getSelectedItems();
-
-            switch (addItemsToMenu(itemsToAdd)) {
-                case 200:
-                    setScene();
-                    break;
-                //show alerts
+            HttpResponseData res = addItemsToMenu(itemsToAdd);
+            setScene();
+            if(res.getStatusCode() == 200) {
+                setScene();
+            }else{
+                expHandler(res, "Failed to add item to menu", null);
             }
 
         }
     }
 
-    public int addItemsToMenu(List<Item> items) {
-        //do the stuff in backend
-
-        return 200; //temporary
+    public HttpResponseData addItemsToMenu(List<Item> items) {
+        HttpResponseData response = null;
+        for (Item item : items) {
+            Map<String, Long> request = new LinkedHashMap<>();
+            request.put("item_id", item.getId());
+            response =
+                    addItemMenu(menu.getRestaurant().getId(), menu.getTitle(), gson.toJson(request));
+            if(response.getStatusCode() != 200){
+                expHandler(response, "Failed to add item to menu", null);
+            }
+        }
+        return response;
     }
 
-    public int deleteItemFromMenu(Item item) {
-        //do the stuff in backend
-
-        return 200;
+    public HttpResponseData deleteItemFromMenu(Item item) {
+        return removeItemMenu(menu.getRestaurant().getId(), menu.getTitle(), (long)item.getId());
     }
 
     public void deleteMenuButtonClicked() {
