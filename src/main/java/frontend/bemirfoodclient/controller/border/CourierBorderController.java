@@ -2,7 +2,10 @@ package frontend.bemirfoodclient.controller.border;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.restaurant.courier.DeliveryCardController;
-import frontend.bemirfoodclient.model.entity.*;
+import frontend.bemirfoodclient.model.entity.Bank_info;
+import frontend.bemirfoodclient.model.entity.Delivery;
+import frontend.bemirfoodclient.model.entity.Order;
+import frontend.bemirfoodclient.model.entity.OrderStatus;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,7 +18,6 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -52,7 +54,7 @@ public class CourierBorderController {
         profileIcon.setPreserveRatio(true);
         profileIcon.setFitHeight(27);
 
-        showAllDeliveries(null, OrderStatus.finding_courier);
+        showAllDeliveries();
     }
 
     @FXML
@@ -129,10 +131,9 @@ public class CourierBorderController {
 
     }
 
-    public List<Order> getAllDeliveries(Delivery delivery, OrderStatus newStatus) {
+    public List<Order> getAllDeliveries() {
         List<Order> orders = new ArrayList<>();
-
-        //temporary
+        /*//temporary
 
         // --- 1. Create Sellers and Customers ---
         Bank_info seller1Bank = new Bank_info("Pizza Bank", "PB-111");
@@ -180,46 +181,34 @@ public class CourierBorderController {
         orders.add(order1);
 
         // --- ORDER 2: A pending burger order with a percentage coupon ---
-//        List<CartItem> order2Items = List.of(new CartItem(classicBurger, 2), new CartItem(fries, 2));
-//        Order order2 = new Order(order2Items, customer2.getAddress(), customer2, burgerBarn,
-//                LocalDateTime.now().minusHours(1), LocalDateTime.now(),
-//                percentDiscount, OrderStatus.finding_courier, 18000.0);
-//        order2.setDelivery(delivery1); // Manually set the delivery person
-//        orders.add(order2);
-//
-//        // --- ORDER 3: A cancelled pizza order with no coupon ---
-//        List<CartItem> order3Items = List.of(new CartItem(veggiePizza, 1));
-//        Order order3 = new Order(order3Items, customer1.getAddress(), customer1, pizzaPalace,
-//                LocalDateTime.now().minusDays(3), LocalDateTime.now().minusDays(3).plusHours(1),
-//                OrderStatus.on_the_way, 0.0);
-//        order3.setDelivery(delivery1); // Manually set the delivery person
-//        orders.add(order3);
+        List<CartItem> order2Items = List.of(new CartItem(classicBurger, 2), new CartItem(fries, 2));
+        Order order2 = new Order(order2Items, customer2.getAddress(), customer2, burgerBarn,
+                LocalDateTime.now().minusHours(1), LocalDateTime.now(),
+                percentDiscount, OrderStatus.finding_courier, 18000.0);
+        order2.setDelivery(delivery1); // Manually set the delivery person
+        orders.add(order2);
+
+        // --- ORDER 3: A cancelled pizza order with no coupon ---
+        List<CartItem> order3Items = List.of(new CartItem(veggiePizza, 1));
+        Order order3 = new Order(order3Items, customer1.getAddress(), customer1, pizzaPalace,
+                LocalDateTime.now().minusDays(3), LocalDateTime.now().minusDays(3).plusHours(1),
+                OrderStatus.on_the_way, 0.0);
+        order3.setDelivery(delivery1); // Manually set the delivery person
+        orders.add(order3);*/
 
         return orders;
     }
 
-    public void showAllDeliveries(Delivery delivery, OrderStatus newStatus) {
-        List<Order> allOrders = getAllDeliveries(delivery, newStatus);
-
-        for (Order order : allOrders) {
-            System.out.println("Show all:" + order.getStatus());
-        }
+    public void showAllDeliveries() {
+        List<Order> allOrders = getAllDeliveries();
 
         List<Order> activeDeliveries = allOrders.stream()
                 .filter(order -> order.getStatus() == OrderStatus.on_the_way)
                 .toList();
 
-        for (Order order : activeDeliveries) {
-            System.out.println("actives:" + order.getStatus());
-        }
-
         List<Order> recommendedDeliveries = allOrders.stream()
                 .filter(order -> order.getStatus() == OrderStatus.finding_courier)
                 .toList();
-
-        for (Order order : recommendedDeliveries) {
-            System.out.println("recom:" + order.getStatus());
-        }
 
         activeDeliverySection.getChildren().clear();
 
@@ -261,7 +250,7 @@ public class CourierBorderController {
             controller.setOnAccept(acceptedOrder -> {
                 switch (deliveryAccept(acceptedOrder)) {
                     case 200:
-                        showAllDeliveries(delivery, OrderStatus.on_the_way);
+                        showAllDeliveries();
                         break;
                     //show alerts
                 }
@@ -270,8 +259,7 @@ public class CourierBorderController {
             controller.setOnStatusChange((orderToUpdate, newStatus) -> {
                 switch (deliveryStatusChange(orderToUpdate, newStatus)) {
                     case 200:
-                        showAllDeliveries(delivery, newStatus);
-                        System.out.println("Order #" + orderToUpdate.getId() + " has been updated to " + newStatus);
+                        showAllDeliveries();
                         break;
                     //show alerts
                 }
