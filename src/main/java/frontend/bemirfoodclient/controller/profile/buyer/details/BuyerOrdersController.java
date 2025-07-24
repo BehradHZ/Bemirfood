@@ -19,23 +19,19 @@ public class BuyerOrdersController {
 
     @FXML
     public void initialize() {
-        // 1. Get the list of orders (from the backend or your factory for testing)
         List<Order> orders = getOrders();
 
         // 2. Loop through each order
         for (Order order : orders) {
             try {
-                // 3. Load the FXML for a single order card
                 FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(
                         "/frontend/bemirfoodclient/restaurant/buyer/order/order-card.fxml"
                 ));
                 Pane card = loader.load();
 
-                // 4. Get the card's controller and set its data
                 BuyerOrderCardController cardController = loader.getController();
                 cardController.setOrderData(order);
 
-                // 5. Add the finished card to the VBox in the UI
                 ordersVBox.getChildren().add(card);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -43,13 +39,11 @@ public class BuyerOrdersController {
         }
     }
 
-    /**
-     * Fetches the list of orders.
-     * @return A list of Order objects.
-     */
+
     private List<Order> getOrders() {
         //do the stuff in backend
 
+        //temporary
         List<Order> orders = new ArrayList<>();
 
         // --- 1. Create Sellers and Customers ---

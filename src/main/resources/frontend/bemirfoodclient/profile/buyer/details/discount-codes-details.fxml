@@ -1,6 +1,14 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER">
-    <Label text="discount Details Section" style="-fx-font-size: 24px;" />
-</VBox>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.ScrollPane?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.profile.buyer.details.BuyerDiscountCodesController">
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: transparent;">
+            <VBox fx:id="couponsSection"/>
+        </ScrollPane>
+    </center>
+</BorderPane>
