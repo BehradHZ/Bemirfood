@@ -54,6 +54,10 @@
                         <ComboBox fx:id="statusComboBox" style="-fx-background-color: transparent"/>
                         <Button fx:id="acceptButton" text="Accept Delivery" style="-fx-font-size: 18; -fx-text-fill: white;
                          -fx-font-weight: bold; -fx-background-color: #0066ff; -fx-background-radius: 15" onAction="#acceptButtonClicked"/>
+                        <Button fx:id="completeButton" text="Completed" style="-fx-background-radius: 10; -fx-font-size: 16; -fx-font-weight: bold;
+                                -fx-background-radius-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0); -fx-background-color: #22b14c; -fx-text-fill: white;" visible="false"/>
+                        <Button fx:id="cancelButton" text="Cancelled" style="-fx-background-radius: 10; -fx-font-size: 16; -fx-font-weight: bold;
+                                    -fx-background-radius-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0); -fx-background-color: #ed1c24; -fx-text-fill: white;" visible="false"/>
                     </StackPane>
                     <Region fx:id="lastUpdateSpacer"/>
                     <Label fx:id="lastUpdate" style="-fx-font-size: 16"/>

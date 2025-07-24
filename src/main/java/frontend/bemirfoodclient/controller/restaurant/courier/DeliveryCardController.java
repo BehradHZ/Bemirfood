@@ -43,6 +43,8 @@ public class DeliveryCardController {
     public ComboBox statusComboBox;
     @FXML
     public Button acceptButton;
+    public Button completeButton;
+    public Button cancelButton;
 
     private Order order;
 
@@ -125,6 +127,22 @@ public class DeliveryCardController {
             lastUpdate.setVisible(false);
         }
 
+        if ((order.getDelivery() != null) && (order.getStatus().equals(OrderStatus.completed) ||
+                order.getStatus().equals(OrderStatus.cancelled))) {
+            acceptButton.setVisible(false);
+            acceptButton.setManaged(false);
+            statusComboBox.setVisible(false);
+            if (order.getStatus().equals(OrderStatus.cancelled)) {
+                completeButton.setVisible(false);
+                cancelButton.setVisible(true);
+                cancelButton.setDisable(true);
+            }
+            if (order.getStatus().equals(OrderStatus.completed)) {
+                completeButton.setVisible(true);
+                completeButton.setDisable(true);
+                cancelButton.setVisible(false);
+            }
+        }
 
         orderAddress.setText("Address: " + order.getDeliveryAddress()); // Assuming address is on the order
         courierFee.setText(String.valueOf(order.getCourierFee()));

@@ -19,6 +19,12 @@ public class DeliveryHistoryController {
     public VBox activeDeliverySection;
     public ScrollPane recommendedScroll;
     public VBox recommendedDeliveryList;
+    public ScrollPane historyScroll;
+    public VBox historyList;
+
+    public void initialize() {
+        showAllDeliveries(null, OrderStatus.finding_courier);
+    }
 
     public List<Order> getAllDeliveries(Delivery delivery, OrderStatus newStatus) {
         List<Order> orders = new ArrayList<>();
@@ -105,15 +111,20 @@ public class DeliveryHistoryController {
         }
 
         List<Order> recommendedDeliveries = allOrders.stream()
-                .filter(order -> order.getStatus() == OrderStatus.finding_courier)
+                        .filter(order -> order.getStatus() == OrderStatus.finding_courier)
                 .toList();
+
 
         for (Order order : recommendedDeliveries) {
             System.out.println("recom:" + order.getStatus());
         }
 
-        activeDeliverySection.getChildren().clear();
+        List<Order> history = allOrders.stream()
+                .filter(order ->
+                        order.getStatus() == OrderStatus.completed || order.getStatus() == OrderStatus.cancelled)
+                .toList();
 
+        activeDeliverySection.getChildren().clear();
         if (activeDeliveries.isEmpty()) {
             activeScroll.setPrefHeight(30);
         } else {
@@ -124,13 +135,22 @@ public class DeliveryHistoryController {
         }
 
         recommendedDeliveryList.getChildren().clear();
-
         if (recommendedDeliveries.isEmpty()) {
             recommendedScroll.setPrefHeight(30);
         } else {
             recommendedScroll.setPrefHeight(400);
             for (Order order : recommendedDeliveries) {
                 recommendedDeliveryList.getChildren().add(createDeliveryCard(order));
+            }
+        }
+
+        historyList.getChildren().clear();
+        if (history.isEmpty()) {
+            historyScroll.setPrefHeight(30);
+        } else {
+            historyScroll.setPrefHeight(400);
+            for (Order order : history) {
+                historyList.getChildren().add(createDeliveryCard(order));
             }
         }
     }
