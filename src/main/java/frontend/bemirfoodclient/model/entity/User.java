@@ -4,7 +4,8 @@ import frontend.bemirfoodclient.model.dto.UserDto;
 
 public class User {
 
-    private String fullName;
+    private Long id;
+    private String full_name;
     private String mobile;
     private String email;
     private UserRole role;
@@ -15,7 +16,7 @@ public class User {
 
     public User(String fullName, String mobile, String role, String email, String photo,
                 String address, Bank_info bank_info) {
-        this.fullName = fullName;
+        this.full_name = fullName;
         this.mobile = mobile;
         if (role.equals("admin")) {
             this.role = UserRole.ADMIN;
@@ -35,7 +36,7 @@ public class User {
 
     public User(String fullName, String mobile, String role, String email, String photo,
                 String address, Bank_info bank_info, String password) {
-        this.fullName = fullName;
+        this.full_name = fullName;
         this.mobile = mobile;
         if (role.equals("admin")) {
             this.role = UserRole.ADMIN;
@@ -57,6 +58,10 @@ public class User {
         this.mobile = mobile;
     }
 
+    public User() {
+
+    }
+
     public static User UserDtoToUser(UserDto userDto) {
         return new User(
                 userDto.getFullName(),
@@ -70,12 +75,19 @@ public class User {
         );
     }
 
-    public String getFullName() {
-        return fullName;
+    public void setId(Long id){
+        this.id = id;
+    }
+    public Long getId(){
+        return id;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public String getFull_name() {
+        return full_name;
+    }
+
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
     }
 
     public String getMobile() {

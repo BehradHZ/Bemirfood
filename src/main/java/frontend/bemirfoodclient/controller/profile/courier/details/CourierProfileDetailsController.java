@@ -167,7 +167,7 @@ public class CourierProfileDetailsController {
 
 
     public static String getFullName() {
-        return courier.getFullName();
+        return courier.getFull_name();
     }
 
     public static String getPhoneNumber() {

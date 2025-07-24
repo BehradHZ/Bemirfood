@@ -14,7 +14,7 @@ public class UserDto {
     String password;
 
     public UserDto(User user) {
-        this.full_name = user.getFullName();
+        this.full_name = user.getFull_name();
         this.email = user.getEmail();
         this.phone = user.getMobile();
         this.role = user.getRole().toString();
