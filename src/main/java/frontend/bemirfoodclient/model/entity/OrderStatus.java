@@ -1,6 +1,6 @@
 package frontend.bemirfoodclient.model.entity;
 
-import frontend.bemirfoodclient.model.Exception.InvalidInputException;
+import frontend.bemirfoodclient.model.exception.InvalidInputException;
 
 public enum OrderStatus {
     submitted,

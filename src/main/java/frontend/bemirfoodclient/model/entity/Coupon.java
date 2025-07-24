@@ -1,7 +1,7 @@
 package frontend.bemirfoodclient.model.entity;
 
 
-import frontend.bemirfoodclient.model.Exception.ForbiddenException;
+import frontend.bemirfoodclient.model.exception.ForbiddenException;
 import lombok.Getter;
 import lombok.Setter;
 

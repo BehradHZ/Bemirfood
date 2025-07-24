@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
 
-import static Exception.exp.expHandler;
+import static exception.exp.expHandler;
 import static HttpClientHandler.HttpClientHandler.sendRequest;
 
 public class LoginController {

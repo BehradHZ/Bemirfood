@@ -49,48 +49,65 @@
         </HBox>
     </top>
     <center>
-        <VBox spacing="30">
-            <VBox fx:id="activeDeliverySection" style="-fx-background-color: white; -fx-background-radius: 25;
-                 -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0)">
-                <Separator/>
-            </VBox>
+        <ScrollPane fitToWidth="true">
+            <VBox spacing="30">
+                <padding>
+                    <Insets top="30" bottom="30" left="30" right="30"/>
+                </padding>
+                <VBox>
 
-            <Separator/>
-
-            <ScrollPane fitToWidth="true">
-                <VBox style="-fx-background-color: #f4f4f4">
-                    <VBox style="-fx-background-color: white; -fx-background-radius: 25">
-                        <VBox.margin>
+                    <VBox style="-fx-background-color: white; -fx-background-radius: 25;
+                    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0)">
+                        <padding>
                             <Insets top="30" bottom="30" left="30" right="30"/>
-                        </VBox.margin>
-                        <VBox fx:id="recommendedDeliverySection" style="-fx-background-color: white; -fx-background-radius: 25;
-                              -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0)"
-                              prefHeight="600">
-
-                            <VBox.margin>
-                                <Insets top="30" bottom="30" left="30" right="30"/>
-                            </VBox.margin>
-                            <Label text="Deliveries:" style="-fx-font-size: 24; -fx-font-weight: bold"
-                                   onMouseClicked="#showAllDeliveries">
-                                <VBox.margin>
-                                    <Insets top="30" left="30"/>
-                                </VBox.margin>
-                            </Label>
-                            <ScrollPane fitToWidth="true">
-                                <VBox.margin>
-                                    <Insets top="30" bottom="30" left="30" right="30"/>
-                                </VBox.margin>
-                                <VBox fx:id="recommendedDeliveryList">
-                                    <padding>
-                                        <Insets top="30" bottom="30" left="30" right="30"/>
-                                    </padding>
-                                </VBox>
-                            </ScrollPane>
-                        </VBox>
+                        </padding>
+                        <Label fx:id="activeDeliveryLabel" text="Active Deliveries:" style="-fx-font-size: 24; -fx-font-weight: bold">
+                            <padding>
+                                <Insets bottom="20"/>
+                            </padding>
+                        </Label>
+                        <ScrollPane fx:id="activeScroll" fitToWidth="true" prefHeight="400">
+                            <VBox fx:id="activeDeliverySection">
+                                <padding>
+                                    <Insets top="10" bottom="10" left="10" right="10"/>
+                                </padding>
+                            </VBox>
+                            <Separator fx:id="noActiveOrder">
+                                <padding>
+                                    <Insets top="15" bottom="15" left="15" right="15"/>
+                                </padding>
+                            </Separator>
+                        </ScrollPane>
                     </VBox>
                 </VBox>
-            </ScrollPane>
-        </VBox>
+
+                <Separator/>
+
+                <VBox fx:id="recommendedDeliverySection" style="-fx-background-color: white; -fx-background-radius: 25;
+                                -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0)">
+                    <padding>
+                        <Insets top="30" bottom="30" left="30" right="30"/>
+                    </padding>
+                    <Label text="Recommended Deliveries:" style="-fx-font-size: 24; -fx-font-weight: bold">
+                        <padding>
+                            <Insets bottom="20"/>
+                        </padding>
+                    </Label>
+                    <ScrollPane fx:id="recommendedScroll" fitToWidth="true" prefHeight="400">
+                        <VBox fx:id="recommendedDeliveryList">
+                            <padding>
+                                <Insets top="10" bottom="10" left="10" right="10"/>
+                            </padding>
+                        </VBox>
+                        <Separator fx:id="noDeliveryOrder">
+                            <padding>
+                                <Insets top="15" bottom="15" left="15" right="15"/>
+                            </padding>
+                        </Separator>
+                    </ScrollPane>
+                </VBox>
+            </VBox>
+        </ScrollPane>
     </center>
 
 </BorderPane>

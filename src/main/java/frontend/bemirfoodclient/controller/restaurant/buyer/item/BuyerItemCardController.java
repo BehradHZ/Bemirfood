@@ -42,8 +42,6 @@ public class BuyerItemCardController {
 
     private Item item;
 
-    private int tity;
-
     public void setItemData(Item item) {
         this.item = item;
         setScene();

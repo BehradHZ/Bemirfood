@@ -9,7 +9,7 @@ import com.google.gson.GsonBuilder;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-import static Exception.exp.expHandler;
+import static exception.exp.expHandler;
 import static HttpClientHandler.HttpClientHandler.sendGetRequest;
 
 public class req {

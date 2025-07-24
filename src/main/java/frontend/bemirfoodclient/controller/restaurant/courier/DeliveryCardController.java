@@ -13,6 +13,8 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class DeliveryCardController {
     @FXML
@@ -30,39 +32,22 @@ public class DeliveryCardController {
     @FXML
     public Label orderCourierName;
     @FXML
-    public Region rawPriceSpacer;
-    @FXML
-    public Label rawPrice;
-    @FXML
-    public Region taxFeeSpacer;
-    @FXML
-    public Label taxFee;
-    @FXML
-    public Region additionalFeeSpacer;
-    @FXML
-    public Label additionalFee;
-    @FXML
     public Region courierFeeSpacer;
     @FXML
     public Label courierFee;
-    @FXML
-    public Region couponDetailsSpacer;
-    @FXML
-    public Label couponDetails;
-    @FXML
-    public Region totalPriceSpacer;
-    @FXML
-    public Label totalPrice;
-    @FXML
-    public Button orderStatusButton;
     @FXML
     public Region lastUpdateSpacer;
     @FXML
     public Label lastUpdate;
     @FXML
     public ComboBox statusComboBox;
+    @FXML
+    public Button acceptButton;
 
     private Order order;
+
+    private Consumer<Order> acceptCallback;
+    private BiConsumer<Order, OrderStatus> statusChangeCallback;
 
     public void setOrderData(Order order) {
         this.order = order;
@@ -71,12 +56,7 @@ public class DeliveryCardController {
 
     public void initialize() {
         HBox.setHgrow(idTimeSpacer, Priority.ALWAYS);
-        HBox.setHgrow(rawPriceSpacer, Priority.ALWAYS);
-        HBox.setHgrow(taxFeeSpacer, Priority.ALWAYS);
-        HBox.setHgrow(additionalFeeSpacer, Priority.ALWAYS);
         HBox.setHgrow(courierFeeSpacer, Priority.ALWAYS);
-        HBox.setHgrow(couponDetailsSpacer, Priority.ALWAYS);
-        HBox.setHgrow(totalPriceSpacer, Priority.ALWAYS);
         HBox.setHgrow(lastUpdateSpacer, Priority.ALWAYS);
 
         statusComboBox.getItems().setAll(OrderStatus.values());
@@ -95,12 +75,20 @@ public class DeliveryCardController {
             }
         };
 
+        statusComboBox.valueProperty().addListener((obs, oldStatus, newStatus) -> {
+            if (newStatus != null && newStatus != oldStatus) {
+                // When the value changes, execute the callback
+                if (statusChangeCallback != null) {
+                    statusChangeCallback.accept(order, (OrderStatus) newStatus);
+                }
+            }
+        });
+
         statusComboBox.setCellFactory(cellFactory);
         statusComboBox.setButtonCell(cellFactory.call(null));
 
         statusComboBox.valueProperty().addListener((obs, oldStatus, newStatus) -> {
             if (newStatus != null && newStatus != oldStatus) {
-                System.out.println("Order #" + order.getId() + " status changed to: " + newStatus);
                 changeOrderStatus((OrderStatus) newStatus);
 
                 statusComboBox.setButtonCell(cellFactory.call(null));
@@ -113,20 +101,26 @@ public class DeliveryCardController {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm");
         dateTime.setText(order.getCreatedAt().format(formatter));
+        orderBuyerName.setText("Buyer: " + order.getCustomer().getFull_name());
+        statusComboBox.setValue(order.getStatus());
         lastUpdate.setText("Last update: " + order.getUpdatedAt().format(formatter));
 
-        orderBuyerName.setText("Buyer: " + order.getCustomer().getFullName());
-        orderAddress.setText("Address: " + order.getDeliveryAddress()); // Assuming address is on the order
-        orderCourierName.setText("Courier: " + order.getDelivery().getFullName());
+        if (order.getDelivery() != null) {
+            orderCourierName.setText("Courier: " + order.getDelivery().getFull_name());
+            acceptButton.setVisible(false);
+            acceptButton.setManaged(false);
+            statusComboBox.setVisible(true);
+            lastUpdate.setVisible(true);
+        } else {
+            orderCourierName.setVisible(false);
+            acceptButton.setVisible(true);
+            statusComboBox.setVisible(false);
+            statusComboBox.setManaged(false);
+            lastUpdate.setVisible(false);
+        }
 
-        rawPrice.setText(String.valueOf(order.getRawPrice()));
-        taxFee.setText(String.valueOf(order.getRestaurant().getTaxFee()));
-        additionalFee.setText(String.valueOf(order.getRestaurant().getAdditionalFee()));
+        orderAddress.setText("Address: " + order.getDeliveryAddress()); // Assuming address is on the order
         courierFee.setText(String.valueOf(order.getCourierFee()));
-        couponDetails.setText(String.valueOf(order.getCoupon())); // Assuming a discount value
-        totalPrice.setText(order.getPayPrice() + " toomans");
-        statusComboBox.setValue(order.getStatus());
-        lastUpdate.setText(order.getUpdatedAt().format(formatter));
         itemsSection.getChildren().clear();
 
         List<CartItem> cartItems = order.getCartItems();
@@ -182,9 +176,21 @@ public class DeliveryCardController {
         button.setStyle(baseStyle + colorStyle);
     }
 
+    public void setOnAccept(Consumer<Order> callback) {
+        this.acceptCallback = callback;
+    }
+
+    public void setOnStatusChange(BiConsumer<Order, OrderStatus> callback) {
+        this.statusChangeCallback = callback;
+    }
+
     public int changeOrderStatus(OrderStatus orderStatus) {
         //do the stuff in backend
 
         return 200; //temporary
+    }
+
+    public void acceptButtonClicked() {
+        acceptCallback.accept(order);
     }
 }
