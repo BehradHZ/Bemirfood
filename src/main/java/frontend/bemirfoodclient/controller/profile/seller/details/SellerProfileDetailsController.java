@@ -1,6 +1,9 @@
 package frontend.bemirfoodclient.controller.profile.seller.details;
 
 import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.ImageLoader;
 import frontend.bemirfoodclient.model.entity.Bank_info;
@@ -23,12 +26,22 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 
+import static Exception.exp.expHandler;
 import static HttpClientHandler.Requests.getCurrentUserProfile;
+import static HttpClientHandler.Requests.updateUserProfile;
 
 public class SellerProfileDetailsController {
+
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).serializeNulls()
+            .create();
+
     @FXML
     public ImageView profileImageView;
     @FXML
@@ -53,8 +66,6 @@ public class SellerProfileDetailsController {
     }
 
     public void setUser() {
-        //do the stuff in backend
-
         HttpResponseData responseData = getCurrentUserProfile();
 
         seller = new User(
@@ -71,10 +82,16 @@ public class SellerProfileDetailsController {
         );
     }
 
-    public static int updateCurrentUserProfile(String full_name, String phoneNumber, String email, String address, String profileImageBase64, Object bank_info) {
-        //do the stuff in backend
-        //YAML: Update current seller profile
-        return 200; //temporary
+    public static HttpResponseData updateCurrentUserProfile(String full_name, String phoneNumber, String email, String address, String profileImageBase64, Object bank_info) {
+        Map<String, Object> request = new LinkedHashMap<>();
+        if(full_name != null && !full_name.isBlank()) request.put("full_name", full_name);
+        if(phoneNumber != null && !phoneNumber.isBlank()) request.put("phone", phoneNumber);
+        if(email != null && !email.isBlank()) request.put("email", email);
+        if(address != null && !address.isBlank()) request.put("address", address);
+        if(bank_info != null) request.put("bank_info", bank_info);
+        if(profileImageBase64 != null && !profileImageBase64.isBlank()) request.put("profileImageBase64", profileImageBase64);
+
+       return updateUserProfile(gson.toJson(request));
     }
 
     @FXML
@@ -114,41 +131,13 @@ public class SellerProfileDetailsController {
                 e.printStackTrace();
             }
 
-            if (base64String != null) {
-                switch (updateCurrentUserProfile(null, null, null, null,
-                        base64String, null)) {
-                    case 200:
-                        profileImageView.setImage(originalImage);
-                        profileImageView.setViewport(cropRectangle);
-
-                        break;
-                    case 400:
-                        showAlert("Invalid phone number or password. (400 Invalid input)");
-                        break;
-                    case 401:
-                        showAlert("This phone number is not registered. (401 Unauthorized)");
-                        break;
-                    case 403:
-                        showAlert("You cannot access to this service. (403 Forbidden)");
-                        break;
-                    case 404:
-                        showAlert("Service not found. (404 Not Found)");
-                        break;
-                    case 409:
-                        showAlert("There was a conflict for access to this service. (409 Conflict)");
-                        break;
-                    case 415:
-                        showAlert("This media type cannot be accepted. (415 Unsupported Media Type)");
-                        break;
-                    case 429:
-                        showAlert("Please try again later. (429 Too Many Requests)");
-                        break;
-                    case 500:
-                        showAlert("This is from our side; pleas try again later :) (500 Internal Server Error)");
-                    default:
-                        break;
-
-                }
+            HttpResponseData responseData = updateCurrentUserProfile(getFullName(), getPhoneNumber(), getEmail(), getAddress(),
+                        base64String, new Bank_info(getBank_name(), getAccount_number()));
+            if(responseData.getStatusCode() == 200) {
+                profileImageView.setImage(originalImage);
+                profileImageView.setViewport(cropRectangle);
+            }else{
+                expHandler(responseData, "Failed to update profile", null);
             }
         }
     }
