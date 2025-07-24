@@ -72,12 +72,12 @@
                                     <Insets top="10" bottom="10" left="10" right="10"/>
                                 </padding>
                             </VBox>
-                            <Separator fx:id="noActiveOrder">
-                                <padding>
-                                    <Insets top="15" bottom="15" left="15" right="15"/>
-                                </padding>
-                            </Separator>
                         </ScrollPane>
+                        <Separator fx:id="noActiveOrder">
+                            <padding>
+                                <Insets top="15" bottom="15" left="15" right="15"/>
+                            </padding>
+                        </Separator>
                     </VBox>
                 </VBox>
 
@@ -99,12 +99,12 @@
                                 <Insets top="10" bottom="10" left="10" right="10"/>
                             </padding>
                         </VBox>
-                        <Separator fx:id="noDeliveryOrder">
-                            <padding>
-                                <Insets top="15" bottom="15" left="15" right="15"/>
-                            </padding>
-                        </Separator>
                     </ScrollPane>
+                    <Separator fx:id="noDeliveryOrder">
+                        <padding>
+                            <Insets top="15" bottom="15" left="15" right="15"/>
+                        </padding>
+                    </Separator>
                 </VBox>
             </VBox>
         </ScrollPane>
