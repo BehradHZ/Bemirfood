@@ -161,7 +161,7 @@ public class RegisterAdditionalController {
         isRegistering.set(true);
 
         HttpResponseData response = checkLoginStatus(
-                user.getFullName(),
+                user.getFull_name(),
                 user.getMobile(),
                 emailTextField.getText(),
                 user.getPassword(),
@@ -250,7 +250,7 @@ public class RegisterAdditionalController {
           }
         }
         """,
-                user.getFullName(), user.getMobile(), emailTextField.getText(), user.getPassword(),
+                user.getFull_name(), user.getMobile(), emailTextField.getText(), user.getPassword(),
                 user.getRole().toString().toLowerCase(), user.getAddress()   , user.getPhoto(),
                 bank_nameTextField.getText(), account_numberTextField.getText()
         );

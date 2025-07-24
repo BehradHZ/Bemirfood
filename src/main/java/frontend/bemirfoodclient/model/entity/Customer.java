@@ -10,4 +10,7 @@ public class Customer extends User {
     public Customer(String mobile){
         super(mobile);
     }
+    public Customer(){
+        super();
+    }
 }

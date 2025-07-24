@@ -4,6 +4,7 @@ import Deserializer.RestaurantDeserializer;
 import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.LocalDateTimeAdapter;
 import com.google.gson.*;
+import dto.OrderDto;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.restaurant.seller.item.AddItemDialogController;
 import frontend.bemirfoodclient.controller.restaurant.seller.item.EditItemDialogController;
@@ -12,8 +13,10 @@ import frontend.bemirfoodclient.controller.restaurant.seller.menu.AddMenuDialogC
 import frontend.bemirfoodclient.controller.restaurant.seller.menu.SellerMenuCardController;
 import frontend.bemirfoodclient.controller.restaurant.seller.order.SellerOrderCardController;
 import frontend.bemirfoodclient.model.ImageLoader;
-import frontend.bemirfoodclient.model.entity.*;
+import frontend.bemirfoodclient.model.entity.Item;
 import frontend.bemirfoodclient.model.entity.Menu;
+import frontend.bemirfoodclient.model.entity.Order;
+import frontend.bemirfoodclient.model.entity.Restaurant;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +32,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static Exception.exp.expHandler;
 import static HttpClientHandler.Requests.*;
+import static BuildEntity.builder.buildOrder;
 
 public class SellerRestaurantViewController {
 
@@ -553,9 +557,61 @@ public class SellerRestaurantViewController {
         }
     }
 
+
+
     public List<Order> getOrders() {
-        //do the stuff in backend
+        HttpResponseData response = getRestaurantOrders(restaurant.getId());
+        JsonObject json = response.getBody();
+        JsonArray ordersJsonArray = json.getAsJsonArray("List of orders");
         List<Order> orders = new ArrayList<>();
+
+        for (JsonElement element : ordersJsonArray) {
+            JsonObject orderJson = element.getAsJsonObject();
+
+            OrderDto dto = new OrderDto();
+            dto.setId(orderJson.get("id").getAsLong());
+            dto.setDelivery_address(orderJson.get("delivery_address").getAsString());
+            dto.setCustomer_id(orderJson.get("customer_id").getAsLong());
+            dto.setVendor_id(orderJson.get("vendor_id").getAsLong());
+
+            if (!orderJson.get("coupon_id").isJsonNull()) {
+                dto.setCoupon_id(orderJson.get("coupon_id").getAsLong());
+            }
+
+            JsonArray itemsArray = orderJson.getAsJsonArray("items");
+            List<OrderDto.ItemHelper> itemHelpers = new ArrayList<>();
+            for (JsonElement itemElement : itemsArray) {
+                JsonObject itemObj = itemElement.getAsJsonObject();
+                Long itemId = itemObj.get("item_id").getAsLong();
+                int quantity = itemObj.get("quantity").getAsInt();
+                itemHelpers.add(new OrderDto.ItemHelper(itemId, quantity));
+            }
+            dto.setItems(itemHelpers);
+
+            dto.setRaw_price(orderJson.get("raw_price").getAsLong());
+            dto.setTax_fee(orderJson.get("tax_fee").getAsDouble());
+            dto.setAdditional_fee(orderJson.get("additional_fee").getAsDouble());
+            dto.setCourier_fee(orderJson.get("courier_fee").getAsDouble());
+            dto.setPay_price(orderJson.get("pay_price").getAsLong());
+
+            if (!orderJson.get("courier_id").isJsonNull()) {
+                dto.setCourier_id(orderJson.get("courier_id").getAsLong());
+            }
+
+            dto.setStatus(orderJson.get("status").getAsString());
+            dto.setCreated_at(orderJson.get("created_at").getAsString());
+            dto.setUpdated_at(orderJson.get("updated_at").getAsString());
+
+            Order order = buildOrder(dto);
+
+            orders.add(order);
+        }
+
+        return orders;
+    }
+}
+
+/* List<Order> orders = new ArrayList<>();
 
         // --- 1. Create Sellers and Customers ---
         Bank_info seller1Bank = new Bank_info("Pizza Bank", "PB-111");
@@ -613,8 +669,4 @@ public class SellerRestaurantViewController {
         Order order3 = new Order(order3Items, customer1.getAddress(), customer1, pizzaPalace,
                 LocalDateTime.now().minusDays(3), LocalDateTime.now().minusDays(3).plusHours(1),
                 OrderStatus.cancelled, 0.0);
-        orders.add(order3);
-
-        return orders;
-    }
-}
+        orders.add(order3);*/

@@ -9,6 +9,9 @@
     requires java.desktop;
         requires java.net.http;
         requires jdk.httpserver;
+        requires static lombok;
+        requires com.fasterxml.jackson.datatype.jsr310;
+        requires com.fasterxml.jackson.databind;
 
         opens frontend.bemirfoodclient to javafx.fxml;
     exports frontend.bemirfoodclient;

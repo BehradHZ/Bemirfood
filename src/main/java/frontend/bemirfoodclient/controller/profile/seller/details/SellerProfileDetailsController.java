@@ -166,7 +166,7 @@ public class SellerProfileDetailsController {
 
 
     public static String getFullName() {
-        return seller.getFullName();
+        return seller.getFull_name();
     }
 
     public static String getPhoneNumber() {

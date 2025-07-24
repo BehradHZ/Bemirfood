@@ -321,5 +321,22 @@ public class Requests {
         }
     }
 
-
+    public static HttpResponseData getRestaurantOrders(Long restaurantId) {
+        String path = "restaurants/" + restaurantId + "/orders";
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path, HttpRequest.GET, null,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
 }

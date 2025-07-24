@@ -109,7 +109,7 @@ public class RegisterController {
                 UserDto userDto = gson.fromJson(jsonText, UserDto.class);
                 user = User.UserDtoToUser(userDto);
 
-                fullNameTextField.setText(user.getFullName());
+                fullNameTextField.setText(user.getFull_name());
                 phoneNumberTextField.setText(user.getMobile());
                 passwordField.setText(user.getPassword());
                 addressTextField.setText(user.getAddress());

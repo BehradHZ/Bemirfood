@@ -1,8 +1,13 @@
 package frontend.bemirfoodclient.model.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
+@Setter
 public class Order {
 
     private Long id;

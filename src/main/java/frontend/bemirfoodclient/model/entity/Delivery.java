@@ -9,6 +9,9 @@ public class Delivery extends User {
     private Double averageRating;
     private Integer totalDeliveries;
 
+    public  Delivery() {
+        super();
+    }
 
     public Delivery(String fullName, String mobile, String role, String email,
                     String photo, String address, Bank_info bankInfo, String password) {

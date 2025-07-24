@@ -2,10 +2,15 @@ package frontend.bemirfoodclient.model.entity;
 
 
 import frontend.bemirfoodclient.model.Exception.ForbiddenException;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-public class Coupon {
+@Getter
+@Setter
+public class
+Coupon {
 
     private Long id;
 

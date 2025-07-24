@@ -9,6 +9,7 @@ public class HttpResponseData {
     private final int statusCode;
     private final JsonObject body;
 
+
     public HttpResponseData(int statusCode, String responseBody) {
         this.statusCode = statusCode;
         this.body = JsonParser.parseString(responseBody).getAsJsonObject();

@@ -115,9 +115,9 @@ public class SellerOrderCardController {
         dateTime.setText(order.getCreatedAt().format(formatter));
         lastUpdate.setText("Last update: " + order.getUpdatedAt().format(formatter));
 
-        orderBuyerName.setText("Buyer: " + order.getCustomer().getFullName());
+        orderBuyerName.setText("Buyer: " + order.getCustomer().getFull_name());
         orderAddress.setText("Address: " + order.getDeliveryAddress()); // Assuming address is on the order
-        orderCourierName.setText("Courier: " + order.getDelivery().getFullName());
+        orderCourierName.setText("Courier: " + ( order.getDelivery() != null ? order.getDelivery().getFull_name() : "no delivery"));
 
         rawPrice.setText(String.valueOf(order.getRawPrice()));
         taxFee.setText(String.valueOf(order.getRestaurant().getTaxFee()));
