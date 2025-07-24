@@ -30,7 +30,7 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import static Exception.exp.expHandler;
+import static exception.exp.expHandler;
 
 
 public class RegisterAdditionalController {

@@ -49,10 +49,55 @@
         </HBox>
     </top>
     <center>
-        <VBox style="-fx-background-color: #ffffff">
+        <ScrollPane fitToWidth="true">
+            <VBox spacing="30">
+                <padding>
+                    <Insets top="30" bottom="30" left="30" right="30"/>
+                </padding>
+                <VBox>
 
-        </VBox>
-        <Label text="this is courier homepage"/>
+                    <VBox style="-fx-background-color: white; -fx-background-radius: 25;
+                    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0)">
+                        <padding>
+                            <Insets top="30" bottom="30" left="30" right="30"/>
+                        </padding>
+                        <Label fx:id="activeDeliveryLabel" text="Active Deliveries:" style="-fx-font-size: 24; -fx-font-weight: bold">
+                            <padding>
+                                <Insets bottom="20"/>
+                            </padding>
+                        </Label>
+                        <ScrollPane fx:id="activeScroll" fitToWidth="true" prefHeight="400">
+                            <VBox fx:id="activeDeliverySection">
+                                <padding>
+                                    <Insets top="10" bottom="10" left="10" right="10"/>
+                                </padding>
+                            </VBox>
+                        </ScrollPane>
+                    </VBox>
+                </VBox>
+
+                <Separator/>
+
+                <VBox fx:id="recommendedDeliverySection" style="-fx-background-color: white; -fx-background-radius: 25;
+                                -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0)">
+                    <padding>
+                        <Insets top="30" bottom="30" left="30" right="30"/>
+                    </padding>
+                    <Label text="Recommended Deliveries:" style="-fx-font-size: 24; -fx-font-weight: bold">
+                        <padding>
+                            <Insets bottom="20"/>
+                        </padding>
+                    </Label>
+                    <ScrollPane fx:id="recommendedScroll" fitToWidth="true" prefHeight="400">
+                        <VBox fx:id="recommendedDeliveryList">
+                            <padding>
+                                <Insets top="10" bottom="10" left="10" right="10"/>
+                            </padding>
+                        </VBox>
+                    </ScrollPane>
+                </VBox>
+            </VBox>
+        </ScrollPane>
     </center>
 
 </BorderPane>

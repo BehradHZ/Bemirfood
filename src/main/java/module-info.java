@@ -1,4 +1,5 @@
     module frontend.bemirfoodclient {
+
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.swing;
@@ -47,5 +48,6 @@
         opens frontend.bemirfoodclient.controller.restaurant.buyer.menu to javafx.fxml;
         opens frontend.bemirfoodclient.controller.profile.buyer.details to javafx.fxml;
         exports frontend.bemirfoodclient.controller.restaurant.buyer.order;
-        opens frontend.bemirfoodclient.controller.restaurant.buyer.order to javafx.fxml;
+        opens frontend.bemirfoodclient.controller.restaurant.buyer.order to javafx.fxml;exports frontend.bemirfoodclient.controller.restaurant.courier;
+        opens frontend.bemirfoodclient.controller.restaurant.courier to javafx.fxml;
     }

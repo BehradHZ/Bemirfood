@@ -1,4 +1,4 @@
-package Exception;
+package exception;
 
 import HttpClientHandler.HttpResponseData;
 import com.google.gson.Gson;

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.courier.DeliveryCardController">
+
+    <center>
+        <VBox style="-fx-background-color: white; -fx-background-radius: 15;
+            -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0);">
+            <BorderPane.margin>
+                <Insets top="15" bottom="15" left="15" right="15"/>
+            </BorderPane.margin>
+            <HBox>
+                <VBox.margin>
+                    <Insets top="15" bottom="15" left="15" right="15"/>
+                </VBox.margin>
+                <Label fx:id="orderId"/>
+                <Region fx:id="idTimeSpacer"/>
+                <Label fx:id="dateTime"/>
+            </HBox>
+
+            <ScrollPane minHeight="150" style="-fx-background-color: white" fitToWidth="true">
+                <VBox.margin>
+                    <Insets top="15" left="30" right="30" bottom="15"/>
+                </VBox.margin>
+                <VBox fx:id="itemsSection" />
+            </ScrollPane>
+
+            <VBox spacing="10">
+                <VBox.margin>
+                    <Insets top="15" left="30" right="30" bottom="15"/>
+                </VBox.margin>
+                <Label fx:id="orderBuyerName" style="-fx-font-size: 20; -fx-font-weight: bold"/>
+                <Label fx:id="orderAddress" style="-fx-font-size: 20; -fx-font-weight: bold"/>
+                <Label fx:id="orderCourierName" style="-fx-font-size: 20; -fx-font-weight: bold"/>
+
+                <HBox>
+                    <Label text="Courier Fee" style="-fx-font-size: 16"/>
+                    <Region fx:id="courierFeeSpacer"/>
+                    <Label fx:id="courierFee" style="-fx-font-size: 16"/>
+                </HBox>
+                <HBox>
+                    <padding>
+                        <Insets top="20" bottom="20"/>
+                    </padding>
+                    <StackPane>
+                        <ComboBox fx:id="statusComboBox" style="-fx-background-color: transparent"/>
+                        <Button fx:id="acceptButton" text="Accept Delivery" style="-fx-font-size: 18; -fx-text-fill: white;
+                         -fx-font-weight: bold; -fx-background-color: #0066ff; -fx-background-radius: 15" onAction="#acceptButtonClicked"/>
+                        <Button fx:id="completeButton" text="Completed" style="-fx-background-radius: 10; -fx-font-size: 16; -fx-font-weight: bold;
+                                -fx-background-radius-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0); -fx-background-color: #22b14c; -fx-text-fill: white;" visible="false"/>
+                        <Button fx:id="cancelButton" text="Cancelled" style="-fx-background-radius: 10; -fx-font-size: 16; -fx-font-weight: bold;
+                                    -fx-background-radius-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0); -fx-background-color: #ed1c24; -fx-text-fill: white;" visible="false"/>
+                    </StackPane>
+                    <Region fx:id="lastUpdateSpacer"/>
+                    <Label fx:id="lastUpdate" style="-fx-font-size: 16"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </center>
+
+</BorderPane>

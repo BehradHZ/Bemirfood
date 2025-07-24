@@ -1,4 +1,4 @@
-package frontend.bemirfoodclient.model.Exception;
+package frontend.bemirfoodclient.model.exception;
 
 public class ForbiddenException extends RuntimeException {
     public ForbiddenException(String message) {

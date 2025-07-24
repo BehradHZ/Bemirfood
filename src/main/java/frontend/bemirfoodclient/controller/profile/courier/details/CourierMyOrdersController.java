@@ -1,139 +1,49 @@
-package frontend.bemirfoodclient.controller.border;
+package frontend.bemirfoodclient.controller.profile.courier.details;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.restaurant.courier.DeliveryCardController;
-import frontend.bemirfoodclient.model.entity.Bank_info;
-import frontend.bemirfoodclient.model.entity.Delivery;
-import frontend.bemirfoodclient.model.entity.Order;
-import frontend.bemirfoodclient.model.entity.OrderStatus;
+import frontend.bemirfoodclient.model.entity.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.stage.Stage;
+import javafx.scene.control.Separator;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
-public class CourierBorderController {
-    @FXML
-    public ImageView borderBemirfoodLogo;
-    @FXML
-    public TextField searchTextField;
-    @FXML
-    public ImageView searchIcon;
-    @FXML
-    public ImageView profileIcon;
-    @FXML
-    public Region toolbarSpacer;
+public class CourierMyOrdersController {
     @FXML
     public VBox activeDeliverySection;
     @FXML
-    public VBox recommendedDeliveryList;
-    @FXML
     public ScrollPane activeScroll;
     @FXML
+    public Separator noActiveOrder;
+    @FXML
     public ScrollPane recommendedScroll;
+    @FXML
+    public VBox recommendedDeliveryList;
+    @FXML
+    public Separator noDeliveryOrder;
+    @FXML
+    public ScrollPane historyScroll;
+    @FXML
+    public VBox historyDeliveryList;
+    @FXML
+    public Separator noHistoryOrder;
 
     public void initialize() {
-        borderBemirfoodLogo.setPreserveRatio(true);
-        borderBemirfoodLogo.setFitHeight(40);
-
-        searchIcon.setPreserveRatio(true);
-        searchIcon.setFitHeight(17);
-
-        HBox.setHgrow(toolbarSpacer, Priority.ALWAYS);
-
-        profileIcon.setPreserveRatio(true);
-        profileIcon.setFitHeight(27);
-
         showAllDeliveries();
-    }
-
-    @FXML
-    public void borderBemirfoodLogoClicked() {
-        try {
-            Stage stage = (Stage) profileIcon.getScene().getWindow();
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
-                    "/frontend/bemirfoodclient/border/courier-border-view.fxml")));
-            stage.getScene().setRoot(root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public int getCurrentUserProfile() {
-        //do the stuff in backend
-        return 200; //temporary
-    }
-
-    @FXML
-    public void profileButtonClicked() {
-        switch (getCurrentUserProfile()){
-            case 200:
-                try {
-                    Stage stage = (Stage) profileIcon.getScene().getWindow();
-                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
-                            "/frontend/bemirfoodclient/profile/courier/courier-profile-view.fxml")));
-                    stage.getScene().setRoot(root);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case 400:
-                showAlert("Invalid phone number or password. (400 Invalid input)");
-                break;
-            case 401:
-                showAlert("This phone number is not registered. (401 Unauthorized)");
-                break;
-            case 403:
-                showAlert("You cannot access to this service. (403 Forbidden)");
-                break;
-            case 404:
-                showAlert("Service not found. (404 Not Found)");
-                break;
-            case 409:
-                showAlert("There was a conflict for access to this service. (409 Conflict)");
-                break;
-            case 415:
-                showAlert("This media type cannot be accepted. (415 Unsupported Media Type)");
-                break;
-            case 429:
-                showAlert("Please try again later. (429 Too Many Requests)");
-                break;
-            case 500:
-                showAlert("This is from our side; pleas try again later :) (500 Internal Server Error)");
-            default:
-                break;
-        }
-    }
-
-    public void showAlert(String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/icons/error.png"))));
-        alert.setTitle("Loading profile failed");
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.getDialogPane().setGraphic(null);
-        alert.showAndWait();
-    }
-
-    @FXML
-    public void searchButtonClicked() {
-
     }
 
     public List<Order> getAllDeliveries() {
         List<Order> orders = new ArrayList<>();
-        /*//temporary
+
+        //temporary
 
         // --- 1. Create Sellers and Customers ---
         Bank_info seller1Bank = new Bank_info("Pizza Bank", "PB-111");
@@ -151,7 +61,7 @@ public class CourierBorderController {
         Customer customer2 = new Customer("Charlie Bucket", "09444444444", "buyer", "charlie@email.com", null, "456 Chocolate Ave", customer2Bank, "pass4");
 
         Delivery delivery1 = new Delivery("Dan Driver", "09333311111", "courier", "dan@email.com", null, "Delivery HQ", delivery1Bank, "pass5");
-//        Delivery delivery2 = new Delivery("Carol Carrier", "09333322222", "courier", "carol@email.com", null, "Delivery HQ", delivery2Bank, "pass6");
+        Delivery delivery2 = new Delivery("Carol Carrier", "09333322222", "courier", "carol@email.com", null, "Delivery HQ", delivery2Bank, "pass6");
 
         // --- 3. Create Restaurants ---
         Restaurant pizzaPalace = new Restaurant("Pizza Palace", seller1, "1 Pizza Plaza", "555-PIZZA", null, 0.09, 2000.0);
@@ -175,9 +85,8 @@ public class CourierBorderController {
         List<CartItem> order1Items = List.of(new CartItem(pepperoniPizza, 1), new CartItem(veggiePizza, 1));
         Order order1 = new Order(order1Items, customer1.getAddress(), customer1, pizzaPalace,
                 LocalDateTime.now().minusDays(2), LocalDateTime.now().minusDays(1),
-                fixedDiscount, newStatus, 15000.0);
-        order1.setDelivery(delivery); // Manually set the delivery person
-        System.out.println(order1.getStatus());
+                fixedDiscount, OrderStatus.completed, 15000.0);
+        order1.setDelivery(delivery1); // Manually set the delivery person
         orders.add(order1);
 
         // --- ORDER 2: A pending burger order with a percentage coupon ---
@@ -194,7 +103,7 @@ public class CourierBorderController {
                 LocalDateTime.now().minusDays(3), LocalDateTime.now().minusDays(3).plusHours(1),
                 OrderStatus.on_the_way, 0.0);
         order3.setDelivery(delivery1); // Manually set the delivery person
-        orders.add(order3);*/
+        orders.add(order3);
 
         return orders;
     }
@@ -210,25 +119,40 @@ public class CourierBorderController {
                 .filter(order -> order.getStatus() == OrderStatus.finding_courier)
                 .toList();
 
-        activeDeliverySection.getChildren().clear();
+        List<Order> historyList = allOrders.stream()
+                .filter(o -> o.getStatus() == OrderStatus.completed || o.getStatus() == OrderStatus.cancelled)
+                .collect(Collectors.toList());
 
+        activeDeliverySection.getChildren().clear();
         if (activeDeliveries.isEmpty()) {
             activeScroll.setPrefHeight(30);
+            noActiveOrder.setVisible(true);
         } else {
-            activeScroll.setPrefHeight(400);
+            noActiveOrder.setVisible(false);
             for (Order order : activeDeliveries) {
                 activeDeliverySection.getChildren().add(createDeliveryCard(order));
             }
         }
 
         recommendedDeliveryList.getChildren().clear();
-
         if (recommendedDeliveries.isEmpty()) {
             recommendedScroll.setPrefHeight(30);
+            noDeliveryOrder.setVisible(true);
         } else {
-            recommendedScroll.setPrefHeight(400);
+            noDeliveryOrder.setVisible(false);
             for (Order order : recommendedDeliveries) {
                 recommendedDeliveryList.getChildren().add(createDeliveryCard(order));
+            }
+        }
+
+        historyDeliveryList.getChildren().clear();
+        if (historyList.isEmpty()) {
+            historyScroll.setPrefHeight(30);
+            noHistoryOrder.setVisible(true);
+        } else {
+            noHistoryOrder.setVisible(false);
+            for (Order order : historyList) {
+                historyDeliveryList.getChildren().add(createDeliveryCard(order));
             }
         }
     }

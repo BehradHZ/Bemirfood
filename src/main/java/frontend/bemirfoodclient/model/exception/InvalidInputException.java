@@ -1,4 +1,4 @@
-package frontend.bemirfoodclient.model.Exception;
+package frontend.bemirfoodclient.model.exception;
 
 public class InvalidInputException extends RuntimeException {
     public InvalidInputException(String message) {

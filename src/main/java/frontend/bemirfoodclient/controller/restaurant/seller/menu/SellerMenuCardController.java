@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Consumer;
 
-import static Exception.exp.expHandler;
+import static exception.exp.expHandler;
 import static HttpClientHandler.Requests.*;
 
 public class SellerMenuCardController {

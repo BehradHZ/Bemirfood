@@ -37,7 +37,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static Exception.exp.expHandler;
+import static exception.exp.expHandler;
 
 public class SellerProfileController {
 

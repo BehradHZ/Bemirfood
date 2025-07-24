@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static Exception.exp.expHandler;
+import static exception.exp.expHandler;
 import static HttpClientHandler.Requests.getCurrentUserProfile;
 import static HttpClientHandler.Requests.updateUserProfile;
 
@@ -55,14 +55,15 @@ public class BuyerProfileDetailsController {
         setUser();
         profileImageView.setPreserveRatio(true);
         profileImageView.setFitHeight(120);
-        setProfileImageBase64(profileImageView);
+        setScene();
+    }
 
+    public void setScene() {
+        setProfileImageBase64(profileImageView);
         fullNameLabel.setText(getFullName());
         phoneNumberLabel.setText(getPhoneNumber());
         emailLabel.setText(getEmail());
     }
-
-
 
     public void setUser() {
         //do the stuff in backend
@@ -82,6 +83,7 @@ public class BuyerProfileDetailsController {
                         responseData.getBody().getAsJsonObject("bank_info").get("account_number").getAsString()
                 )
         );
+        setScene();
     }
 
     public static HttpResponseData updateCurrentUserProfile(String full_name, String phoneNumber, String email, String address, String profileImageBase64, Bank_info bank_info) {

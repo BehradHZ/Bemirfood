@@ -9,6 +9,9 @@ import javafx.scene.control.TextFormatter;
 
 import java.util.function.UnaryOperator;
 
+import static exception.exp.expHandler;
+import static HttpClientHandler.Requests.updateUserProfile;
+
 
 public class EditProfileDialogController {
 

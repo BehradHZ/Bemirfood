@@ -39,4 +39,27 @@ public class Delivery extends User {
         orders.add(order);
     }
 
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public Double getAverageRating() {
+        return averageRating;
+    }
+
+    public Integer getTotalDeliveries() {
+        return totalDeliveries;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
 }
