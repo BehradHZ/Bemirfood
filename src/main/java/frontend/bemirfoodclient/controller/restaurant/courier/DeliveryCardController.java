@@ -46,11 +46,17 @@ public class DeliveryCardController {
 
     private Order order;
 
+    private boolean accepted = false;
+
     private Consumer<Order> acceptCallback;
     private BiConsumer<Order, OrderStatus> statusChangeCallback;
 
     public void setOrderData(Order order) {
         this.order = order;
+        if (order.getDelivery() == null || !order.getStatus().equals(OrderStatus.on_the_way))
+            accepted = false;
+        else if (order.getStatus().equals(OrderStatus.on_the_way))
+            accepted = true;
         setScene();
     }
 
@@ -105,7 +111,7 @@ public class DeliveryCardController {
         statusComboBox.setValue(order.getStatus());
         lastUpdate.setText("Last update: " + order.getUpdatedAt().format(formatter));
 
-        if (order.getDelivery() != null) {
+        if (accepted) {
             orderCourierName.setText("Courier: " + order.getDelivery().getFull_name());
             acceptButton.setVisible(false);
             acceptButton.setManaged(false);
@@ -118,6 +124,7 @@ public class DeliveryCardController {
             statusComboBox.setManaged(false);
             lastUpdate.setVisible(false);
         }
+
 
         orderAddress.setText("Address: " + order.getDeliveryAddress()); // Assuming address is on the order
         courierFee.setText(String.valueOf(order.getCourierFee()));

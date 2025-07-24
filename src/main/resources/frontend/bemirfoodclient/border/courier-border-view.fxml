@@ -73,11 +73,6 @@
                                 </padding>
                             </VBox>
                         </ScrollPane>
-                        <Separator fx:id="noActiveOrder">
-                            <padding>
-                                <Insets top="15" bottom="15" left="15" right="15"/>
-                            </padding>
-                        </Separator>
                     </VBox>
                 </VBox>
 
@@ -100,11 +95,6 @@
                             </padding>
                         </VBox>
                     </ScrollPane>
-                    <Separator fx:id="noDeliveryOrder">
-                        <padding>
-                            <Insets top="15" bottom="15" left="15" right="15"/>
-                        </padding>
-                    </Separator>
                 </VBox>
             </VBox>
         </ScrollPane>
