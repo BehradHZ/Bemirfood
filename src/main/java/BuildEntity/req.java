@@ -58,6 +58,15 @@ public class req {
         );
     }
 
+    public static HttpResponseData getCoupons() {
+        String path = "dt/coupons";
+        return tryRequestWithRetry(
+                () -> sendGetRequest(path, Token.read()),
+                3,
+                "Failed to connect server"
+        );
+    }
+
     public static HttpResponseData tryRequestWithRetry(
             RequestSupplierWithException<HttpResponseData> requestSupplier,
             int maxRetries,
@@ -83,4 +92,6 @@ public class req {
         }
         return new HttpResponseData(500, errorContent);
     }
+
+
 }

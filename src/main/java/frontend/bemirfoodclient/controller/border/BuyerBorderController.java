@@ -1,12 +1,11 @@
 package frontend.bemirfoodclient.controller.border;
 
+import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.LocalDateTimeAdapter;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.restaurant.buyer.BuyerRestaurantViewController;
 import frontend.bemirfoodclient.controller.restaurant.buyer.RestaurantCardController;
-import frontend.bemirfoodclient.model.entity.Bank_info;
 import frontend.bemirfoodclient.model.entity.Restaurant;
 import frontend.bemirfoodclient.model.entity.Seller;
 import javafx.fxml.FXML;
@@ -24,6 +23,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static BuildEntity.EntityRequest.getEntity;
+import static HttpClientHandler.Requests.getCustomerFavorites;
 
 public class BuyerBorderController {
 
@@ -125,18 +127,18 @@ public class BuyerBorderController {
     }
 
     public List<Restaurant> getRecommendedRestaurants() {
-        //do the stuff in backend
-
-        //temporary
+        HttpResponseData response = getCustomerFavorites();
+        JsonObject json = response.getBody();
+        JsonArray rstaurantJsonArray = json.getAsJsonArray( "List of favorite restaurants");
         List<Restaurant> restaurants = new ArrayList<>();
-        Bank_info seller1Bank = new Bank_info("Pizza Bank", "PB-111");
-        Seller seller1 = new Seller("Pizza Pete", "09111111111", "pete@pizzapalace.com", null, "1 Pizza Plaza", seller1Bank, "pass1");
 
-
-        restaurants.add( new Restaurant("Pizza Palace", seller1, "1 Pizza Plaza, 1 Pizza Plaza, 1 Pizza Plaza, 1 Pizza Plaza, ", "555-PIZZA", null, 0.09, 2000.0));
-        restaurants.add( new Restaurant("Pizza Palace", seller1, "1 Pizza Plaza, 1 Pizza Plaza, 1 Pizza Plaza, 1 Pizza Plaza, ", "555-PIZZA", null, 0.09, 2000.0));
-        restaurants.add( new Restaurant("Pizza Palace", seller1, "1 Pizza Plaza, 1 Pizza Plaza, 1 Pizza Plaza, 1 Pizza Plaza, ", "555-PIZZA", null, 0.09, 2000.0));
-        restaurants.add( new Restaurant("Pizza Palace", seller1, "1 Pizza Plaza, 1 Pizza Plaza, 1 Pizza Plaza, 1 Pizza Plaza, ", "555-PIZZA", null, 0.09, 2000.0));
+        for (JsonElement element : rstaurantJsonArray) {
+            JsonObject restaurantJson = element.getAsJsonObject();
+            Restaurant restaurant = gson.fromJson(restaurantJson, Restaurant.class);
+            Seller seller =  getEntity(restaurantJson.get("seller_id").getAsLong(), Seller.class);
+            restaurant.setSeller(seller);
+            restaurants.add(restaurant);
+        }
 
         return restaurants;
     }

@@ -114,7 +114,7 @@ public class Requests {
         }
     }
 
-    public static HttpResponseData getRestaurantItems(Long restaurantId) {
+    public static HttpResponseData getRestaurantItemsSeller(Long restaurantId) {
         try{
             HttpResponseData responseData =
                     sendRequest(
@@ -188,7 +188,7 @@ public class Requests {
         }
     }
 
-    public static HttpResponseData getRestaurantMenus(Long restaurantId) {
+    public static HttpResponseData getRestaurantMenusSeller(Long restaurantId) {
         String path = "restaurants/" + restaurantId + "/menus";
         try{
             HttpResponseData responseData =
@@ -339,4 +339,160 @@ public class Requests {
             return response;
         }
     }
+
+    public static HttpResponseData getCustomerFavorites() {
+        String path = "favorites";
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path, HttpRequest.GET, null,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData getRestaurantItemsCustomer(Long restaurantId) {
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            "vendors/" + restaurantId +"/items", HttpRequest.GET, null,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData getRestaurantMenusCustomer(Long restaurantId) {
+        String path = "vendors/" + restaurantId + "/menus";
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path, HttpRequest.GET, null,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData addToFavorites(Long restaurantId) {
+        String path = "favorites/" + restaurantId;
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path, HttpRequest.PUT, null,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData removeFromFavorites(Long restaurantId) {
+        String path = "favorites/" + restaurantId;
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path, HttpRequest.DELETE, null,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData getCartItemQuantity(Long itemId) {
+        String path = "items/"+ itemId + "/cart-item";
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path, HttpRequest.GET, null,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData modifyCartItems(String requestBody) {
+        String path = "items/cart-items";
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path, HttpRequest.POST, requestBody,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData getCustomerOrders() {
+        String path = "orders/history";
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path, HttpRequest.GET, null,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+
+
+
+
 }

@@ -46,11 +46,11 @@ public class builder {
         order.setRestaurant(getRestaurant(orderDto.getId()));
         List<CartItem> cartItems = new ArrayList<>();
         for(OrderDto.ItemHelper ih : orderDto.getItems()){
-            Item item = new Item();
-            int quantity = 0;
-            item = getItem(ih.getItem_id());
-            quantity = ih.getQuantity();
-            cartItems.add(new CartItem(item, quantity));
+            if(ih.getQuantity() > 0){
+                Item item = new Item();
+                item = getItem(ih.getItem_id());
+                cartItems.add(new CartItem(item, ih.getQuantity()));
+            }
         }
         order.setCartItems(cartItems);
         order.setDeliveryAddress(orderDto.getDelivery_address());

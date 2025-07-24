@@ -1,8 +1,9 @@
 package frontend.bemirfoodclient.controller.restaurant.buyer;
 
+import Deserializer.RestaurantDeserializer;
+import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.LocalDateTimeAdapter;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.restaurant.buyer.item.BuyerItemCardController;
 import frontend.bemirfoodclient.controller.restaurant.buyer.menu.BuyerMenuCardController;
@@ -26,6 +27,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static HttpClientHandler.Requests.*;
 
 public class BuyerRestaurantViewController {
 
@@ -85,9 +88,6 @@ public class BuyerRestaurantViewController {
 
         HBox.setHgrow(headerSpacer, Priority.ALWAYS);
 
-//        keywords.add("kebab");
-//        keywords.add("irani");
-//        keywords.add("madagascar");
     }
 
     private void setScene() {
@@ -115,7 +115,7 @@ public class BuyerRestaurantViewController {
 
     private void setFavoriteRestaurantStar() {
         //do the stuff in backend
-        boolean isThisRestaurantInFavorite = false;
+        boolean isThisRestaurantInFavorite = true;
         if (isThisRestaurantInFavorite) {
             favoriteRestaurantStar.setImage(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream(
             "/frontend/bemirfoodclient/assets/icons/favorite.png")
@@ -156,14 +156,17 @@ public class BuyerRestaurantViewController {
     }
 
     public List<Item> getItems() {
-        //do the sstuff in backend
+        Gson g = new GsonBuilder()
+                .registerTypeAdapter(Restaurant.class, new RestaurantDeserializer())
+                .create();
 
-        //temporary
+        HttpResponseData response = getRestaurantItemsCustomer(restaurant.getId());
+        JsonArray itemArray = response.getBody().getAsJsonArray("Vendor items");
         List<Item> items = new ArrayList<>();
-        items.add(new Item("Kebab", null, "Kebab koobide asl ghafghaz!", 65.50, 5, keywords, restaurant, 5.0));
-        items.add(new Item("joojeh", null, "joojeh kabab bahal!", 75.50, 55, keywords, restaurant, 3.2));
-//        items.add(new Item("berenj", null, "berenje shomal!", 65.50, 5, keywords, restaurant, 1.2));
-//        items.add(new Item("berenj", null, "berenje shomal!", 65.50, 5, keywords, restaurant, 1.2));
+        for(JsonElement itemElement : itemArray) {
+            Item item = g.fromJson(itemElement, Item.class);
+            items.add(item);
+        }
 
         return items;
     }
@@ -198,19 +201,61 @@ public class BuyerRestaurantViewController {
     }
 
     public List<Menu> getMenus() {
-//        List<Menu> menus = new ArrayList<>();
-        menus.add(new Menu("menu1", restaurant, getItems()));
-        menus.add(new Menu("menu2", restaurant, getItems()));
-        menus.add(new Menu("menu3", restaurant, getItems()));
+
+        menus = new ArrayList<>();
+
+        Gson g = new GsonBuilder()
+                .registerTypeAdapter(Restaurant.class, new RestaurantDeserializer())
+                .create();
+
+        HttpResponseData response = getRestaurantMenusCustomer(restaurant.getId());
+        JsonObject body = response.getBody();
+        JsonArray restaurantMenus = body.getAsJsonArray("Restaurant menus");
+
+        for (JsonElement menuElement : restaurantMenus) {
+            JsonObject menuObj = menuElement.getAsJsonObject();
+            String title = menuObj.get("title").getAsString();
+
+            List<Item> menuItems = new ArrayList<>();
+
+            JsonArray items = menuObj.getAsJsonArray("items");
+
+            for (JsonElement itemElement : items) {
+                JsonObject item = itemElement.getAsJsonObject();
+                int id = item.get("id").getAsInt();
+                String name = item.get("name").getAsString();
+                String image = null;
+                if(item.get("imageBase64") != null && !item.get("imageBase64").isJsonNull()) image = item.get("imageBase64").getAsString();
+                String description = item.get("description").getAsString();
+                double price = item.get("price").getAsDouble();
+                int supply = item.get("supply").getAsInt();
+                JsonArray keywords = item.getAsJsonArray("keywords");
+
+                List<String> keywordList = new ArrayList<>();
+                for (JsonElement keyword : keywords) {
+                    keywordList.add(keyword.getAsString());
+                }
+
+                menuItems.add(new Item((long)id, name, image, description, price, supply, keywordList));
+            }
+
+            menus.add(new Menu(title, restaurant, menuItems));
+        }
 
         return menus;
     }
 
     public void favoriteRestaurantButtonClicked(MouseEvent event) {
-        //do the stuff in backend
-        int code = 200; //temporary
+        boolean status = true;
+        HttpResponseData response = addToFavorites(restaurant.getId());
+        if(response.getStatusCode() == 409) {
+            response = removeFromFavorites(restaurant.getId());
+            status = false;
+        }
+        int code = response.getStatusCode();
         if (code == 200) {
-            if (favoriteToggle.isSelected()) {
+            //favoriteToggle.isSelected()
+            if (status) {
                 favoriteRestaurantStar.setImage(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream(
                         "/frontend/bemirfoodclient/assets/icons/favorite.png")
                 )));
