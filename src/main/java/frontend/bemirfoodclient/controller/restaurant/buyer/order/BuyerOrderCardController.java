@@ -89,7 +89,7 @@ public class BuyerOrderCardController {
 
         orderBuyerName.setText("Buyer: " + order.getCustomer().getFull_name());
         orderAddress.setText("Address: " + order.getDeliveryAddress()); // Assuming address is on the order
-        orderCourierName.setText("Courier: " + order.getDelivery().getFull_name());
+        orderCourierName.setText("Courier: " + ( order.getDelivery() != null ? order.getDelivery().getFull_name() : "no delivery"));
 
         rawPrice.setText(String.valueOf(order.getRawPrice()));
         taxFee.setText(String.valueOf(order.getRestaurant().getTaxFee()));

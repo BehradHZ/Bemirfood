@@ -151,7 +151,7 @@ public class SellerMenuCardController {
                 .registerTypeAdapter(Restaurant.class, new RestaurantDeserializer())
                 .create();
 
-        HttpResponseData response = getRestaurantItems(menu.getRestaurant().getId());
+        HttpResponseData response = getRestaurantItemsSeller(menu.getRestaurant().getId());
 
         JsonArray itemArray = response.getBody().getAsJsonArray("Restaurant items");
         List<Item> allItems = new ArrayList<>();

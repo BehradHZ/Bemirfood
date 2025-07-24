@@ -1,5 +1,10 @@
 package frontend.bemirfoodclient.controller.restaurant.buyer.item;
 
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.ImageLoader;
 import frontend.bemirfoodclient.model.entity.Item;
@@ -10,8 +15,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+
+import static HttpClientHandler.Requests.getCartItemQuantity;
+import static HttpClientHandler.Requests.modifyCartItems;
 
 public class BuyerItemCardController {
 
@@ -43,6 +54,11 @@ public class BuyerItemCardController {
     private Item item;
 
     private int tity;
+
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+            .serializeNulls()
+            .create();
 
     public void setItemData(Item item) {
         this.item = item;
@@ -94,22 +110,35 @@ public class BuyerItemCardController {
     }
 
     public int getItemQuantity() {
-        //do the stuff in backend
-
-        return 5; //temporary
+        HttpResponseData response = getCartItemQuantity(item.getId());
+        JsonObject body = response.getBody();
+        JsonObject cartItemObj = body.getAsJsonObject("Cart item");
+        return cartItemObj.get("quantity").getAsInt();
     }
 
     public void addItemToCart() {
-        //do the stuff in backend
+        Map<String, Object> request = new LinkedHashMap<>();
+        request.put("item_id", item.getId());
+        request.put("quantity", 1);
+        HttpResponseData response = modifyCartItems(gson.toJson(request));
+        setScene();
     }
 
     @FXML
     public void plusButtonClicked() {
-        //do the stuff in backend
+        Map<String, Object> request = new LinkedHashMap<>();
+        request.put("item_id", item.getId());
+        request.put("quantity", 1);
+        HttpResponseData response = modifyCartItems(gson.toJson(request));
+        setScene();
     }
 
     @FXML
     public void minusButtonClicked() {
-        //do the stuff in backend
+        Map<String, Object> request = new LinkedHashMap<>();
+        request.put("item_id", item.getId());
+        request.put("quantity", -1);
+        HttpResponseData response = modifyCartItems(gson.toJson(request));
+        setScene();
     }
 }

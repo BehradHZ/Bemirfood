@@ -13,7 +13,7 @@ public class Item {
 
     private List<String> keywords;
 
-    private Double rating;
+    private Double rating = 0.0;
 
     private Restaurant restaurant;
 

@@ -1,16 +1,24 @@
 package frontend.bemirfoodclient.controller.profile.buyer.details;
 
+import HttpClientHandler.HttpResponseData;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import dto.OrderDto;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.restaurant.buyer.order.BuyerOrderCardController;
-import frontend.bemirfoodclient.model.entity.*;
+import frontend.bemirfoodclient.model.entity.Order;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static BuildEntity.builder.buildOrder;
+import static HttpClientHandler.Requests.getCustomerOrders;
 
 public class BuyerOrdersController {
 
@@ -19,7 +27,9 @@ public class BuyerOrdersController {
 
     @FXML
     public void initialize() {
+
         List<Order> orders = getOrders();
+
 
         // 2. Loop through each order
         for (Order order : orders) {
@@ -41,7 +51,59 @@ public class BuyerOrdersController {
 
 
     private List<Order> getOrders() {
-        //do the stuff in backend
+        HttpResponseData response = getCustomerOrders();
+        JsonObject json = response.getBody();
+        JsonArray ordersJsonArray = json.getAsJsonArray("List of past orders");
+        List<Order> orders = new ArrayList<>();
+
+        for (JsonElement element : ordersJsonArray) {
+            JsonObject orderJson = element.getAsJsonObject();
+
+            OrderDto dto = new OrderDto();
+            dto.setId(orderJson.get("id").getAsLong());
+            dto.setDelivery_address(orderJson.get("delivery_address").getAsString());
+            dto.setCustomer_id(orderJson.get("customer_id").getAsLong());
+            dto.setVendor_id(orderJson.get("vendor_id").getAsLong());
+
+            if (!orderJson.get("coupon_id").isJsonNull()) {
+                dto.setCoupon_id(orderJson.get("coupon_id").getAsLong());
+            }
+
+            JsonArray itemsArray = orderJson.getAsJsonArray("items");
+            List<OrderDto.ItemHelper> itemHelpers = new ArrayList<>();
+            for (JsonElement itemElement : itemsArray) {
+                JsonObject itemObj = itemElement.getAsJsonObject();
+                Long itemId = itemObj.get("item_id").getAsLong();
+                int quantity = itemObj.get("quantity").getAsInt();
+                itemHelpers.add(new OrderDto.ItemHelper(itemId, quantity));
+            }
+            dto.setItems(itemHelpers);
+
+            dto.setRaw_price(orderJson.get("raw_price").getAsLong());
+            dto.setTax_fee(orderJson.get("tax_fee").getAsDouble());
+            dto.setAdditional_fee(orderJson.get("additional_fee").getAsDouble());
+            dto.setCourier_fee(orderJson.get("courier_fee").getAsDouble());
+            dto.setPay_price(orderJson.get("pay_price").getAsLong());
+
+            if (!orderJson.get("courier_id").isJsonNull()) {
+                dto.setCourier_id(orderJson.get("courier_id").getAsLong());
+            }
+
+            dto.setStatus(orderJson.get("status").getAsString());
+            dto.setCreated_at(orderJson.get("created_at").getAsString());
+            dto.setUpdated_at(orderJson.get("updated_at").getAsString());
+
+            Order order = buildOrder(dto);
+
+            orders.add(order);
+        }
+
+        return orders;
+    }
+
+
+    /*
+            //do the stuff in backend
 
         //temporary
         List<Order> orders = new ArrayList<>();
@@ -107,5 +169,5 @@ public class BuyerOrdersController {
         orders.add(order3);
 
         return orders;
-    }
+    * */
 }
