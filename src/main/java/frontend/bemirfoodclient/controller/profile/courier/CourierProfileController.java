@@ -33,8 +33,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static Exception.exp.expHandler;
 import static HttpClientHandler.Requests.updateUserProfile;
+import static exception.exp.expHandler;
 
 public class CourierProfileController {
 

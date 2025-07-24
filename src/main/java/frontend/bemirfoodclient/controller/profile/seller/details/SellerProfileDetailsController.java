@@ -32,9 +32,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static Exception.exp.expHandler;
 import static HttpClientHandler.Requests.getCurrentUserProfile;
 import static HttpClientHandler.Requests.updateUserProfile;
+import static exception.exp.expHandler;
 
 public class SellerProfileDetailsController {
 
