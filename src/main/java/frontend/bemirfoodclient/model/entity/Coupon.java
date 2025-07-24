@@ -40,6 +40,26 @@ Coupon {
         this.userCount--;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public Long getMinPrice() {
+        return minPrice;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public Long getUserCount() {
+        return userCount;
+    }
+
     public long getValue() {
         return value;
     }

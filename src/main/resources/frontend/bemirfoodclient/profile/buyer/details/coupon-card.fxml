@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.profile.buyer.details.CouponCardController">
+    <center>
+        <VBox alignment="CENTER" spacing="15">
+            <HBox style="-fx-background-color: white; -fx-background-radius: 25; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0, 0, 0)"
+                  alignment="CENTER" spacing="10" minHeight="70">
+                <VBox.margin>
+                    <Insets top="15" left="15" right="15"/>
+                </VBox.margin>
+                <Button style="-fx-background-color: transparent" onAction="#copyButtonClicked">
+                    <HBox.margin>
+                        <Insets left="15"/>
+                    </HBox.margin>
+                    <graphic>
+                        <ImageView fx:id="copyButton">
+                            <Image url="@../../../assets/icons/copy.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Label fx:id="couponCode" style="-fx-font-size: 18; -fx-font-weight: bold"/>
+                <Region fx:id="spacer"/>
+                <Label fx:id="usersLeft" style="-fx-font-size: 12"/>
+                <Label text=" | " style="-fx-font-size: 12"/>
+                <Label fx:id="validDateAndTime">
+                    <HBox.margin>
+                        <Insets right="15"/>
+                    </HBox.margin>
+                </Label>
+            </HBox>
+            <Separator>
+                <VBox.margin>
+                    <Insets left="15" right="15"/>
+                </VBox.margin>
+            </Separator>
+        </VBox>
+    </center>
+
+</BorderPane>
