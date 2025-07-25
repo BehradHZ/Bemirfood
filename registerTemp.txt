@@ -1,5 +1,0 @@
-login data:
-{
-  "phone": "09411111111",
-  "role": "seller"
-}
