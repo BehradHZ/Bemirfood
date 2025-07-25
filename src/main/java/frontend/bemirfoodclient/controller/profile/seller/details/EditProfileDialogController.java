@@ -32,13 +32,26 @@ public class EditProfileDialogController {
     @FXML
     public TextField editPopupAccount_numberTextField;
 
+    private User currentUser;
+
+    public void setUserData(User user) {
+        this.currentUser = user;
+        setScene();
+    }
+
     public void initialize() {
-        editPopupFullNameTextField.setPromptText(SellerProfileDetailsController.getFullName());
-        editPopupPhoneNumberTextField.setPromptText(SellerProfileDetailsController.getPhoneNumber());
-        editPopupEmailTextField.setPromptText(SellerProfileDetailsController.getEmail());
-        editPopupAddressTextField.setPromptText(SellerProfileDetailsController.getAddress());
-        editPopupBank_nameTextField.setPromptText(SellerProfileDetailsController.getBank_name());
-        editPopupAccount_numberTextField.setPromptText(SellerProfileDetailsController.getAccount_number());
+
+    }
+
+    public void setScene() {
+        editPopupFullNameTextField.setText(currentUser.getFull_name());
+        editPopupPhoneNumberTextField.setText(currentUser.getMobile());
+        editPopupEmailTextField.setText(currentUser.getEmail());
+        editPopupAddressTextField.setText(currentUser.getAddress());
+        if (currentUser.getBank_info() != null) {
+            editPopupBank_nameTextField.setText(currentUser.getBank_info().getBank_name());
+            editPopupAccount_numberTextField.setText(currentUser.getBank_info().getAccount_number());
+        }
 
         UnaryOperator<TextFormatter.Change> filter = change -> {
             String newText = change.getControlNewText();

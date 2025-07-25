@@ -62,7 +62,7 @@ public class BuyerMenuItemCardController {
     public void setScene() {
         setItemPhoto();
         itemName.setText(item.getName());
-        itemPrice.setText(String.valueOf(item.getPrice()) + " toomans   ");
+        itemPrice.setText("$" + String.valueOf(item.getPrice()) + "   ");
         if (getItemQuantity() == 0) {
             addToCart.setVisible(true);
             addToCart.setManaged(true);

@@ -38,6 +38,10 @@ public class CourierProfileDetailsController {
     public Label phoneNumberLabel;
     @FXML
     public Label emailLabel;
+    @FXML
+    public Label bankNameLabel;
+    @FXML
+    public Label accountNumberLabel;
 
     private static User courier;
 
@@ -46,12 +50,16 @@ public class CourierProfileDetailsController {
         setUser();
         profileImageView.setPreserveRatio(true);
         profileImageView.setFitHeight(120);
-        setProfileImageBase64(profileImageView);
+        setScene();
+    }
 
+    public void setScene() {
+        setProfileImageBase64(profileImageView);
         fullNameLabel.setText(getFullName());
         phoneNumberLabel.setText(getPhoneNumber());
         emailLabel.setText(getEmail());
-
+        bankNameLabel.setText(courier.getBank_info().getBank_name());
+        accountNumberLabel.setText(courier.getBank_info().getAccount_number());
     }
 
     public void setUser() {
@@ -204,5 +212,9 @@ public class CourierProfileDetailsController {
 
     public static String getAccount_number() {
         return courier.getBank_info().getAccount_number();
+    }
+
+    public static User getCourier() {
+        return courier;
     }
 }

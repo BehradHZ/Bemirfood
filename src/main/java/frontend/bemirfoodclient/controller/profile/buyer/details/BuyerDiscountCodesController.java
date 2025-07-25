@@ -40,5 +40,50 @@ public class BuyerDiscountCodesController {
 
     public List<Coupon> getCoupons() {
         return getCoupon();
+        /*return List.of(
+                // An active percentage-based coupon that ends in a few days
+                new Coupon(
+                        "SUMMER25",
+                        CouponType.percent,
+                        25L,
+                        50000L,
+                        99L,
+                        LocalDateTime.now().minusDays(10),
+                        LocalDateTime.now().plusDays(5)
+                ),
+
+                // An active fixed-amount coupon that ends in a few hours
+                new Coupon(
+                        "WELCOME10K",
+                        CouponType.fixed,
+                        10000L,
+                        0L,
+                        1L,
+                        LocalDateTime.now().minusHours(1),
+                        LocalDateTime.now().plusHours(12)
+                ),
+
+                // An already expired coupon
+                new Coupon(
+                        "EXPIREDDEAL",
+                        CouponType.fixed,
+                        5000L,
+                        0L,
+                        0L,
+                        LocalDateTime.now().minusDays(20),
+                        LocalDateTime.now().minusDays(2)
+                ),
+
+                // An upcoming coupon that hasn't started yet
+                new Coupon(
+                        "NEXTWINTER",
+                        CouponType.percent,
+                        15L,
+                        100000L,
+                        500L,
+                        LocalDateTime.now().plusDays(3),
+                        LocalDateTime.now().plusDays(15)
+                )
+        );*/
     }
 }

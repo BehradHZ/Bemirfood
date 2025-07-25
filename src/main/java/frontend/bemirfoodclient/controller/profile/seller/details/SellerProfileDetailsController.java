@@ -13,20 +13,25 @@ import frontend.bemirfoodclient.model.entity.User;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import lombok.Getter;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -51,6 +56,7 @@ public class SellerProfileDetailsController {
     @FXML
     public Label emailLabel;
 
+    @Getter
     private static User seller;
 
     @FXML
@@ -135,55 +141,6 @@ public class SellerProfileDetailsController {
        return updateUserProfile(gson.toJson(request));
     }
 
-
-/*
-    public void addProfilePicture() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Select Profile Picture");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.bmp"),
-                new FileChooser.ExtensionFilter("All Files", "*.*")
-        );
-        Stage stage = (Stage) profileImageView.getScene().getWindow();
-        File selectedFile = fileChooser.showOpenDialog(stage);
-
-        if (selectedFile != null) {
-            String selectedFileURI = selectedFile.toURI().toString();
-            Image originalImage = new Image(selectedFileURI);
-
-            double originalWidth = originalImage.getWidth();
-            double originalHeight = originalImage.getHeight();
-            double cropSize = Math.min(originalWidth, originalHeight);
-            double cropX = (originalWidth - cropSize) / 2;
-            double cropY = (originalHeight - cropSize) / 2;
-            Rectangle2D cropRectangle = new Rectangle2D(cropX, cropY, cropSize, cropSize);
-
-            SnapshotParameters params = new SnapshotParameters();
-            params.setViewport(cropRectangle);
-            params.setFill(Color.TRANSPARENT);
-            WritableImage croppedImage = profileImageView.snapshot(params, null);
-
-            String base64String = null;
-            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(croppedImage, null);
-            try (ByteArrayOutputStream byteOutput = new ByteArrayOutputStream()) {
-                ImageIO.write(bufferedImage, "png", byteOutput);
-                base64String = Base64.getEncoder().encodeToString(byteOutput.toByteArray());
-            } catch (IOException e) {
-                System.err.println("Failed to convert image to Base64.");
-                e.printStackTrace();
-            }
-
-            HttpResponseData responseData = updateCurrentUserProfile(getFullName(), getPhoneNumber(), getEmail(), getAddress(),
-                    base64String, new Bank_info(getBank_name(), getAccount_number()));
-            if(responseData.getStatusCode() == 200) {
-                profileImageView.setImage(originalImage);
-                profileImageView.setViewport(cropRectangle);
-            }else{
-                expHandler(responseData, "Failed to update profile", null);
-            }
-        }
-    }
-*/
 
     public void addProfilePicture() {
         FileChooser fileChooser = new FileChooser();
@@ -306,5 +263,9 @@ public class SellerProfileDetailsController {
 
     public static String getAccount_number() {
         return seller.getBank_info().getAccount_number();
+    }
+
+    public static User getSeller() {
+        return seller;
     }
 }

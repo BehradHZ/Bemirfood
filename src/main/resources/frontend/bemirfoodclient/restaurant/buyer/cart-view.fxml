@@ -7,26 +7,35 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
+
 <BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.controller.restaurant.buyer.CartViewController">
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="frontend.bemirfoodclient.controller.restaurant.buyer.CartViewController"
+      style="-fx-background-color: #f4f4f4">
+
     <center>
-        <VBox style="-fx-background-color: #f4f4f4">
+        <VBox style="-fx-background-color: #ffffff; -fx-background-radius: 25;" spacing="30">
             <BorderPane.margin>
                 <Insets top="30" bottom="30" left="30" right="30"/>
             </BorderPane.margin>
-            <VBox style="-fx-background-color: white; -fx-background-radius: 25;" spacing="30">
+            <Label text="Carts" style="-fx-font-size: 24; -fx-font-weight: bold; ">
                 <padding>
-                    <Insets top="30" bottom="30" left="30" right="30"/>
+                    <Insets top="30" left="30"/>
                 </padding>
-                <Label text="Carts" style="-fx-font-size: 24; -fx-font-weight: bold; "/>
-                <ScrollPane>
-                    <VBox>
-
-                    </VBox>
-                </ScrollPane>
-            </VBox>
+            </Label>
+            <ScrollPane fitToWidth="true">
+                <padding>
+                    <Insets left="30" right="30"/>
+                </padding>
+                <VBox fx:id="cartsSection">
+                    <padding>
+                        <Insets top="30" bottom="30" left="30" right="30"/>
+                    </padding>
+                </VBox>
+            </ScrollPane>
         </VBox>
     </center>
-
 </BorderPane>
+
+
+

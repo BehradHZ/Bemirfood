@@ -25,6 +25,12 @@ public class CouponCardController {
     public Label validDateAndTime;
     @FXML
     public Label usersLeft;
+    @FXML
+    public Label type;
+    @FXML
+    public Label value;
+    @FXML
+    public Label minPrice;
 
     private Coupon coupon;
 
@@ -42,10 +48,12 @@ public class CouponCardController {
 
     private void setScene() {
         couponCode.setText(coupon.getCode());
-
         usersLeft.setText(coupon.getUserCount() + " users left");
-
         validDateAndTime.setText(formatValidity(coupon.getStartDate(), coupon.getEndDate()));
+
+        type.setText("type: " + coupon.getType() + " | ");
+        value.setText("value: " + coupon.getValue() + " | ");
+        minPrice.setText("min price: " + coupon.getMinPrice());
     }
 
     private String formatValidity(LocalDateTime start, LocalDateTime end) {

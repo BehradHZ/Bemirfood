@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<DialogPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.PaymentGatewayDialogController"
+            prefWidth="300" prefHeight="100">
+    <content>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="20" right="20" bottom="10" left="20"/>
+            </padding>
+
+            <VBox fx:id="amountVBox" spacing="5" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2">
+                <Label text="Amount:"/>
+                <TextField fx:id="amountField" promptText="e.g., 50000"/>
+            </VBox>
+
+            <Label text="Account Number:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="accountNumberField" promptText="Enter your account number" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        </VBox>
+    </content>
+</DialogPane>

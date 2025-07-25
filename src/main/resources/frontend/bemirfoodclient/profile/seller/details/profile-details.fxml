@@ -23,6 +23,8 @@
             <Label fx:id="fullNameLabel" style="-fx-font-weight: bold; -fx-font-size: 24"/>
             <Label fx:id="phoneNumberLabel" style="-fx-font-size: 16"/>
             <Label fx:id="emailLabel" style="-fx-font-size: 16"/>
+            <Label fx:id="bankNameLabel" style="-fx-font-size: 16"/>
+            <Label fx:id="accountNumberLabel" style="-fx-font-size: 16"/>
         </VBox>
     </HBox>
 </VBox>
