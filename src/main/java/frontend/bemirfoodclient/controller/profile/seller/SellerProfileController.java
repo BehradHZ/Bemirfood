@@ -37,6 +37,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static HttpClientHandler.Requests.updateUserProfile;
 import static exception.exp.expHandler;
 
 public class SellerProfileController {
@@ -243,10 +244,15 @@ public class SellerProfileController {
         }
     }
 
-    public int editUserProfile(UserDto userDto) {
-        //do the stuff in backend
-        //YAML: Update current user profile
-        return 200;
+    public HttpResponseData editUserProfile(UserDto userDto) {
+        Map<String, Object> request = new LinkedHashMap<>();
+        if(userDto.getFullName() != null && !userDto.getFullName().isBlank()) request.put("full_name", userDto.getFullName());
+        if(userDto.getPhone() != null && !userDto.getPhone() .isBlank()) request.put("phone", userDto.getPhone() );
+        if(userDto.getEmail() != null && !userDto.getEmail().isBlank()) request.put("email", userDto.getEmail());
+        if(userDto.getAddress() != null && !userDto.getAddress().isBlank()) request.put("address", userDto.getAddress());
+        if(userDto.getBank_info() != null) request.put("bank_info", userDto.getBank_info());
+
+        return updateUserProfile(gson.toJson(request));
     }
 
     @FXML
@@ -270,35 +276,11 @@ public class SellerProfileController {
             EditProfileDialogController controller = fxmlLoader.getController();
             UserDto userDto = controller.updateCurrentUserProfile();
 
-            switch (editUserProfile(userDto)) {
-                case 200:
-                    profileButtonClicked();
-                    break;
-                case 400:
-                    showAlert("Invalid phone number or password. (400 Invalid input)", event);
-                    break;
-                case 401:
-                    showAlert("This phone number is not registered. (401 Unauthorized)", event);
-                    break;
-                case 403:
-                    showAlert("You cannot access to this service. (403 Forbidden)", event);
-                    break;
-                case 404:
-                    showAlert("Service not found. (404 Not Found)", event);
-                    break;
-                case 409:
-                    showAlert("There was a conflict for access to this service. (409 Conflict)", event);
-                    break;
-                case 415:
-                    showAlert("This media type cannot be accepted. (415 Unsupported Media Type)", event);
-                    break;
-                case 429:
-                    showAlert("Please try again later. (429 Too Many Requests)", event);
-                    break;
-                case 500:
-                    showAlert("This is from our side; pleas try again later :) (500 Internal Server Error)", event);
-                default:
-                    break;
+            HttpResponseData responseData = editUserProfile(userDto);
+            if(responseData.getStatusCode() == 200){
+                profileButtonClicked();
+            }else{
+                expHandler(responseData, "Failed to update profile", null);
             }
         });
 

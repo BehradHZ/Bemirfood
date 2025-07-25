@@ -1,6 +1,5 @@
 package frontend.bemirfoodclient.controller.profile.seller.details;
 
-import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,12 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.function.UnaryOperator;
-
-import static exception.exp.expHandler;
-import static HttpClientHandler.Requests.updateUserProfile;
 
 public class EditProfileDialogController {
 
@@ -70,21 +64,6 @@ public class EditProfileDialogController {
         String bank_name = editPopupBank_nameTextField.getText();
         String account_number = editPopupAccount_numberTextField.getText();
         Bank_info bank_info = new Bank_info(bank_name, account_number);
-
-
-        Map<String, Object> request = new LinkedHashMap<>();
-        if(fullName != null && !fullName.isBlank()) request.put("full_name", fullName);
-        if(phoneNumber != null && !phoneNumber.isBlank()) request.put("phone_number", phoneNumber);
-        if(email != null && !email.isBlank()) request.put("email", email);
-        if(address != null && !address.isBlank()) request.put("address", address);
-        if(bank_info != null) request.put("bank_info", bank_info);
-
-        HttpResponseData responseData = updateUserProfile(gson.toJson(request));
-        if(responseData.getStatusCode() == 200){
-
-        }else{
-            expHandler(responseData, "Failed to update profile", null);
-        }
 
         return new UserDto(
                 new User(fullName, phoneNumber, "seller", email, null, address, bank_info));

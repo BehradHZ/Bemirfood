@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+import static HttpClientHandler.HttpClientHandler.sendGetRequest;
 import static exception.exp.expHandler;
 import static HttpClientHandler.HttpClientHandler.sendRequest;
 
@@ -491,8 +492,79 @@ public class Requests {
         }
     }
 
+    public static HttpResponseData getAvailableDeliveryOrders() {
+        String path = "deliveries/available";
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path, HttpRequest.GET, null,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
 
+    public static HttpResponseData searchDeliveryHistory(Map<String, String> queryParams) {
+        String path = "deliveries/history";
+        try{
+            HttpResponseData responseData =
+                    sendGetRequest(
+                            path, queryParams,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
 
+    public static HttpResponseData changeOrderStatusDelivery(Long orderId, String requestBody) {
+        String path = "deliveries/" + orderId;
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path, HttpRequest.PUT, requestBody,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
 
-
+    public static HttpResponseData changeOrderStatusSeller(Long orderId, String requestBody) {
+        String path = "restaurants/orders/" + orderId;
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path, HttpRequest.PUT, requestBody,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
 }

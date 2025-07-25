@@ -4,6 +4,7 @@ import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.ImageLoader;
 import frontend.bemirfoodclient.model.entity.Bank_info;
@@ -27,11 +28,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Base64;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 
-import static exception.exp.expHandler;
 import static HttpClientHandler.Requests.getCurrentUserProfile;
 import static HttpClientHandler.Requests.updateUserProfile;
+import static exception.exp.expHandler;
 
 public class BuyerProfileDetailsController {
 
@@ -70,19 +74,45 @@ public class BuyerProfileDetailsController {
 
         HttpResponseData responseData = getCurrentUserProfile();
 
-        //temporary
-        buyer = new User(
-                responseData.getString("full_name"),
-                responseData.getString("phone"),
-                responseData.getString("role"),
-                responseData.getString("email"),
-                responseData.getString("profileImageBase64"),
-                responseData.getString("address"),
-                new Bank_info(
-                        responseData.getBody().getAsJsonObject("bank_info").get("bank_name").getAsString(),
-                        responseData.getBody().getAsJsonObject("bank_info").get("account_number").getAsString()
-                )
-        );
+        JsonObject body = responseData.getBody().get("Current user profile").getAsJsonObject();
+
+        String fullName = body.has("full_name") && !body.get("full_name").isJsonNull()
+                ? body.get("full_name").getAsString()
+                : null;
+
+        String phone = body.has("phone") && !body.get("phone").isJsonNull()
+                ? body.get("phone").getAsString()
+                : null;
+
+        String email = body.has("email") && !body.get("email").isJsonNull()
+                ? body.get("email").getAsString()
+                : null;
+
+        String profileImageBase64 = body.has("profileImageBase64") && !body.get("profileImageBase64").isJsonNull()
+                ? body.get("profileImageBase64").getAsString()
+                : null;
+
+        String address = body.has("address") && !body.get("address").isJsonNull()
+                ? body.get("address").getAsString()
+                : null;
+
+        Bank_info bankInfo = null;
+        if (body.has("bank_info") && !body.get("bank_info").isJsonNull()) {
+            JsonObject bankJson = body.getAsJsonObject("bank_info");
+
+            String bankName = bankJson.has("bank_name") && !bankJson.get("bank_name").isJsonNull()
+                    ? bankJson.get("bank_name").getAsString()
+                    : null;
+
+            String accountNumber = bankJson.has("account_number") && !bankJson.get("account_number").isJsonNull()
+                    ? bankJson.get("account_number").getAsString()
+                    : null;
+
+            bankInfo = new Bank_info(bankName, accountNumber);
+        }
+
+        buyer = new User(fullName, phone, "buyer", email, profileImageBase64, address, bankInfo);
+
         setScene();
     }
 
