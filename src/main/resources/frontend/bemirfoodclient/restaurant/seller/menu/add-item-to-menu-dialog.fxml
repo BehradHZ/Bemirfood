@@ -10,7 +10,7 @@
 <DialogPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.menu.AddItemToMenuDialogController"
-            minHeight="600.0" minWidth="600.0">
+            minHeight="900.0" minWidth="600.0">
     <content>
         <VBox alignment="TOP_CENTER" spacing="10">
             <BorderPane.margin>

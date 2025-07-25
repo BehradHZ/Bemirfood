@@ -1,6 +1,7 @@
 package frontend.bemirfoodclient.controller.profile.courier.details;
 
 import HttpClientHandler.HttpResponseData;
+import com.google.gson.JsonObject;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.ImageLoader;
 import frontend.bemirfoodclient.model.entity.Bank_info;
@@ -65,18 +66,21 @@ public class CourierProfileDetailsController {
         //do the stuff in backend
 
         HttpResponseData responseData = getCurrentUserProfile();
+        JsonObject body = responseData.getBody().get("Current user profile").getAsJsonObject();
 
         courier = new User(
-                responseData.getString("full_name"),
-                responseData.getString("phone"),
-                responseData.getString("role"),
-                responseData.getString("email"),
-                responseData.getString("profileImageBase64"),
-                responseData.getString("address"),
-                new Bank_info(
-                        responseData.getBody().getAsJsonObject("bank_info").get("bank_name").getAsString(),
-                        responseData.getBody().getAsJsonObject("bank_info").get("account_number").getAsString()
+                body.get("full_name").getAsString(),
+                body.get("phone").getAsString(),
+                body.get("role").getAsString(),
+                body.has("email") && !body.get("email").isJsonNull() ? body.get("email").getAsString() : null,
+                body.has("profileImageBase64") && !body.get("profileImageBase64").isJsonNull() ? body.get("profileImageBase64").getAsString() : null,
+                body.get("address").getAsString(),
+                body.has("bank_info") && !body.get("bank_info").isJsonNull()
+                        ? new Bank_info(
+                        body.getAsJsonObject("bank_info").get("bank_name").getAsString(),
+                        body.getAsJsonObject("bank_info").get("account_number").getAsString()
                 )
+                        : null
         );
     }
 

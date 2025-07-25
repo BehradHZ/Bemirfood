@@ -4,7 +4,6 @@ import Deserializer.RestaurantDeserializer;
 import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.LocalDateTimeAdapter;
 import com.google.gson.*;
-import dto.OrderDto;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.restaurant.seller.item.AddItemDialogController;
 import frontend.bemirfoodclient.controller.restaurant.seller.item.EditItemDialogController;
@@ -30,9 +29,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static exception.exp.expHandler;
+import static BuildEntity.builder.buildOrderList;
 import static HttpClientHandler.Requests.*;
-import static BuildEntity.builder.buildOrder;
+import static exception.exp.expHandler;
 
 public class SellerRestaurantViewController {
 
@@ -558,56 +557,7 @@ public class SellerRestaurantViewController {
         }
     }
 
-
-
     public List<Order> getOrders() {
-        HttpResponseData response = getRestaurantOrders(restaurant.getId());
-        JsonObject json = response.getBody();
-        JsonArray ordersJsonArray = json.getAsJsonArray("List of orders");
-        List<Order> orders = new ArrayList<>();
-
-        for (JsonElement element : ordersJsonArray) {
-            JsonObject orderJson = element.getAsJsonObject();
-
-            OrderDto dto = new OrderDto();
-            dto.setId(orderJson.get("id").getAsLong());
-            dto.setDelivery_address(orderJson.get("delivery_address").getAsString());
-            dto.setCustomer_id(orderJson.get("customer_id").getAsLong());
-            dto.setVendor_id(orderJson.get("vendor_id").getAsLong());
-
-            if (!orderJson.get("coupon_id").isJsonNull()) {
-                dto.setCoupon_id(orderJson.get("coupon_id").getAsLong());
-            }
-
-            JsonArray itemsArray = orderJson.getAsJsonArray("items");
-            List<OrderDto.ItemHelper> itemHelpers = new ArrayList<>();
-            for (JsonElement itemElement : itemsArray) {
-                JsonObject itemObj = itemElement.getAsJsonObject();
-                Long itemId = itemObj.get("item_id").getAsLong();
-                int quantity = itemObj.get("quantity").getAsInt();
-                itemHelpers.add(new OrderDto.ItemHelper(itemId, quantity));
-            }
-            dto.setItems(itemHelpers);
-
-            dto.setRaw_price(orderJson.get("raw_price").getAsLong());
-            dto.setTax_fee(orderJson.get("tax_fee").getAsDouble());
-            dto.setAdditional_fee(orderJson.get("additional_fee").getAsDouble());
-            dto.setCourier_fee(orderJson.get("courier_fee").getAsDouble());
-            dto.setPay_price(orderJson.get("pay_price").getAsLong());
-
-            if (!orderJson.get("courier_id").isJsonNull()) {
-                dto.setCourier_id(orderJson.get("courier_id").getAsLong());
-            }
-
-            dto.setStatus(orderJson.get("status").getAsString());
-            dto.setCreated_at(orderJson.get("created_at").getAsString());
-            dto.setUpdated_at(orderJson.get("updated_at").getAsString());
-
-            Order order = buildOrder(dto);
-
-            orders.add(order);
-        }
-
-        return orders;
+        return buildOrderList(args -> getRestaurantOrders((Long) args[0]), "List of orders", "Failed to get restaurant orders", restaurant.getId());
     }
 }

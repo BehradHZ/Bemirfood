@@ -1,5 +1,9 @@
 package frontend.bemirfoodclient.controller.restaurant.seller.order;
 
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.entity.CartItem;
 import frontend.bemirfoodclient.model.entity.Order;
@@ -11,10 +15,20 @@ import javafx.scene.layout.*;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static HttpClientHandler.Requests.changeOrderStatusSeller;
+import static exception.exp.expHandler;
 
 public class SellerOrderCardController {
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).serializeNulls()
+            .create();
+
     @FXML
     public Label orderId;
     @FXML
@@ -101,8 +115,10 @@ public class SellerOrderCardController {
         statusComboBox.valueProperty().addListener((obs, oldStatus, newStatus) -> {
             if (newStatus != null && newStatus != oldStatus) {
                 System.out.println("Order #" + order.getId() + " status changed to: " + newStatus);
-                changeOrderStatus((OrderStatus) newStatus);
-
+                HttpResponseData response = changeOrderStatus((OrderStatus) newStatus);
+                if(response.getStatusCode() != 200){
+                    expHandler(response, "Failed to change order status", null);
+                }
                 statusComboBox.setButtonCell(cellFactory.call(null));
             }
         });
@@ -182,9 +198,9 @@ public class SellerOrderCardController {
         button.setStyle(baseStyle + colorStyle);
     }
 
-    public int changeOrderStatus(OrderStatus orderStatus) {
-        //do the stuff in backend
-
-        return 200; //temporary
+    public HttpResponseData changeOrderStatus(OrderStatus orderStatus) {
+        Map<String, String> request = new HashMap<>();
+        request.put("status", orderStatus.name());
+        return changeOrderStatusSeller(order.getId(), gson.toJson(request));
     }
 }
