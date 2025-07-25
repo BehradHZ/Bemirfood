@@ -2,16 +2,14 @@ package frontend.bemirfoodclient.controller.profile.courier.details;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.restaurant.courier.DeliveryCardController;
-import frontend.bemirfoodclient.model.entity.Bank_info;
-import frontend.bemirfoodclient.model.entity.Delivery;
-import frontend.bemirfoodclient.model.entity.Order;
-import frontend.bemirfoodclient.model.entity.OrderStatus;
+import frontend.bemirfoodclient.model.entity.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class DeliveryHistoryController {
 
     public List<Order> getAllDeliveries() {
         List<Order> orders = new ArrayList<>();
-        /*//temporary
+        //temporary
 
         // --- 1. Create Sellers and Customers ---
         Bank_info seller1Bank = new Bank_info("Pizza Bank", "PB-111");
@@ -72,8 +70,8 @@ public class DeliveryHistoryController {
         List<CartItem> order1Items = List.of(new CartItem(pepperoniPizza, 1), new CartItem(veggiePizza, 1));
         Order order1 = new Order(order1Items, customer1.getAddress(), customer1, pizzaPalace,
                 LocalDateTime.now().minusDays(2), LocalDateTime.now().minusDays(1),
-                fixedDiscount, newStatus, 15000.0);
-        order1.setDelivery(delivery); // Manually set the delivery person
+                fixedDiscount, OrderStatus.on_the_way, 15000.0);
+        order1.setDelivery(delivery1); // Manually set the delivery person
         System.out.println(order1.getStatus());
         orders.add(order1);
 
@@ -91,7 +89,7 @@ public class DeliveryHistoryController {
                 LocalDateTime.now().minusDays(3), LocalDateTime.now().minusDays(3).plusHours(1),
                 OrderStatus.on_the_way, 0.0);
         order3.setDelivery(delivery1); // Manually set the delivery person
-        orders.add(order3);*/
+        orders.add(order3);
 
         return orders;
     }

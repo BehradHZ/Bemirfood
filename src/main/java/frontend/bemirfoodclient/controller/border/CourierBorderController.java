@@ -240,11 +240,6 @@ public class CourierBorderController {
             DeliveryCardController controller = loader.getController();
             controller.setOrderData(order);
 
-            Bank_info delivery1Bank = new Bank_info("Courier Bank", "DEL-555");
-            Delivery delivery = new Delivery("Dan Driver", "09333311111", "courier",
-                    "dan@email.com", null, "Delivery HQ", delivery1Bank, "pass5");
-
-
             controller.setOnAccept(acceptedOrder -> {
                 switch (deliveryAccept(acceptedOrder)) {
                     case 200:
