@@ -136,7 +136,7 @@ public class BuyerProfileDetailsController {
             }
 
             if (base64String != null) {
-                HttpResponseData response = updateCurrentUserProfile(
+                HttpResponseData response =     updateCurrentUserProfile(
                         fullNameLabel.getText(),
                         phoneNumberLabel.getText(),
                         emailLabel.getText(),

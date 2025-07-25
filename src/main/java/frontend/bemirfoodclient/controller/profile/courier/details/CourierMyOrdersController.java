@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CourierMyOrdersController {
     @FXML
@@ -85,25 +84,11 @@ public class CourierMyOrdersController {
         List<CartItem> order1Items = List.of(new CartItem(pepperoniPizza, 1), new CartItem(veggiePizza, 1));
         Order order1 = new Order(order1Items, customer1.getAddress(), customer1, pizzaPalace,
                 LocalDateTime.now().minusDays(2), LocalDateTime.now().minusDays(1),
-                fixedDiscount, OrderStatus.completed, 15000.0);
-        order1.setDelivery(delivery1); // Manually set the delivery person
+                fixedDiscount, OrderStatus.finding_courier, 15000.0);
+        order1.setDelivery(null); // Manually set the delivery person
         orders.add(order1);
 
-        // --- ORDER 2: A pending burger order with a percentage coupon ---
-        List<CartItem> order2Items = List.of(new CartItem(classicBurger, 2), new CartItem(fries, 2));
-        Order order2 = new Order(order2Items, customer2.getAddress(), customer2, burgerBarn,
-                LocalDateTime.now().minusHours(1), LocalDateTime.now(),
-                percentDiscount, OrderStatus.finding_courier, 18000.0);
-        order2.setDelivery(delivery1); // Manually set the delivery person
-        orders.add(order2);
-
-        // --- ORDER 3: A cancelled pizza order with no coupon ---
-        List<CartItem> order3Items = List.of(new CartItem(veggiePizza, 1));
-        Order order3 = new Order(order3Items, customer1.getAddress(), customer1, pizzaPalace,
-                LocalDateTime.now().minusDays(3), LocalDateTime.now().minusDays(3).plusHours(1),
-                OrderStatus.on_the_way, 0.0);
-        order3.setDelivery(delivery1); // Manually set the delivery person
-        orders.add(order3);
+        System.out.println(order1.getStatus());
 
         return orders;
     }
@@ -121,7 +106,7 @@ public class CourierMyOrdersController {
 
         List<Order> historyList = allOrders.stream()
                 .filter(o -> o.getStatus() == OrderStatus.completed || o.getStatus() == OrderStatus.cancelled)
-                .collect(Collectors.toList());
+                .toList();
 
         activeDeliverySection.getChildren().clear();
         if (activeDeliveries.isEmpty()) {

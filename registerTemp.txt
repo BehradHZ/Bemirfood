@@ -1,5 +1,5 @@
 login data:
 {
-  "phone": "09220000002",
-  "role": "courier"
+  "phone": "09211111111",
+  "role": "buyer"
 }
