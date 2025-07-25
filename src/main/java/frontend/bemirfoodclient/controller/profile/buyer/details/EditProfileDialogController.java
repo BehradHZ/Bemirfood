@@ -7,13 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 
-import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.function.UnaryOperator;
-
-import static exception.exp.expHandler;
-import static HttpClientHandler.Requests.updateUserProfile;
 
 
 public class EditProfileDialogController {
@@ -31,13 +25,26 @@ public class EditProfileDialogController {
     @FXML
     public TextField editPopupAccount_numberTextField;
 
+    private User currentUser;
+
+    public void setUserData(User user) {
+        this.currentUser = user;
+        setScene();
+    }
+
     public void initialize() {
-        editPopupFullNameTextField.setPromptText(BuyerProfileDetailsController.getFullName());
-        editPopupPhoneNumberTextField.setPromptText(BuyerProfileDetailsController.getPhoneNumber());
-        editPopupEmailTextField.setPromptText(BuyerProfileDetailsController.getEmail());
-        editPopupAddressTextField.setPromptText(BuyerProfileDetailsController.getAddress());
-        editPopupBank_nameTextField.setPromptText(BuyerProfileDetailsController.getBank_name());
-        editPopupAccount_numberTextField.setPromptText(BuyerProfileDetailsController.getAccount_number());
+
+    }
+
+    public void setScene() {
+        editPopupFullNameTextField.setText(currentUser.getFull_name());
+        editPopupPhoneNumberTextField.setText(currentUser.getMobile());
+        editPopupEmailTextField.setText(currentUser.getEmail());
+        editPopupAddressTextField.setText(currentUser.getAddress());
+        if (currentUser.getBank_info() != null) {
+            editPopupBank_nameTextField.setText(currentUser.getBank_info().getBank_name());
+            editPopupAccount_numberTextField.setText(currentUser.getBank_info().getAccount_number());
+        }
 
         UnaryOperator<TextFormatter.Change> filter = change -> {
             String newText = change.getControlNewText();

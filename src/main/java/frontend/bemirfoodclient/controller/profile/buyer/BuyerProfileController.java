@@ -5,6 +5,7 @@ import HttpClientHandler.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
+import frontend.bemirfoodclient.controller.profile.buyer.details.BuyerProfileDetailsController;
 import frontend.bemirfoodclient.controller.profile.buyer.details.EditProfileDialogController;
 import frontend.bemirfoodclient.model.dto.UserDto;
 import javafx.application.Platform;
@@ -33,8 +34,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static exception.exp.expHandler;
 import static HttpClientHandler.Requests.updateUserProfile;
+import static exception.exp.expHandler;
 
 public class BuyerProfileController {
 
@@ -270,6 +271,9 @@ public class BuyerProfileController {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+
+        EditProfileDialogController editController = fxmlLoader.getController();
+        editController.setUserData(BuyerProfileDetailsController.getBuyer());
 
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
 

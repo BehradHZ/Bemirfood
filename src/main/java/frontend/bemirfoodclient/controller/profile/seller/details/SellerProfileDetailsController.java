@@ -50,6 +50,10 @@ public class SellerProfileDetailsController {
     public Label phoneNumberLabel;
     @FXML
     public Label emailLabel;
+    @FXML
+    public Label bankNameLabel;
+    @FXML
+    public Label accountNumberLabel;
 
     private static User seller;
 
@@ -58,11 +62,16 @@ public class SellerProfileDetailsController {
         setUser();
         profileImageView.setPreserveRatio(true);
         profileImageView.setFitHeight(120);
-        setProfileImageBase64(profileImageView);
+        setScene();
+    }
 
+    public void setScene() {
+        setProfileImageBase64(profileImageView);
         fullNameLabel.setText(getFullName());
         phoneNumberLabel.setText(getPhoneNumber());
         emailLabel.setText(getEmail());
+        bankNameLabel.setText(seller.getBank_info().getBank_name());
+        accountNumberLabel.setText(seller.getBank_info().getAccount_number());
     }
 
     public void setUser() {
@@ -188,5 +197,9 @@ public class SellerProfileDetailsController {
 
     public static String getAccount_number() {
         return seller.getBank_info().getAccount_number();
+    }
+
+    public static User getSeller() {
+        return seller;
     }
 }

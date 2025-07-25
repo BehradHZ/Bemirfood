@@ -6,6 +6,7 @@ import HttpClientHandler.Requests;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
+import frontend.bemirfoodclient.controller.profile.seller.details.SellerProfileDetailsController;
 import frontend.bemirfoodclient.controller.profile.seller.details.AddRestaurantDialogController;
 import frontend.bemirfoodclient.controller.profile.seller.details.EditProfileDialogController;
 import frontend.bemirfoodclient.model.dto.UserDto;
@@ -262,6 +263,9 @@ public class SellerProfileController {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+
+        EditProfileDialogController editController = fxmlLoader.getController();
+        editController.setUserData(SellerProfileDetailsController.getSeller());
 
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
 

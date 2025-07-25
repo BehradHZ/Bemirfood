@@ -47,6 +47,10 @@ public class BuyerProfileDetailsController {
     public Label phoneNumberLabel;
     @FXML
     public Label emailLabel;
+    @FXML
+    public Label bankNameLabel;
+    @FXML
+    public Label accountNumberLabel;
 
     private static User buyer;
 
@@ -63,6 +67,8 @@ public class BuyerProfileDetailsController {
         fullNameLabel.setText(getFullName());
         phoneNumberLabel.setText(getPhoneNumber());
         emailLabel.setText(getEmail());
+        bankNameLabel.setText(buyer.getBank_info().getBank_name());
+        accountNumberLabel.setText(buyer.getBank_info().getAccount_number());
     }
 
     public void setUser() {
@@ -200,5 +206,9 @@ public class BuyerProfileDetailsController {
 
     public static String getAccount_number() {
         return buyer.getBank_info().getAccount_number();
+    }
+
+    public static User getBuyer() {
+        return buyer;
     }
 }
