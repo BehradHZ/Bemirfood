@@ -57,7 +57,7 @@ public class BuyerTransactionsController {
     public String getBalance() {
         //do the stuff in backend
         double balance = 20000; //temporary
-        return balance + " toomans"; //don't change the structure
+        return "$" + balance; //don't change the structure
     }
 
     public int walletTopUp(double amount) {

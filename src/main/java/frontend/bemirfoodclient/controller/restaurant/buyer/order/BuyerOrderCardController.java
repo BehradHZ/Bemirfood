@@ -96,7 +96,7 @@ public class BuyerOrderCardController {
         additionalFee.setText(String.valueOf(order.getRestaurant().getAdditionalFee()));
         courierFee.setText(String.valueOf(order.getCourierFee()));
         couponDetails.setText(String.valueOf(order.getCoupon())); // Assuming a discount value
-        totalPrice.setText(order.getPayPrice() + " toomans");
+        totalPrice.setText("$" + order.getPayPrice());
         orderStatusButton.setText(getStatusText(order.getStatus()));
         styleStatusButton(orderStatusButton, order.getStatus());
         lastUpdate.setText(order.getUpdatedAt().format(formatter));
