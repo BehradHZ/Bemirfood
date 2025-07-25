@@ -21,7 +21,7 @@
 
 	search view
 	carts list view
-	individual cart view [status]
+	individual cart view [paymentStatus]
 
 	payment view [order details +
 	              coupon validation (button -> alert) +
@@ -30,9 +30,9 @@
     coupon validation                                                 //GET-coupons
     submit an order                                                   //POST-orders
 
-    submit status view                                                //POST-payment/online
+    submit paymentStatus view                                                //POST-payment/online
 
-    submitted order status view                                       //GET-orders/{id}
+    submitted order paymentStatus view                                       //GET-orders/{id}
     order history view                                                //GET-orders/history
     transaction history view                                          //GET-transactions
     wallet view [top-up (pop-up)]
@@ -60,8 +60,8 @@
 	    delete item to a menu of a restaurant                         //DELETE-restaurants/{id}/menu/{title}/{item_id}
 
 	orders list view (for each restaurant)                            //GET-restaurants/{id}/orders
-	change status of an order                                         //PATCH-restaurants/orders/{order_id}
-	individual order view [change status (button -> pop-up)]
+	change paymentStatus of an order                                         //PATCH-restaurants/orders/{order_id}
+	individual order view [change paymentStatus (button -> pop-up)]
 
 	get available delivery requests                                   //GET-deliveries/available
 	wallet view [top-up (pop-up)]
@@ -69,7 +69,7 @@
 
 -Courier:
 	courier homepage                                                    Not finished yet
-	change status of a delivery request                               //PATCH-deliveries/{order_id}
+	change paymentStatus of a delivery request                               //PATCH-deliveries/{order_id}
 	delivery history view                                             //GET-deliveries/history
 	individual delivery view
 	wallet view [top-up (pop-up)]
@@ -80,7 +80,7 @@
     update profile (pop-up)                                           //PUT-auth/profile
 	admin homepage
 	all users list view [(approved +                                  //GET-admin/users
-	                  que +                                           //PATCH-admin/users/{id}/status
+	                  que +                                           //PATCH-admin/users/{id}/paymentStatus
 	                  non-approved) tabs]
     all orders list                                                   //GET-admin/orders
 
