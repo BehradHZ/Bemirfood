@@ -51,9 +51,9 @@ public class CouponCardController {
         usersLeft.setText(coupon.getUserCount() + " users left");
         validDateAndTime.setText(formatValidity(coupon.getStartDate(), coupon.getEndDate()));
 
-//        type.setText("type: " + coupon.getType() + " | ");
-//        value.setText("value: " + coupon.getValue() + " | ");
-//        minPrice.setText("min price: " + coupon.getMinPrice());
+        type.setText("type: " + coupon.getType() + " | ");
+        value.setText("value: " + coupon.getValue() + " | ");
+        minPrice.setText("min price: " + coupon.getMinPrice());
     }
 
     private String formatValidity(LocalDateTime start, LocalDateTime end) {
