@@ -2,11 +2,13 @@ package frontend.bemirfoodclient.controller.adminPanel;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.TransactionCardController;
+import frontend.bemirfoodclient.controller.adminPanel.card.AddCouponDialogController;
 import frontend.bemirfoodclient.controller.adminPanel.card.AdminOrderCardController;
 import frontend.bemirfoodclient.controller.adminPanel.card.CouponCardController;
 import frontend.bemirfoodclient.controller.adminPanel.card.UserCardController;
 import frontend.bemirfoodclient.model.entity.*;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class AdminBorderController {
     public ImageView borderBemirfoodLogo;
@@ -43,6 +46,8 @@ public class AdminBorderController {
     public Button logoutLarge;
     public VBox contentVBox;
     public Button searchButton;
+    public Button addCouponButton;
+    public ImageView addCouponIcon;
 
     public String profileView;
 
@@ -54,6 +59,9 @@ public class AdminBorderController {
 
         searchIcon.setPreserveRatio(true);
         searchIcon.setFitHeight(17);
+
+        addCouponIcon.setPreserveRatio(true);
+        addCouponIcon.setFitHeight(30);
 
         HBox.setHgrow(toolbarSpacer, Priority.ALWAYS);
         usersButtonClicked();
@@ -77,6 +85,8 @@ public class AdminBorderController {
 
         searchButton.setVisible(false);
         searchTextField.setVisible(false);
+
+        addCouponButton.setVisible(false);
 
         contentVBox.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);");
 
@@ -132,6 +142,8 @@ public class AdminBorderController {
 
         searchButton.setVisible(true);
         searchTextField.setVisible(true);
+
+        addCouponButton.setVisible(false);
 
         contentVBox.setStyle("-fx-background-color: transparent");
 
@@ -272,6 +284,8 @@ public class AdminBorderController {
         searchButton.setVisible(true);
         searchTextField.setVisible(true);
 
+        addCouponButton.setVisible(false);
+
         contentVBox.setStyle("-fx-background-color: transparent");
 
         usersLarge.setVisible(false);
@@ -398,8 +412,10 @@ public class AdminBorderController {
 
     public void discountCodesButtonClicked() {
         profileView = "discountCodes";
-        searchButton.setVisible(true);
-        searchTextField.setVisible(true);
+        searchButton.setVisible(false);
+        searchTextField.setVisible(false);
+
+        addCouponButton.setVisible(true);
 
         contentVBox.setStyle("-fx-background-color: transparent");
 
@@ -422,11 +438,33 @@ public class AdminBorderController {
                 CouponCardController controller = loader.getController();
                 controller.setCouponData(coupon);
 
+                controller.setOnDelete(couponToDelete -> {
+                    if (deleteCoupon(couponToDelete) == 200)
+                        discountCodesButtonClicked(); // Refresh the list
+                });
+
+                // Set the action for the edit button
+                controller.setOnEdit(couponToEdit -> {
+                    if (updateCoupon(couponToEdit) == 200){
+                        discountCodesButtonClicked(); // Refresh the list
+                    }
+                });
+
                 contentVBox.getChildren().add(card);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private int updateCoupon(Coupon couponToEdit) {
+        //do the stuff in backend
+        return 200; //temporary
+    }
+
+    private int deleteCoupon(Coupon couponToDelete) {
+        //do the stuff in backend
+        return 200;
     }
 
     public List<Coupon> getCoupons() {
@@ -543,6 +581,52 @@ public class AdminBorderController {
     public int deleteUser(User user) {
         //do the stuff in backend
 
+        return 200;
+    }
+
+    public void addCouponButtonClicked() {
+        try {
+            // Load the NEW dialog FXML
+            FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource("/frontend/bemirfoodclient/adminPanel/card/add-coupon-dialog.fxml"));
+            DialogPane dialogPane = loader.load();
+
+            // Get the NEW dialog's controller
+            AddCouponDialogController dialogController = loader.getController();
+
+            // Create and configure the dialog
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setDialogPane(dialogPane);
+            dialog.setTitle("Add New Coupon");
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+            ((Button) dialog.getDialogPane().lookupButton(ButtonType.OK)).setText("Add Coupon");
+
+            Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(new javafx.scene.image.Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream(
+                    "/frontend/bemirfoodclient/assets/Bemirfood_Logo.png"
+            ))));
+
+            AtomicReference<Coupon> newCoupon = new AtomicReference<>(new Coupon());
+            Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+            okButton.addEventFilter(ActionEvent.ACTION, event -> {
+                newCoupon.set(dialogController.processResult());
+                if (newCoupon.get() == null) {
+                    event.consume();
+                }
+            });
+
+            // Show the dialog and process the result
+            Optional<ButtonType> result = dialog.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                if (createCoupon(newCoupon.get()) == 200) // Call the backend logic
+                    discountCodesButtonClicked(); // Refresh the view
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int createCoupon(Coupon coupon) {
+        //do the stuff in backend
         return 200;
     }
 }

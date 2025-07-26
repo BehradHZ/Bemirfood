@@ -34,6 +34,17 @@
             </Button>
 
             <Region fx:id="toolbarSpacer"/>
+
+            <Button fx:id="addCouponButton" style="-fx-background-color: transparent" onAction="#addCouponButtonClicked">
+                <padding>
+                    <Insets right="15"/>
+                </padding>
+                <graphic>
+                    <ImageView fx:id="addCouponIcon">
+                        <Image url="@../assets/icons/addCoupon.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
         </HBox>
     </top>
     <left>

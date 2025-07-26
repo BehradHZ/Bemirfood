@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <DialogPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.controller.adminPanel.card.EditCouponDialogController"
+            fx:controller="frontend.bemirfoodclient.controller.adminPanel.card.AddCouponDialogController"
             prefHeight="500.0" prefWidth="600.0">
     <content>
         <VBox>

@@ -1,17 +1,24 @@
 package frontend.bemirfoodclient.controller.adminPanel.card;
 
+import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.entity.Coupon;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 public class CouponCardController {
 
@@ -34,6 +41,8 @@ public class CouponCardController {
     public ImageView deleteButtonIcon;
 
     private Coupon coupon;
+    private Consumer<Coupon> onDelete;
+    private Consumer<Coupon> onEdit;
 
     public void setCouponData(Coupon coupon) {
         this.coupon = coupon;
@@ -117,10 +126,60 @@ public class CouponCardController {
     }
 
     public void editButtonClicked() {
+        try {
+            // Load the FXML for the dialog
+            FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(
+                    "/frontend/bemirfoodclient/adminPanel/card/edit-coupon-dialog.fxml"));
+            DialogPane dialogPane = loader.load();
 
+            EditCouponDialogController dialogController = loader.getController();
+            dialogController.setData(coupon);
+
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setDialogPane(dialogPane);
+            dialog.setTitle("Edit Coupon");
+            Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+            stage.getIcons().add(new javafx.scene.image.Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream(
+                    "/frontend/bemirfoodclient/assets/Bemirfood_Logo.png"))));
+
+            // Add the "Save" and "Cancel" buttons to the dialog pane
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+            Optional<ButtonType> result = dialog.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                Coupon updatedCoupon = dialogController.processResult();
+                if (updatedCoupon != null && onEdit != null) {
+                    onEdit.accept(updatedCoupon); // Pass the updated coupon back
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Optionally show an error alert to the user
+        }
     }
 
+    @FXML
     public void deleteButtonClicked() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Coupon");
+        alert.setHeaderText("Are you sure you want to delete this coupon?");
+        alert.setContentText("Coupon Code: " + coupon.getCode());
 
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            if (onDelete != null) {
+                onDelete.accept(coupon);
+            }
+        }
+    }
+
+    public void setOnDelete(Consumer<Coupon> onDelete) {
+        this.onDelete = onDelete;
+    }
+
+    public void setOnEdit(Consumer<Coupon> onEdit) {
+        this.onEdit = onEdit;
     }
 }
