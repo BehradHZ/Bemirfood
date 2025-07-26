@@ -18,6 +18,10 @@ public class CartViewController {
     public VBox cartsSection;
 
     public void initialize() {
+        setScene();
+    }
+
+    public void setScene() {
         List<Order> allOrders = getUnpaidOrders();
         
         List<Order> unpaidOrders = allOrders.stream()
@@ -35,6 +39,7 @@ public class CartViewController {
 
                 controller.setOnPaymentSuccess(paidOrder -> {
                     cartsSection.getChildren().remove(card);
+                    setScene();
                 });
 
                 cartsSection.getChildren().add(card);

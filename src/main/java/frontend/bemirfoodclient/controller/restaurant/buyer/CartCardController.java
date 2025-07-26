@@ -127,10 +127,9 @@ public class CartCardController {
         Toggle selectedToggle = methodToggleGroup.getSelectedToggle();
 
         if (selectedToggle == onlineToggle) {
-            showPaymentDialog(false); // It's NOT a wallet top-up
+            showPaymentDialog(false);
         } else if (selectedToggle == walletToggle) {
-            // Handle direct wallet payment logic
-            System.out.println("Processing payment from wallet...");
+
         }
     }
 
