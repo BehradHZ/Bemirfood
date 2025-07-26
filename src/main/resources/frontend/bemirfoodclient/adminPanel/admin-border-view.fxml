@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <BorderPane fx:id="mainBorderPane" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -20,7 +21,7 @@
             <TextField fx:id="searchTextField" promptText="search here..." style="-fx-background-color: #ebedf0;
                         -fx-background-radius: 15; -fx-font-size: 14" prefWidth="300"/>
 
-            <Button style="-fx-background-color: #ebedf0;
+            <Button fx:id="searchButton" style="-fx-background-color: #ebedf0;
                         -fx-background-radius: 25;" onAction="#searchButtonClicked">
                 <HBox.margin>
                     <Insets left="7"/>
@@ -89,12 +90,15 @@
     </left>
 
     <center>
-        <VBox fx:id="contentVBox" style="-fx-background-color: #ffffff; -fx-background-radius: 25;
-             -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);">
-            <BorderPane.margin>
+        <ScrollPane fitToWidth="true">
+            <padding>
                 <Insets top="30" bottom="30" right="30"/>
-            </BorderPane.margin>
-        </VBox>
+            </padding>
+            <VBox fx:id="contentVBox" style="-fx-background-color: #ffffff; -fx-background-radius: 25;
+             -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);">
+
+            </VBox>
+        </ScrollPane>
     </center>
 
 </BorderPane>

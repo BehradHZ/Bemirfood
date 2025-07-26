@@ -13,7 +13,7 @@ import javafx.scene.layout.Region;
 
 import java.util.Objects;
 
-public class SellerOrderItemCardController {
+public class AdminOrderItemCardController {
 
     @FXML
     public ImageView itemImage;

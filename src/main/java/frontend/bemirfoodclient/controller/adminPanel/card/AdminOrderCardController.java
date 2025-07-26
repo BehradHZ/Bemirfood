@@ -1,6 +1,5 @@
 package frontend.bemirfoodclient.controller.adminPanel.card;
 
-import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,21 +9,22 @@ import frontend.bemirfoodclient.model.entity.Order;
 import frontend.bemirfoodclient.model.entity.OrderStatus;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.util.Callback;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
-import static HttpClientHandler.Requests.changeOrderStatusSeller;
-import static exception.exp.expHandler;
-
-public class SellerOrderCardController {
+public class AdminOrderCardController {
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).serializeNulls()
             .create();
@@ -73,10 +73,18 @@ public class SellerOrderCardController {
     public Region lastUpdateSpacer;
     @FXML
     public Label lastUpdate;
-    @FXML
-    public ComboBox statusComboBox;
+    public HBox statusHBox;
+    public ImageView statusIcon;
+    public Label paymentStatus;
 
     private Order order;
+
+    @FXML
+    private Image successIcon = new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream(
+            "/frontend/bemirfoodclient/assets/icons/success.png")));
+    @FXML
+    private Image failureIcon = new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream(
+            "/frontend/bemirfoodclient/assets/icons/failure.png")));
 
     public void setOrderData(Order order) {
         this.order = order;
@@ -93,7 +101,8 @@ public class SellerOrderCardController {
         HBox.setHgrow(totalPriceSpacer, Priority.ALWAYS);
         HBox.setHgrow(lastUpdateSpacer, Priority.ALWAYS);
 
-        statusComboBox.getItems().setAll(OrderStatus.values());
+        statusIcon.setPreserveRatio(true);
+        statusIcon.setFitHeight(20);
 
         Callback<ListView<OrderStatus>, ListCell<OrderStatus>> cellFactory = lv -> new ListCell<>() {
             @Override
@@ -108,20 +117,6 @@ public class SellerOrderCardController {
                 }
             }
         };
-
-        statusComboBox.setCellFactory(cellFactory);
-        statusComboBox.setButtonCell(cellFactory.call(null));
-
-        statusComboBox.valueProperty().addListener((obs, oldStatus, newStatus) -> {
-            if (newStatus != null && newStatus != oldStatus) {
-                System.out.println("Order #" + order.getId() + " status changed to: " + newStatus);
-                HttpResponseData response = changeOrderStatus((OrderStatus) newStatus);
-                if(response.getStatusCode() != 200){
-                    expHandler(response, "Failed to change order status", null);
-                }
-                statusComboBox.setButtonCell(cellFactory.call(null));
-            }
-        });
     }
 
     public void setScene() {
@@ -141,7 +136,17 @@ public class SellerOrderCardController {
         courierFee.setText(String.valueOf(order.getCourierFee()));
         couponDetails.setText(String.valueOf(order.getCoupon())); // Assuming a discount value
         totalPrice.setText("$" + order.getPayPrice());
-        statusComboBox.setValue(order.getStatus());
+        if (order.isPaid()) {
+            statusIcon.setImage(successIcon);
+            statusHBox.setStyle("-fx-background-color: rgba(68,130,74,0.2); -fx-background-radius: 50");
+            paymentStatus.setText("Paid");
+        } else {
+            statusIcon.setImage(failureIcon);
+            statusHBox.setStyle("-fx-background-color: rgba(130,68,68,0.2); -fx-background-radius: 50");
+            paymentStatus.setText("Unpaid");
+        }
+        orderStatusButton.setText(getStatusText(order.getStatus()));
+        styleStatusButton(orderStatusButton, order.getStatus());
         lastUpdate.setText(order.getUpdatedAt().format(formatter));
         itemsSection.getChildren().clear();
 
@@ -150,11 +155,11 @@ public class SellerOrderCardController {
         for (CartItem cartItem : cartItems) {
             try {
                 FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(
-                        "/frontend/bemirfoodclient/restaurant/seller/order/item-card-small-order.fxml"
+                        "/frontend/bemirfoodclient/adminPanel/card/item-card-small-order.fxml"
                 ));
                 Pane itemCard = loader.load();
 
-                SellerOrderItemCardController itemController = loader.getController();
+                AdminOrderItemCardController itemController = loader.getController();
                 itemController.setItemData(cartItem);
 
                 itemsSection.getChildren().add(itemCard);
@@ -196,11 +201,5 @@ public class SellerOrderCardController {
             case served -> "-fx-background-color: #39107b; -fx-text-fill: white;";
         };
         button.setStyle(baseStyle + colorStyle);
-    }
-
-    public HttpResponseData changeOrderStatus(OrderStatus orderStatus) {
-        Map<String, String> request = new HashMap<>();
-        request.put("status", orderStatus.name());
-        return changeOrderStatusSeller(order.getId(), gson.toJson(request));
     }
 }

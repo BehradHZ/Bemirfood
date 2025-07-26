@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.order.SellerOrderCardController">
+            fx:controller="frontend.bemirfoodclient.controller.adminPanel.card.AdminOrderCardController">
 
     <center>
         <VBox style="-fx-background-color: white; -fx-background-radius: 15;
@@ -26,7 +23,7 @@
                 <Label fx:id="dateTime"/>
             </HBox>
 
-            <ScrollPane style="-fx-background-color: white" fitToWidth="true">
+            <ScrollPane style="-fx-background-color: white" fitToWidth="true" minHeight="150">
                 <VBox fx:id="itemsSection" />
             </ScrollPane>
 
@@ -68,11 +65,15 @@
                     <Region fx:id="totalPriceSpacer"/>
                     <Label fx:id="totalPrice" style="-fx-font-size: 16"/>
                 </HBox>
+                <HBox fx:id="statusHBox" minHeight="30" maxWidth="100" alignment="CENTER" spacing="5">
+                    <ImageView fx:id="statusIcon" preserveRatio="true"/>
+                    <Label fx:id="paymentStatus" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: white"/>
+                </HBox>
                 <HBox>
                     <padding>
                         <Insets top="20" bottom="20"/>
                     </padding>
-                    <ComboBox fx:id="statusComboBox" style="-fx-background-color: transparent"/>
+                    <Button fx:id="orderStatusButton" disable="true"/>
                     <Region fx:id="lastUpdateSpacer"/>
                     <Label fx:id="lastUpdate" style="-fx-font-size: 16"/>
                 </HBox>
