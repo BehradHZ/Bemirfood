@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<BorderPane fx:id="mainBorderPane" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.adminPanel.AdminBorderController">
+    <top>
+        <HBox alignment="CENTER" style="-fx-background-color: #ffffff">
+            <Button prefHeight="40" style="-fx-background-color: #ffffff">
+                <graphic>
+                    <ImageView fx:id="borderBemirfoodLogo">
+                        <Image url="@../assets/Bemirfood_Logo.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <TextField fx:id="searchTextField" promptText="search here..." style="-fx-background-color: #ebedf0;
+                        -fx-background-radius: 15; -fx-font-size: 14" prefWidth="300"/>
+
+            <Button fx:id="searchButton" style="-fx-background-color: #ebedf0;
+                        -fx-background-radius: 25;" onAction="#searchButtonClicked">
+                <HBox.margin>
+                    <Insets left="7"/>
+                </HBox.margin>
+                <graphic>
+                    <ImageView fx:id="searchIcon">
+                        <Image url="@../assets/icons/search.png" />
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <Region fx:id="toolbarSpacer"/>
+        </HBox>
+    </top>
+    <left>
+        <VBox prefWidth="250" style="-fx-background-color: #ffffff; -fx-background-radius: 25;
+             -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);">
+            <BorderPane.margin>
+                <Insets top="30" bottom="30" left="30" right="30" />
+            </BorderPane.margin>
+            <StackPane>
+                <Button fx:id="usersSmall" text="  Users" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 20
+                           ; -fx-text-fill: #444444" onAction="#usersButtonClicked"/>
+                <Button fx:id="usersLarge" text=" Users" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 24
+                           ; -fx-text-fill: #0066ff" onAction="#usersButtonClicked" wrapText="true"/>
+            </StackPane>
+            <Separator/>
+            <StackPane>
+                <Button fx:id="ordersSmall" text="  Orders" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 20
+                           ; -fx-text-fill: #444444" onAction="#ordersButtonClicked"/>
+                <Button fx:id="ordersLarge" text=" Orders" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 24
+                           ; -fx-text-fill: #0066ff" visible="false" onAction="#ordersButtonClicked" wrapText="true"/>
+            </StackPane>
+            <Separator/>
+            <StackPane>
+                <Button fx:id="transactionsSmall" text="  Transactions" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 20
+                           ; -fx-text-fill: #444444" onAction="#transactionsButtonClicked"/>
+                <Button fx:id="transactionsLarge" text=" Transactions" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 24
+                           ; -fx-text-fill: #0066ff" visible="false" onAction="#transactionsButtonClicked" wrapText="true"/>
+            </StackPane>
+            <Separator/>
+            <StackPane>
+                <Button fx:id="discountCodesSmall" text="  Discount codes" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 20
+                           ; -fx-text-fill: #444444" onAction="#discountCodesButtonClicked"/>
+                <Button fx:id="discountCodesLarge" text=" Discount codes" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 24
+                           ; -fx-text-fill: #0066ff" visible="false" onAction="#discountCodesButtonClicked" wrapText="true"/>
+            </StackPane>
+            <Separator/>
+            <StackPane>
+                <Button fx:id="logoutSmall" text="  Logout" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 20
+                           ; -fx-text-fill: #444444" onAction="#logoutButtonClicked"/>
+                <Button fx:id="logoutLarge" text=" Logout" alignment="CENTER_LEFT" prefWidth="250" prefHeight="45"
+                        style="-fx-background-color: #ffffff; -fx-background-radius: 25; -fx-font-weight: bold; -fx-font-size: 24
+                           ; -fx-text-fill: #e40000" visible="false" onAction="#logoutButtonClicked" wrapText="true"/>
+            </StackPane>
+        </VBox>
+    </left>
+
+    <center>
+        <ScrollPane fitToWidth="true">
+            <padding>
+                <Insets top="30" bottom="30" right="30"/>
+            </padding>
+            <VBox fx:id="contentVBox" style="-fx-background-color: #ffffff; -fx-background-radius: 25;
+             -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);">
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

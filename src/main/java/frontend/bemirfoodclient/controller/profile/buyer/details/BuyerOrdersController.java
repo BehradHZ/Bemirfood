@@ -24,7 +24,6 @@ public class BuyerOrdersController {
 
         List<Order> orders = getOrders();
 
-
         // 2. Loop through each order
         for (Order order : orders) {
             try {

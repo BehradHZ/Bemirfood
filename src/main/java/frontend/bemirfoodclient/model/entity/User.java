@@ -13,6 +13,7 @@ public class User {
     private String photo;
     private Bank_info bank_info;
     private String password;
+    private UserStatus status =  UserStatus.not_approved;
 
     public User(String fullName, String mobile, String role, String email, String photo,
                 String address, Bank_info bank_info) {
@@ -154,5 +155,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
     }
 }

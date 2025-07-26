@@ -109,7 +109,7 @@ public class LoginController {
             case "courier":
                 return "/frontend/bemirfoodclient/border/courier-border-view.fxml";
             case "admin":
-                return "/frontend/bemirfoodclient/border/admin-border-view.fxml";
+                return "/frontend/bemirfoodclient/adminPanel/admin-border-view.fxml";
             default:
                 return "";
         }
