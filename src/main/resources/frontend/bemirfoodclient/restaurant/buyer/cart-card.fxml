@@ -9,6 +9,8 @@
 <?import javafx.geometry.Insets?>
 
 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="frontend.bemirfoodclient.controller.restaurant.buyer.CartCardController">
@@ -36,6 +38,16 @@
                 <Label text="Coupon Code:" style="-fx-font-size: 20; -fx-font-weight: bold"/>
                 <Region fx:id="couponCodeSpacer"/>
                 <TextField fx:id="couponTextField" style="-fx-font-size: 16" minWidth="100" maxHeight="10"/>
+                <Button fx:id="applyCoupon" style="-fx-background-color: transparent" onAction="#applyCoupon">
+                    <padding>
+                        <Insets left="15"/>
+                    </padding>
+                    <graphic>
+                        <ImageView fx:id="applyCouponIcon">
+                            <Image url="@../../assets/icons/addCoupon.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
             </HBox>
 
             <HBox>

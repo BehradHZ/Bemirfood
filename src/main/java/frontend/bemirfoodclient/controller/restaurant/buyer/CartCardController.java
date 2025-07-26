@@ -8,6 +8,7 @@ import frontend.bemirfoodclient.model.entity.Order;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 import java.io.IOException;
@@ -59,6 +60,7 @@ public class CartCardController {
     public Button payButton;
     @FXML
     public ToggleGroup methodToggleGroup;
+    public ImageView applyCouponIcon;
 
     private Order order;
 
@@ -83,6 +85,9 @@ public class CartCardController {
         HBox.setHgrow(courierFeeSpacer, Priority.ALWAYS);
         HBox.setHgrow(couponDetailsSpacer, Priority.ALWAYS);
         HBox.setHgrow(totalPriceSpacer, Priority.ALWAYS);
+
+        applyCouponIcon.setPreserveRatio(true);
+        applyCouponIcon.setFitWidth(30);
     }
 
     public void setScene() {
@@ -152,7 +157,7 @@ public class CartCardController {
         Optional<ButtonType> result = dialog.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            String accountNumber = controller.getAccountNumber();
+            String accountNumber = controller.getOtp();
 
             switch (acceptPayment()) {
                 case 200:
@@ -166,5 +171,9 @@ public class CartCardController {
         //do the stuff in backend
         //change paid to true
         return 200;
+    }
+
+    public void applyCoupon() {
+
     }
 }

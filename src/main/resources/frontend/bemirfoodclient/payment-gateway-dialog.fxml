@@ -21,8 +21,8 @@
                 <TextField fx:id="amountField" promptText="e.g., 50000"/>
             </VBox>
 
-            <Label text="Account Number:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <TextField fx:id="accountNumberField" promptText="Enter your account number" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label text="One Time Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="otpField" promptText="Enter your account number" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
         </VBox>
     </content>
