@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<DialogPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.adminPanel.card.EditCouponDialogController"
+            prefHeight="500.0" prefWidth="600.0">
+    <content>
+        <VBox>
+            <VBox.margin>
+                <Insets top="20" bottom="20" left="20" right="20"/>
+            </VBox.margin>
+
+            <Label text="Full name" style="-fx-font-weight: bold; -fx-font-size: 20">
+                <padding>
+                    <Insets bottom="5"/>
+                </padding>
+            </Label>
+            <TextField fx:id="editPopupFullNameTextField">
+                <VBox.margin>
+                    <Insets bottom="15"/>
+                </VBox.margin>
+            </TextField>
+
+            <Label text="Phone number" style="-fx-font-weight: bold; -fx-font-size: 20">
+                <padding>
+                    <Insets bottom="5"/>
+                </padding>
+            </Label>
+            <TextField fx:id="editPopupPhoneNumberTextField">
+                <VBox.margin>
+                    <Insets bottom="15"/>
+                </VBox.margin>
+            </TextField>
+
+            <Label text="Email" style="-fx-font-weight: bold; -fx-font-size: 20">
+                <padding>
+                    <Insets bottom="5"/>
+                </padding>
+            </Label>
+            <TextField fx:id="editPopupEmailTextField">
+                <VBox.margin>
+                    <Insets bottom="15"/>
+                </VBox.margin>
+            </TextField>
+
+            <Label text="Address" style="-fx-font-weight: bold; -fx-font-size: 20">
+                <padding>
+                    <Insets bottom="5"/>
+                </padding>
+            </Label>
+            <TextField fx:id="editPopupAddressTextField">
+                <VBox.margin>
+                    <Insets bottom="15"/>
+                </VBox.margin>
+            </TextField>
+
+            <Label text="Bank name" style="-fx-font-weight: bold; -fx-font-size: 20">
+                <padding>
+                    <Insets bottom="5"/>
+                </padding>
+            </Label>
+            <TextField fx:id="editPopupBank_nameTextField">
+                <VBox.margin>
+                    <Insets bottom="15"/>
+                </VBox.margin>
+            </TextField>
+
+            <Label text="Account number" style="-fx-font-weight: bold; -fx-font-size: 20">
+                <padding>
+                    <Insets bottom="5"/>
+                </padding>
+            </Label>
+            <TextField fx:id="editPopupAccount_numberTextField">
+                <VBox.margin>
+                    <Insets bottom="15"/>
+                </VBox.margin>
+            </TextField>
+        </VBox>
+    </content>
+
+</DialogPane>

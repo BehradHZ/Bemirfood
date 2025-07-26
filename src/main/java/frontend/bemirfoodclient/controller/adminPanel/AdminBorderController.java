@@ -3,11 +3,9 @@ package frontend.bemirfoodclient.controller.adminPanel;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.TransactionCardController;
 import frontend.bemirfoodclient.controller.adminPanel.card.AdminOrderCardController;
+import frontend.bemirfoodclient.controller.adminPanel.card.CouponCardController;
 import frontend.bemirfoodclient.controller.adminPanel.card.UserCardController;
-import frontend.bemirfoodclient.model.entity.Coupon;
-import frontend.bemirfoodclient.model.entity.Order;
-import frontend.bemirfoodclient.model.entity.Transaction;
-import frontend.bemirfoodclient.model.entity.User;
+import frontend.bemirfoodclient.model.entity.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +20,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -413,11 +412,70 @@ public class AdminBorderController {
         contentVBox.getChildren().clear();
 
         List<Coupon> coupons = getCoupons();
+
+        for (Coupon coupon : coupons) {
+            try {
+                FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(
+                   "/frontend/bemirfoodclient/adminPanel/card/coupon-card.fxml"
+                ));
+                Pane card = loader.load();
+                CouponCardController controller = loader.getController();
+                controller.setCouponData(coupon);
+
+                contentVBox.getChildren().add(card);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public List<Coupon> getCoupons() {
 
-        return coupons;
+        return List.of(
+                // An active percentage-based coupon that ends in a few days
+                new Coupon(
+                        "SUMMER25",
+                        CouponType.percent,
+                        25L,
+                        50000L,
+                        99L,
+                        LocalDateTime.now().minusDays(10),
+                        LocalDateTime.now().plusDays(5)
+                ),
+
+                // An active fixed-amount coupon that ends in a few hours
+                new Coupon(
+                        "WELCOME10K",
+                        CouponType.fixed,
+                        10000L,
+                        0L,
+                        1L,
+                        LocalDateTime.now().minusHours(1),
+                        LocalDateTime.now().plusHours(12)
+                ),
+
+                // An already expired coupon
+                new Coupon(
+                        "EXPIREDDEAL",
+                        CouponType.fixed,
+                        5000L,
+                        0L,
+                        0L,
+                        LocalDateTime.now().minusDays(20),
+                        LocalDateTime.now().minusDays(2)
+                ),
+
+                // An upcoming coupon that hasn't started yet
+                new Coupon(
+                        "NEXTWINTER",
+                        CouponType.percent,
+                        15L,
+                        100000L,
+                        500L,
+                        LocalDateTime.now().plusDays(3),
+                        LocalDateTime.now().plusDays(15)
+                )
+        );
     }
 
     @FXML

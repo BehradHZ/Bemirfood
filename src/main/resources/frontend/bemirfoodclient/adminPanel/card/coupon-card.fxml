@@ -1,14 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="frontend.bemirfoodclient.adminPanel.card.CouponCard"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-</AnchorPane>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.adminPanel.card.CouponCardController">
+    <center>
+        <VBox style="-fx-background-color: white; -fx-background-radius: 25; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0, 0, 0)" alignment="CENTER" spacing="5">
+            <BorderPane.margin>
+                <Insets top="15" bottom="15" left="15" right="15"/>
+            </BorderPane.margin>
+            <HBox alignment="CENTER" spacing="10" minHeight="70">
+                <VBox.margin>
+                    <Insets left="15" right="15"/>
+                </VBox.margin>
+                <Button style="-fx-background-color: transparent" onAction="#copyButtonClicked">
+                    <HBox.margin>
+                        <Insets left="15"/>
+                    </HBox.margin>
+                    <graphic>
+                        <ImageView fx:id="copyButton">
+                            <Image url="@../../assets/icons/copy.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Label fx:id="couponCode" wrapText="true" style="-fx-font-size: 18; -fx-font-weight: bold"/>
+                <Region fx:id="spacer"/>
+                <VBox alignment="CENTER_RIGHT">
+                    <HBox alignment="CENTER_RIGHT">
+                        <Label fx:id="usersLeft" style="-fx-font-size: 12"/>
+                        <Label text=" | " style="-fx-font-size: 12"/>
+                        <Label fx:id="validDateAndTime">
+                            <HBox.margin>
+                                <Insets right="15"/>
+                            </HBox.margin>
+                        </Label>
+                    </HBox>
+                    <HBox alignment="CENTER_RIGHT">
+                        <Label fx:id="type" style="-fx-font-size: 12"/>
+                        <Label fx:id="value" style="-fx-font-size: 12"/>
+                        <Label fx:id="minPrice" style="-fx-font-size: 12">
+                            <HBox.margin>
+                                <Insets right="15"/>
+                            </HBox.margin>
+                        </Label>
+                    </HBox>
+                </VBox>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" spacing="5">
+                <padding>
+                    <Insets right="30" bottom="15"/>
+                </padding>
+                <Button fx:id="editButton" text="Edit" style="-fx-background-color: #0066ff; -fx-background-radius: 15;
+                    -fx-font-size: 16; -fx-text-fill: white; -fx-font-weight: bold" onAction="#editButtonClicked" minHeight="40"/>
+                <Button fx:id="deleteButton" style="-fx-background-color: #bb0000; -fx-background-radius: 15"
+                        onAction="#deleteButtonClicked" minHeight="40" minWidth="40">
+                    <graphic>
+                        <ImageView fx:id="deleteButtonIcon">
+                            <Image url="@../../assets/icons/deleteWhite.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
