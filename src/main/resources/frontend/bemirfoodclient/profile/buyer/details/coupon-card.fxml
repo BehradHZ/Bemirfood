@@ -29,7 +29,7 @@
                         </ImageView>
                     </graphic>
                 </Button>
-                <Label fx:id="couponCode" style="-fx-font-size: 18; -fx-font-weight: bold"/>
+                <Label fx:id="couponCode" wrapText="true" style="-fx-font-size: 18; -fx-font-weight: bold"/>
                 <Region fx:id="spacer"/>
                 <VBox alignment="CENTER_RIGHT">
                     <HBox alignment="CENTER_RIGHT">

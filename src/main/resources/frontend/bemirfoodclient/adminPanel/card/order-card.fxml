@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.seller.order.SellerOrderCardController">
+
+    <center>
+        <VBox style="-fx-background-color: white; -fx-background-radius: 15;
+            -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 4);">
+            <BorderPane.margin>
+                <Insets top="15" bottom="15" left="15" right="15"/>
+            </BorderPane.margin>
+            <HBox>
+                <VBox.margin>
+                    <Insets top="15" bottom="15" left="15" right="15"/>
+                </VBox.margin>
+                <Label fx:id="orderId"/>
+                <Region fx:id="idTimeSpacer"/>
+                <Label fx:id="dateTime"/>
+            </HBox>
+
+            <ScrollPane style="-fx-background-color: white" fitToWidth="true">
+                <VBox fx:id="itemsSection" />
+            </ScrollPane>
+
+            <VBox spacing="10">
+                <VBox.margin>
+                    <Insets top="15" left="30" right="30" bottom="15"/>
+                </VBox.margin>
+                <Label fx:id="orderBuyerName" style="-fx-font-size: 20; -fx-font-weight: bold"/>
+                <Label fx:id="orderAddress" style="-fx-font-size: 20; -fx-font-weight: bold"/>
+                <Label fx:id="orderCourierName" style="-fx-font-size: 20; -fx-font-weight: bold"/>
+
+                <HBox>
+                    <Label text="Raw Price" style="-fx-font-size: 16"/>
+                    <Region fx:id="rawPriceSpacer"/>
+                    <Label fx:id="rawPrice" style="-fx-font-size: 16"/>
+                </HBox>
+                <HBox>
+                    <Label text="Tax Fee" style="-fx-font-size: 16"/>
+                    <Region fx:id="taxFeeSpacer"/>
+                    <Label fx:id="taxFee" style="-fx-font-size: 16"/>
+                </HBox>
+                <HBox>
+                    <Label text="Additional Fee" style="-fx-font-size: 16"/>
+                    <Region fx:id="additionalFeeSpacer"/>
+                    <Label fx:id="additionalFee" style="-fx-font-size: 16"/>
+                </HBox>
+                <HBox>
+                    <Label text="Courier Fee" style="-fx-font-size: 16"/>
+                    <Region fx:id="courierFeeSpacer"/>
+                    <Label fx:id="courierFee" style="-fx-font-size: 16"/>
+                </HBox>
+                <HBox>
+                    <Label text="Coupon" style="-fx-font-size: 16"/>
+                    <Region fx:id="couponDetailsSpacer"/>
+                    <Label fx:id="couponDetails" style="-fx-font-size: 16"/>
+                </HBox>
+                <HBox>
+                    <Label text="Total Price" style="-fx-font-size: 16"/>
+                    <Region fx:id="totalPriceSpacer"/>
+                    <Label fx:id="totalPrice" style="-fx-font-size: 16"/>
+                </HBox>
+                <HBox>
+                    <padding>
+                        <Insets top="20" bottom="20"/>
+                    </padding>
+                    <ComboBox fx:id="statusComboBox" style="-fx-background-color: transparent"/>
+                    <Region fx:id="lastUpdateSpacer"/>
+                    <Label fx:id="lastUpdate" style="-fx-font-size: 16"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </center>
+
+</BorderPane>

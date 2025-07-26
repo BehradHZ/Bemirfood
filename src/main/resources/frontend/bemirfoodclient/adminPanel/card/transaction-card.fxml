@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.TransactionCardController">
+
+    <center>
+        <VBox style="-fx-background-color: #ffffff; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 4);">
+            <HBox spacing="10">
+                <VBox.margin>
+                    <Insets right="15" left="15" top="10"/>
+                </VBox.margin>
+                <Label fx:id="title" style="-fx-font-size: 16; -fx-font-weight: bold"/>
+                <Region fx:id="firstLineSpacer"/>
+                <Label fx:id="date" style="-fx-font-size: 16"/>
+                <Label fx:id="time" style="-fx-font-size: 16"/>
+            </HBox>
+
+            <HBox spacing="10">
+                <VBox.margin>
+                    <Insets right="15" left="15"/>
+                </VBox.margin>
+                <Label fx:id="paymentMethod" style="-fx-font-size: 16; -fx-font-weight: bold"/>
+                <HBox fx:id="statusHBox" prefWidth="30" alignment="CENTER">
+                    <ImageView fx:id="statusIcon" preserveRatio="true"/>
+                    <Label fx:id="paymentStatus" style="-fx-font-size: 14; -fx-font-weight: bold"/>
+                </HBox>
+                <Region fx:id="secondLineSpacer"/>
+                <Label fx:id="amount" style="-fx-font-size: 16; -fx-font-weight: bold"/>
+            </HBox>
+            <padding>
+                <Insets bottom="15"/>
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>

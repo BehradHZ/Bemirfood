@@ -23,8 +23,8 @@ public class BemirfoodApplication extends Application {
 
         if (isUserLoggedIn() != null) {
             fxmlLoader = switch (getUserRole()) {
-                case "admin" -> new FXMLLoader(BemirfoodApplication.class.getResource("border/admin-border-view.fxml"));
-                case "buyer" -> new FXMLLoader(BemirfoodApplication.class.getResource("border/buyer-border-view.fxml"));
+                case "buyer" -> new FXMLLoader(BemirfoodApplication.class.getResource("adminPanel/admin-border-view.fxml"));
+                case "buyer2" -> new FXMLLoader(BemirfoodApplication.class.getResource("border/buyer-border-view.fxml"));
                 case "seller" ->
                         new FXMLLoader(BemirfoodApplication.class.getResource("border/seller-border-view.fxml"));
                 case "courier" ->

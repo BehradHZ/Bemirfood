@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import org.controlsfx.control.ListActionView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.adminPanel.card.UserCardController">
+    <center>
+        <VBox>
+            <HBox alignment="CENTER" spacing="10" prefHeight="40">
+                <padding>
+                    <Insets left="15" right="15"/>
+                </padding>
+                <ImageView fx:id="userPhoto"/>
+                <Label fx:id="idRoleLabel" style="-fx-font-size: 14;"/>
+                <Label fx:id="nameLabel" style="-fx-font-size: 16; -fx-font-weight: bold"/>
+                <Region fx:id="spacer"/>
+                <StackPane>
+                    <Button fx:id="approveButton" text="Approve" prefWidth="100" style="-fx-background-color: #0066ff; -fx-background-radius: 10;
+                        -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0); -fx-text-fill: white" onAction="#approveButtonClicked"/>
+                    <Button fx:id="disapproveButton" text="Disapprove" prefWidth="100" style="-fx-background-color: #bb0000; -fx-background-radius: 10;
+                        -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0); -fx-text-fill: white" onAction="#disapproveButtonClicked"/>
+                </StackPane>
+                <Button style="-fx-background-color: transparent" onAction="#deleteButtonClicked">
+                    <graphic>
+                        <ImageView fx:id="deleteButtonIcon">
+                            <Image url="@../../assets/icons/deleteRed.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </HBox>
+            <Separator>
+
+            </Separator>
+        </VBox>
+    </center>
+
+</BorderPane>
