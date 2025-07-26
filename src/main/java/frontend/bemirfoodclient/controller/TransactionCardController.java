@@ -29,8 +29,6 @@ public class TransactionCardController {
     @FXML
     public HBox statusHBox;
     @FXML
-    public Label status;
-    @FXML
     public ImageView statusIcon;
     @FXML
     public Label paymentMethod;
@@ -56,29 +54,17 @@ public class TransactionCardController {
 
     public void setData(Transaction transaction) {
         this.transaction = transaction;
+        title.setText("Order #" + transaction.getId() +" from " + transaction.getSender().getFull_name());
         time.setText(getTime(transaction));
         date.setText(getDate(transaction));
-        switch (getTransactionType(transaction)) {
-            case "payment":
-                title.setText("Order from " + getTitle(transaction));
-                break;
-            case "wallet top up":
-                title.setText("Wallet Top up");
-                break;
-            default:
-                break;
-        }
-        amount.setText(getAmount(transaction));
-        status.setText(" " + getStatus(transaction) + " ");
+        amount.setText("$" + getAmount(transaction));
         paymentMethod.setText(getPaymentMethod(transaction));
 
         if (getStatus(transaction).equals("successful")) {
             statusIcon.setImage(successIcon);
-            statusHBox.setPrefWidth(100);
             statusHBox.setStyle("-fx-background-color: rgba(68,130,74,0.2); -fx-background-radius: 50");
         } else {
             statusIcon.setImage(failureIcon);
-            statusHBox.setPrefWidth(80);
             statusHBox.setStyle("-fx-background-color: rgba(130,68,68,0.2); -fx-background-radius: 50");
         }
     }
@@ -86,18 +72,12 @@ public class TransactionCardController {
     public String getTime(Transaction transaction) {
         return transaction.getTimestamp().getHour() + ":" + transaction.getTimestamp().getMinute();
     }
+    public String getAmount(Transaction transaction) {
+        return transaction.getOrder().getPayPrice().toString();
+    }
     public String getDate(Transaction transaction) {
         return transaction.getTimestamp().getMonth().name() + " " + transaction.getTimestamp().getDayOfMonth() + ", " +
                 transaction.getTimestamp().getYear();
-    }
-    public String getTitle(Transaction transaction) {
-        return transaction.getTitle();
-    }
-    public String getTransactionType(Transaction transaction) {
-        return transaction.getTransactionType();
-    }
-    public String getAmount(Transaction transaction) {
-        return transaction.getAmount() + "";
     }
     public String getStatus(Transaction transaction) {
         return transaction.getStatus();

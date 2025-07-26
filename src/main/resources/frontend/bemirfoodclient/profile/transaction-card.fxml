@@ -30,9 +30,9 @@
                     <Insets right="15" left="15"/>
                 </VBox.margin>
                 <Label fx:id="paymentMethod" style="-fx-font-size: 16; -fx-font-weight: bold"/>
-                <HBox fx:id="statusHBox" prefWidth="110" alignment="CENTER">
+                <HBox fx:id="statusHBox" prefWidth="30" alignment="CENTER">
                     <ImageView fx:id="statusIcon" preserveRatio="true"/>
-                    <Label fx:id="status" style="-fx-font-size: 14; -fx-font-weight: bold"/>
+                    <Label fx:id="paymentStatus" style="-fx-font-size: 14; -fx-font-weight: bold"/>
                 </HBox>
                 <Region fx:id="secondLineSpacer"/>
                 <Label fx:id="amount" style="-fx-font-size: 16; -fx-font-weight: bold"/>
