@@ -144,23 +144,17 @@ public class CourierBorderController {
 
     }
 
-    public List<Order> getAllDeliveries() {
-        return buildOrderList(args -> getAvailableDeliveryOrders(), "List of available deliveries", "Failed to get available orders");
-    }
-
     public void showAllDeliveries() {
-        List<Order> allOrders = getAllDeliveries();
-
         List<Order> recommendedDeliveries =
                 buildOrderList(args -> getAvailableDeliveryOrders(),
                         "List of available deliveries", "Failed to get available orders");
 
 
         Map<String, String> queryParams = new HashMap<>();
-        List<Order> historyAndRecommendedOrders =
+        List<Order> historyAndActiveOrders =
                 buildOrderList(args -> searchDeliveryHistory((Map) args[0]), "List of completed and active deliveries", "Failed to get history", queryParams);
 
-        List<Order> activeDeliveries = historyAndRecommendedOrders.stream().filter(o -> o.getStatus().equals(OrderStatus.on_the_way) || o.getStatus().equals(OrderStatus.accepted)).toList();
+        List<Order> activeDeliveries = historyAndActiveOrders.stream().filter(o -> o.getStatus().equals(OrderStatus.on_the_way) || o.getStatus().equals(OrderStatus.accepted)).toList();
 
         activeDeliverySection.getChildren().clear();
 

@@ -1,5 +1,10 @@
 package frontend.bemirfoodclient.controller.profile.buyer.details;
 
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
+import HttpClientHandler.Requests;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.TransactionCardController;
 import frontend.bemirfoodclient.model.entity.Transaction;
@@ -12,11 +17,17 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.util.*;
+
+import static exception.exp.expHandler;
 
 public class BuyerTransactionsController {
+
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+            .serializeNulls()
+            .create();
 
     @FXML
     public BorderPane mainBorderPane;
@@ -55,16 +66,15 @@ public class BuyerTransactionsController {
     }
 
     public String getBalance() {
-        //do the stuff in backend
-        double balance = 20000; //temporary
-        return "$" + balance; //don't change the structure
+        HttpResponseData response = Requests.getBalance();
+        if(response.getStatusCode() != 200) expHandler(response, "Failed to get balance", null);
+        return "$" + response.getBody().get("Balance").getAsString();
     }
 
-    public int walletTopUp(double amount) {
-        //do the stuff in backend
-        //YAML: Top up user's wallet
-
-        return 200;
+    public HttpResponseData walletTopUp(double amount) {
+        Map<String, Long> request = new HashMap<>();
+        request.put("amount", (long) amount);
+        return Requests.walletTopUp(gson.toJson(request));
     }
 
     @FXML
@@ -87,41 +97,15 @@ public class BuyerTransactionsController {
         okButton.addEventFilter(ActionEvent.ACTION, event -> {
             TopUpDialogController controller = fxmlLoader.getController();
             double amount = controller.getTopUpAmount();
-
-            switch (walletTopUp(amount)) {
-                case 200:
-                    initialize();
-                    break;
-                case 400:
-                    showAlert("Invalid `field name`. (400 Invalid input)", event);
-                    break;
-                case 401:
-                    showAlert("Unauthorized request. (401 Unauthorized)", event);
-                    break;
-                case 403:
-                    showAlert("Forbidden request. (403 Forbidden)", event);
-                    break;
-                case 404:
-                    showAlert("Resource not found. (404 Not Found)", event);
-                    break;
-                case 409:
-                    showAlert("Conflict occurred. (409 Conflict)", event);
-                    break;
-                case 415:
-                    showAlert("Unsupported media type. (415 Unsupported Media Type)", event);
-                    break;
-                case 429:
-                    showAlert("Too many requests. (429 Too Many Requests)", event);
-                    break;
-                case 500:
-                    showAlert("Internal server error. (500 Internal Server Error)", event);
-                default:
-                    break;
+            HttpResponseData response = walletTopUp(amount);
+            if(response.getStatusCode() == 200){
+                initialize();
+            }else{
+                expHandler(response, "Failed to top-up wallet", null);
             }
         });
 
         dialog.showAndWait();
-
     }
 
     public void showAlert(String content, ActionEvent event) {

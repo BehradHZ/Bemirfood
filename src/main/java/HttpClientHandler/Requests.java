@@ -567,4 +567,80 @@ public class Requests {
             return response;
         }
     }
+
+    public static HttpResponseData searchOrderHistoryCustomer(Map<String, String> queryParams) {
+        String path = "orders/history";
+        try{
+            HttpResponseData responseData =
+                    sendGetRequest(
+                            path, queryParams,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData pay(String requestBody) {
+        String path = "payment/online";
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path,HttpRequest.POST, requestBody, Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData getBalance() {
+        String path = "wallet/balance";
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path,HttpRequest.GET, null, Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData walletTopUp(String requestBody) {
+        String path = "wallet/top-up";
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path,HttpRequest.POST, requestBody, Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
 }

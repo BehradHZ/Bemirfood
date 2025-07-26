@@ -69,8 +69,14 @@ public class builder {
         order.setDeliveryAddress(orderDto.getDelivery_address());
         order.setCreatedAt(StringToTime(orderDto.getCreated_at()));
         order.setUpdatedAt(StringToTime(orderDto.getUpdated_at()));
-        order.setStatus(orderDto.getStatus() != null ? OrderStatus.strToStatus(orderDto.getStatus()) : OrderStatus.submitted);
+        String status = orderDto.getStatus();
+        try{
+            order.setStatus(OrderStatus.strToStatus(status));
+        }catch (Exception e){
+            order.setStatus(OrderStatus.submitted);
+        }
         order.setCourierFee(orderDto.getCourier_fee());
+        order.setPaid(orderDto.getIs_paid());
         return order;
     }
 
@@ -91,7 +97,11 @@ public class builder {
 
             OrderDto dto = new OrderDto();
             dto.setId(orderJson.get("id").getAsLong());
-            dto.setDelivery_address(orderJson.get("delivery_address").getAsString());
+            if(!orderJson.get("delivery_address").isJsonNull()){
+                dto.setDelivery_address(orderJson.get("delivery_address").getAsString());
+            }else{
+                dto.setDelivery_address("");
+            }
             dto.setCustomer_id(orderJson.get("customer_id").getAsLong());
             dto.setVendor_id(orderJson.get("vendor_id").getAsLong());
 
@@ -122,6 +132,7 @@ public class builder {
             dto.setStatus(orderJson.get("status").getAsString());
             dto.setCreated_at(orderJson.get("created_at").getAsString());
             dto.setUpdated_at(orderJson.get("updated_at").getAsString());
+            dto.setIs_paid(orderJson.get("is_paid").getAsBoolean());
 
             Order order = buildOrder(dto);
 
