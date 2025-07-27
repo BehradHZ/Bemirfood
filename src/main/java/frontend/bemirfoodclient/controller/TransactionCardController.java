@@ -53,6 +53,7 @@ public class TransactionCardController {
     }
 
     public void setData(Transaction transaction) {
+        if(transaction == null) return;
         this.transaction = transaction;
         title.setText("Order #" + transaction.getId() +" from " + transaction.getSender().getFull_name());
         time.setText(getTime(transaction));

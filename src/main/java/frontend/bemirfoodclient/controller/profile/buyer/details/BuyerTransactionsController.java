@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static BuildEntity.builder.buildTransactionList;
 import static exception.exp.expHandler;
 
 public class BuyerTransactionsController {
@@ -58,11 +59,7 @@ public class BuyerTransactionsController {
     }
 
     private List<Transaction> getTransactions() {
-        List<Transaction> transactions = new ArrayList<>();
-        //do the stuff in backend
-        //Get user's transaction history
-
-        return transactions;
+        return buildTransactionList(args -> Requests.getTransactions(), "List of transactions", "Failed to get transactions");
     }
 
     public String getBalance() {

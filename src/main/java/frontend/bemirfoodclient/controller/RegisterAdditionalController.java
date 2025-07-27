@@ -4,6 +4,7 @@ import HttpClientHandler.HttpClientHandler;
 import HttpClientHandler.HttpRequest;
 import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.LocalDateTimeAdapter;
+import Util.Token;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
@@ -157,7 +158,7 @@ public class RegisterAdditionalController {
     }
 
     @FXML
-    public void handelRegisterButtonClicked() {
+    public void handelRegisterButtonClicked() throws IOException {
         isRegistering.set(true);
 
         HttpResponseData response = checkLoginStatus(
@@ -173,6 +174,7 @@ public class RegisterAdditionalController {
 
         int code = response.getStatusCode();
         if(code == 200) {
+            Token.addToken(response.getBody().get("token").getAsString());
             //Add login token
 //            Map<String, Object> body = new LinkedHashMap<>();
 //            body.put("phone", user.getMobile());

@@ -1,5 +1,7 @@
 package frontend.bemirfoodclient.controller.profile.courier.details;
 
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.Requests;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.TransactionCardController;
 import frontend.bemirfoodclient.model.entity.Transaction;
@@ -9,8 +11,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+
+import static BuildEntity.builder.buildTransactionList;
+import static exception.exp.expHandler;
 
 public class CourierTransactionsController {
 
@@ -42,20 +46,12 @@ public class CourierTransactionsController {
     }
 
     private List<Transaction> getTransactions() {
-        List<Transaction> transactions = new ArrayList<>();
-        //do the stuff in backend
-        //Get user's transaction history
-
-        //create suitable Transaction() constructors
-        //if transaction is a payment, it needs a title
-        //amount, payment method, status, time are also required
-
-        return transactions;
+        return buildTransactionList(args -> Requests.getTransactions(), "List of transactions", "Failed to get transactions");
     }
 
     public String getBalance() {
-        //do the stuff in backend
-        double balance = 20000; //temporary
-        return "$" + balance; //don't change the structure
+        HttpResponseData response = Requests.getBalance();
+        if(response.getStatusCode() != 200) expHandler(response, "Failed to get balance", null);
+        return "$" + response.getBody().get("Balance").getAsString();
     }
 }

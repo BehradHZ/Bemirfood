@@ -66,6 +66,7 @@ public class BuyerBorderController {
         profileIcon.setFitHeight(27);
 
         List<Restaurant> restaurants = getRecommendedRestaurants();
+        if(restaurants == null) return;
 
         for (Restaurant restaurant : restaurants) {
             try {
@@ -131,6 +132,8 @@ public class BuyerBorderController {
         JsonObject json = response.getBody();
         JsonArray rstaurantJsonArray = json.getAsJsonArray( "List of favorite restaurants");
         List<Restaurant> restaurants = new ArrayList<>();
+
+        if(rstaurantJsonArray == null) return restaurants;
 
         for (JsonElement element : rstaurantJsonArray) {
             JsonObject restaurantJson = element.getAsJsonObject();
