@@ -68,6 +68,20 @@ public class builder {
                 cartItems.add(new CartItem(item, ih.getQuantity()));
             }
         }
+        if(orderDto.getCoupon_id() != null){
+            HttpResponseData res = req.getCoupon(orderDto.getCoupon_id());
+            JsonObject obj = res.getBody().get("Coupon details").getAsJsonObject();
+            Coupon coupon = new Coupon();
+            coupon.setId(orderDto.getCoupon_id());
+            coupon.setCode(obj.get("code").getAsString());
+            coupon.setType(CouponType.valueOf(obj.get("type").getAsString().toLowerCase()));
+            coupon.setValue(obj.get("value").getAsLong());
+            coupon.setUserCount(obj.get("user_count").getAsLong());
+            coupon.setMinPrice(obj.get("min_price").getAsLong());
+            coupon.setStartDate(LocalDateTimeAdapter.StringToDateTime(obj.get("start_date").getAsString()));
+            coupon.setEndDate(LocalDateTimeAdapter.StringToDateTime(obj.get("end_date").getAsString()));
+            order.setCoupon(coupon);
+        }
         order.setCartItems(cartItems);
         order.setDeliveryAddress(orderDto.getDelivery_address());
         order.setCreatedAt(StringToTime(orderDto.getCreated_at()));

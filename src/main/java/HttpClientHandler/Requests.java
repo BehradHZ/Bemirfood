@@ -815,6 +815,41 @@ public class Requests {
         }
     }
 
+    public static HttpResponseData validateCoupon(Map<String, String> queryParams) {
+        String path = "coupons";
+        try{
+            HttpResponseData responseData =
+                    sendGetRequest(
+                            path,queryParams,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
 
-
+    public static HttpResponseData applyCoupon(String requestBody) {
+        String path = "coupons/apply";
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path,HttpRequest.POST, requestBody,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
 }
