@@ -55,10 +55,6 @@ public class DeliveryCardController {
 
     public void setOrderData(Order order) {
         this.order = order;
-        if (order.getDelivery() == null || !order.getStatus().equals(OrderStatus.on_the_way))
-            accepted = false;
-        else if (order.getStatus().equals(OrderStatus.on_the_way))
-            accepted = true;
         setScene();
     }
 
@@ -105,47 +101,40 @@ public class DeliveryCardController {
     }
 
     public void setScene() {
-        orderId.setText("Order #" + order.getId());
+        orderAddress.setText("Address: " + order.getDeliveryAddress());
+        courierFee.setText(String.valueOf(order.getCourierFee()));
 
+        orderId.setText("Order #" + order.getId());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm");
         dateTime.setText(order.getCreatedAt().format(formatter));
         orderBuyerName.setText("Buyer: " + order.getCustomer().getFull_name());
-        statusComboBox.setValue(order.getStatus());
+        orderAddress.setText("Address: " + order.getDeliveryAddress());
+        courierFee.setText(String.valueOf(order.getCourierFee()));
         lastUpdate.setText("Last update: " + order.getUpdatedAt().format(formatter));
 
-        if (accepted) {
+        // --- 2. Clear and Robust Logic to Determine Card State ---
+        boolean isRecommended = order.getDelivery() == null && order.getStatus() == OrderStatus.finding_courier;
+        boolean isActive = order.getDelivery() != null && (order.getStatus() == OrderStatus.accepted || order.getStatus() == OrderStatus.on_the_way);
+        boolean isFinished = order.getStatus() == OrderStatus.completed || order.getStatus() == OrderStatus.cancelled;
+
+        acceptButton.setVisible(isRecommended);
+        acceptButton.setManaged(isRecommended);
+
+        statusComboBox.setVisible(isActive);
+        statusComboBox.setManaged(isActive);
+        if (isActive) {
+            statusComboBox.setValue(order.getStatus());
             orderCourierName.setText("Courier: " + order.getDelivery().getFull_name());
-            acceptButton.setVisible(false);
-            acceptButton.setManaged(false);
-            statusComboBox.setVisible(true);
-            lastUpdate.setVisible(true);
-        } else {
-            orderCourierName.setVisible(false);
-            acceptButton.setVisible(true);
-            statusComboBox.setVisible(false);
-            statusComboBox.setManaged(false);
-            lastUpdate.setVisible(false);
         }
 
-        if ((order.getDelivery() != null) && (order.getStatus().equals(OrderStatus.completed) ||
-                order.getStatus().equals(OrderStatus.cancelled))) {
-            acceptButton.setVisible(false);
-            acceptButton.setManaged(false);
-            statusComboBox.setVisible(false);
-            if (order.getStatus().equals(OrderStatus.cancelled)) {
-                completeButton.setVisible(false);
-                cancelButton.setVisible(true);
-                cancelButton.setDisable(true);
-            }
-            if (order.getStatus().equals(OrderStatus.completed)) {
-                completeButton.setVisible(true);
-                completeButton.setDisable(true);
-                cancelButton.setVisible(false);
-            }
-        }
+        orderCourierName.setVisible(isActive || isFinished);
+        lastUpdate.setVisible(isActive || isFinished);
 
-        orderAddress.setText("Address: " + order.getDeliveryAddress()); // Assuming address is on the order
-        courierFee.setText(String.valueOf(order.getCourierFee()));
+        completeButton.setVisible(isFinished && order.getStatus() == OrderStatus.completed);
+        completeButton.setDisable(isFinished && order.getStatus() == OrderStatus.completed);
+        cancelButton.setVisible(isFinished && order.getStatus() == OrderStatus.cancelled);
+        cancelButton.setDisable(isFinished && order.getStatus() == OrderStatus.cancelled);
+
         itemsSection.getChildren().clear();
 
         List<CartItem> cartItems = order.getCartItems();
