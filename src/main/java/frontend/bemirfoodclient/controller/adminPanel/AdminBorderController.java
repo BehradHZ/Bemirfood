@@ -391,7 +391,9 @@ public class AdminBorderController {
                     transactions.add(new Transaction(PaymentMethod.WALLET, LocalDateTime.now(), PaymentStatus.SUCCESS, seller1, order1));*/
 
             return transactions;
-        } else {
+        }
+        //show recommended
+        else {
             String searchText = "";
             String user = "";
             String method = "";

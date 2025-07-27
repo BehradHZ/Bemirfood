@@ -86,6 +86,30 @@
                             </VBox>
                         </ScrollPane>
                     </VBox>
+
+                    <VBox fx:id="recommendedItemSection" style="-fx-background-color: white; -fx-background-radius: 25;
+                    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0)"
+                          prefHeight="400">
+
+                        <VBox.margin>
+                            <Insets top="30" bottom="30" left="30" right="30"/>
+                        </VBox.margin>
+                        <Label text="Items:" style="-fx-font-size: 24; -fx-font-weight: bold"  onMouseClicked="#showAllItems">
+                            <VBox.margin>
+                                <Insets top="30" left="30"/>
+                            </VBox.margin>
+                        </Label>
+                        <ScrollPane fitToWidth="true">
+                            <VBox.margin>
+                                <Insets top="30" bottom="30" left="30" right="30"/>
+                            </VBox.margin>
+                            <VBox fx:id="recommendedItemList">
+                                <padding>
+                                    <Insets top="30" bottom="30" left="30" right="30"/>
+                                </padding>
+                            </VBox>
+                        </ScrollPane>
+                    </VBox>
                 </VBox>
             </VBox>
         </ScrollPane>
