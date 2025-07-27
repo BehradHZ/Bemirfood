@@ -39,6 +39,7 @@ public class builder {
         cust.setFull_name(user.getFull_name());
         cust.setMobile(user.getMobile());
         order.setCustomer(cust);
+        cust.setRole(user.getRole());
 
         if(orderDto.getCourier_id() != null){
             user = getUser(orderDto.getCourier_id());
@@ -53,6 +54,7 @@ public class builder {
             del.setFull_name(user.getFull_name());
             del.setMobile(user.getMobile());
             order.setDelivery(del);
+            del.setRole(user.getRole());
         }else{
             order.setDelivery(null);
         }

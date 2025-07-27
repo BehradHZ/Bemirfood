@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 import static HttpClientHandler.HttpClientHandler.sendGetRequest;
-import static exception.exp.expHandler;
 import static HttpClientHandler.HttpClientHandler.sendRequest;
+import static exception.exp.expHandler;
 
 public class Requests {
 
@@ -757,6 +757,64 @@ public class Requests {
             return response;
         }
     }
+
+    public static HttpResponseData addCouponAdmin(String requestBody) {
+        String path = "admin/coupons";
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path,HttpRequest.POST,requestBody,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData removeCouponAdmin(Long couponId) {
+        String path = "admin/coupons/" + couponId;
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path,HttpRequest.DELETE, null,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData updateCouponAdmin(String requestBody, Long  couponId) {
+        String path = "admin/coupons/" + couponId;
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path,HttpRequest.PUT, requestBody,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
 
 
 }

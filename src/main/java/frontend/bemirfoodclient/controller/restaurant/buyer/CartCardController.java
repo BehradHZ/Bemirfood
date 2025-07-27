@@ -75,6 +75,8 @@ public class CartCardController {
     public Button payButton;
     @FXML
     public ToggleGroup methodToggleGroup;
+    @FXML
+    public ImageView applyCouponIcon;
 
     private Order order;
 
