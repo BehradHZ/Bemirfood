@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 public class Token {
@@ -78,6 +79,14 @@ public class Token {
 
         // Replace original file with the modified temp file
         Files.move(tempFile, filePath, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    public static void clearFileContent() {
+        try {
+            Files.writeString(filePath, "", StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to clear file content", e);
+        }
     }
 }
 

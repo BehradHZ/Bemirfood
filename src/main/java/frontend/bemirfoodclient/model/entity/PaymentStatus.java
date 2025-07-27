@@ -11,7 +11,7 @@ public enum PaymentStatus {
             throw new InvalidInputException("Status cannot be null");
         }
         try {
-            return PaymentStatus.valueOf(str.toLowerCase());
+            return PaymentStatus.valueOf(str.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new InvalidInputException("This status is not valid: " + str);
         }

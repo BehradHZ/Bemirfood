@@ -1,5 +1,6 @@
 package frontend.bemirfoodclient.controller.adminPanel.card;
 
+import HttpClientHandler.HttpResponseData;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.entity.User;
 import frontend.bemirfoodclient.model.entity.UserStatus;
@@ -19,6 +20,8 @@ import javafx.stage.Stage;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+
+import static HttpClientHandler.Requests.removeUserAdmin;
 
 public class UserCardController {
 
@@ -80,12 +83,12 @@ public class UserCardController {
         // 2. If the user confirms, execute the callback
         if (result.isPresent() && result.get() == ButtonType.OK) {
             deleteCallback.accept(user);
+            deleteUser(user);
         }
     }
 
-    public int deleteUser(User user) {
-        //do the stuff in backend
 
-        return 200;
+    public HttpResponseData deleteUser(User user) {
+        return removeUserAdmin(user.getId());
     }
 }

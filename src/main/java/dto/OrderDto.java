@@ -23,6 +23,7 @@ public class OrderDto {
     String status;
     String created_at;
     String updated_at;
+    Boolean is_paid;
 
     @Getter
     @Setter

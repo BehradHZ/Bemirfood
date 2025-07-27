@@ -1,5 +1,10 @@
 package frontend.bemirfoodclient.controller.restaurant.buyer;
 
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
+import HttpClientHandler.Requests;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.PaymentGatewayDialogController;
 import frontend.bemirfoodclient.controller.restaurant.buyer.order.BuyerOrderItemCardController;
@@ -10,13 +15,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 public class CartCardController {
+
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+            .serializeNulls()
+            .create();
+
 
     @FXML
     public VBox itemsInTheCart;
@@ -126,12 +141,30 @@ public class CartCardController {
 
     public void pay() {
         Toggle selectedToggle = methodToggleGroup.getSelectedToggle();
-
+        HttpResponseData response = null;
         if (selectedToggle == onlineToggle) {
+            showPaymentDialog(false);
+            Map<String, Object> request = new HashMap<>();
+            request.put("order_id", order.getId());
+            request.put("method", "online");
+            response = Requests.pay(gson.toJson(request));
             showPaymentDialog(false);
         } else if (selectedToggle == walletToggle) {
 
+            Map<String, Object> request = new HashMap<>();
+            request.put("order_id", order.getId());
+            request.put("method", "wallet");
+            response = Requests.pay(gson.toJson(request));
         }
+
+        if(response.getStatusCode()== 200){
+            showAlert("Successful payment", "Thanks for your purchase", Alert.AlertType.CONFIRMATION);
+        }else if(response.getStatusCode() == 403){
+            showAlert("Payment Failed", "Insufficient balance", Alert.AlertType.ERROR);
+        }else{
+            showAlert("Failed payment", "Something went wrong", Alert.AlertType.ERROR);
+        }
+
     }
 
     private void showPaymentDialog(boolean isWalletTopUp) {
@@ -171,6 +204,16 @@ public class CartCardController {
         //do the stuff in backend
         //change paid to true
         return 200;
+    }
+
+    public void showAlert(String title, String content, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.getDialogPane().setGraphic(null);
+        alert.showAndWait();
     }
 
     public void applyCoupon() {

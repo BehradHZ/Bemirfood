@@ -86,8 +86,10 @@ public class BuyerBorderController {
     private void displayRestaurants(List<Restaurant> restaurants) {
 
         recommendedVendorList.getChildren().clear();
+        List<Restaurant> res = getRecommendedRestaurants();
+        if(res == null) return;
 
-        for (Restaurant restaurant : restaurants) {
+        for (Restaurant restaurant : res) {
             try {
                 FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(
                         "/frontend/bemirfoodclient/restaurant/buyer/restaurant-card.fxml"

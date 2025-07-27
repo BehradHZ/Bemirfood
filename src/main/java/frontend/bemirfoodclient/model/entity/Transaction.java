@@ -1,10 +1,12 @@
 package frontend.bemirfoodclient.model.entity;
 
-import frontend.bemirfoodclient.model.exception.InvalidInputException;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-
+@Getter
+@Setter
 public class Transaction {
 
     private Long id;
@@ -45,21 +47,12 @@ public class Transaction {
         this.order = order;
     }
 
-    public Long getId() { return id; }
-
     public String getPaymentMethod() {
         if (paymentMethod == PaymentMethod.WALLET) {
             return "wallet";
         } else {
             return "online";
         }
-    }
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
     }
 
     public String getStatus() {
@@ -74,24 +67,4 @@ public class Transaction {
         this.paymentStatus = paymentStatus;
     }
 
-    public PaymentStatus getPaymentStatus() {
-
-        return paymentStatus;
-    }
-
-    public User getSender() {
-        return sender;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setSender(User sender) {
-        this.sender = sender;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
 }

@@ -1,6 +1,7 @@
 package frontend.bemirfoodclient.model.entity;
 
 
+import com.google.gson.annotations.SerializedName;
 import frontend.bemirfoodclient.model.exception.ForbiddenException;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,10 +19,13 @@ Coupon {
 
     private CouponType type;
     private Long value;
+    @SerializedName("min_price")
     private Long minPrice;
+    @SerializedName("user_count")
     private Long userCount;
-
+    //@SerializedName("start_date")
     private LocalDateTime startDate;
+    //@SerializedName("end_date")
     private LocalDateTime endDate;
     public Coupon() {}
 

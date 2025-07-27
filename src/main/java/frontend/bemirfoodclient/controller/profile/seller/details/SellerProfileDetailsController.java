@@ -137,7 +137,7 @@ public class SellerProfileDetailsController {
        return updateUserProfile(gson.toJson(request));
     }
 
-
+    @FXML
     public void addProfilePicture() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Profile Picture");

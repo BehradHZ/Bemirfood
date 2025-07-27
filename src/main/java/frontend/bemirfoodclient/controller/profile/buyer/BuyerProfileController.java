@@ -2,6 +2,7 @@ package frontend.bemirfoodclient.controller.profile.buyer;
 
 import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.LocalDateTimeAdapter;
+import Util.Token;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
@@ -192,8 +193,7 @@ public class BuyerProfileController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
 
-            //do the stuff in backend
-            //YAML: Logout User
+            Token.clearFileContent();
 
             String homeDirectory = System.getProperty("user.dir");
             Path filePath = Path.of(homeDirectory, "registerTemp.txt");

@@ -2,6 +2,7 @@ package frontend.bemirfoodclient.controller.profile.buyer.details;
 
 import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.LocalDateTimeAdapter;
+import Util.ImageProcess;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -12,29 +13,27 @@ import frontend.bemirfoodclient.model.entity.User;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
 import static HttpClientHandler.Requests.getCurrentUserProfile;
 import static HttpClientHandler.Requests.updateUserProfile;
+import static Util.ImageProcess.imageFileToBase64;
 import static exception.exp.expHandler;
 
 public class BuyerProfileDetailsController {
@@ -142,6 +141,7 @@ public class BuyerProfileDetailsController {
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.bmp"),
                 new FileChooser.ExtensionFilter("All Files", "*.*")
         );
+
         Stage stage = (Stage) profileImageView.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
 
@@ -156,36 +156,49 @@ public class BuyerProfileDetailsController {
             double cropY = (originalHeight - cropSize) / 2;
             Rectangle2D cropRectangle = new Rectangle2D(cropX, cropY, cropSize, cropSize);
 
-            SnapshotParameters params = new SnapshotParameters();
-            params.setViewport(cropRectangle);
-            params.setFill(Color.TRANSPARENT);
-            WritableImage croppedImage = profileImageView.snapshot(params, null);
-
-            String base64String = null;
-            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(croppedImage, null);
-            try (ByteArrayOutputStream byteOutput = new ByteArrayOutputStream()) {
-                ImageIO.write(bufferedImage, "png", byteOutput);
-                base64String = Base64.getEncoder().encodeToString(byteOutput.toByteArray());
-            } catch (IOException e) {
-                System.err.println("Failed to convert image to Base64.");
-                e.printStackTrace();
+            // Crop the image using PixelReader instead of snapshot
+            PixelReader pixelReader = originalImage.getPixelReader();
+            if (pixelReader == null) {
+                System.err.println("PixelReader is null. Cannot read image data.");
+                return;
             }
+            WritableImage croppedImage = new WritableImage(pixelReader, (int) cropX, (int) cropY, (int) cropSize, (int) cropSize);
 
-            if (base64String != null) {
-                HttpResponseData response =     updateCurrentUserProfile(
-                        fullNameLabel.getText(),
-                        phoneNumberLabel.getText(),
-                        emailLabel.getText(),
-                        getAddress(),
-                        base64String,
-                        new Bank_info(getBank_name(), getAccount_number())
+            // Ensure directory exists
+            File dir = new File(ImageProcess.outputDir);
+            if (!dir.exists()) dir.mkdirs();
+
+            // Save the cropped image
+            String fileName = "User" + buyer.getId();
+            File outputFile = new File(ImageProcess.outputDir + File.separator + fileName + "." + ImageProcess.format);
+
+            try {
+                BufferedImage bufferedImage = SwingFXUtils.fromFXImage(croppedImage, null);
+                ImageIO.write(bufferedImage, ImageProcess.format, outputFile);
+
+                String base64String = imageFileToBase64(fileName);
+                if (base64String == null) {
+                    System.err.println("File not found when encoding to Base64.");
+                    return;
+                }
+
+                base64String = base64String.replaceAll("\\s", "");
+
+                HttpResponseData responseData = updateCurrentUserProfile(
+                        getFullName(), getPhoneNumber(), getEmail(), getAddress(),
+                        base64String, new Bank_info(getBank_name(), getAccount_number())
                 );
-                if(response.getStatusCode() == 200) {
+
+                if (responseData.getStatusCode() == 200) {
                     profileImageView.setImage(originalImage);
                     profileImageView.setViewport(cropRectangle);
-                }else{
-                    expHandler(response, "Update profile info failed", null);
+                } else {
+                    expHandler(responseData, "Failed to update profile", null);
                 }
+
+            } catch (IOException e) {
+                System.err.println("Error while saving or encoding the image.");
+                e.printStackTrace();
             }
         }
     }
@@ -215,10 +228,14 @@ public class BuyerProfileDetailsController {
     }
 
     public void setProfileImageBase64(ImageView profileImageView) {
-        //do the stuff in backend
-        boolean profilePhotoExists = false;
-        if (profilePhotoExists) {
-            String base64Uri = null;
+        HttpResponseData responseData = getCurrentUserProfile();
+        JsonObject body = responseData.getBody().get("Current user profile").getAsJsonObject();
+        String base64Uri = body.has("profileImageBase64") && !body.get("profileImageBase64").isJsonNull()
+                ? body.get("profileImageBase64").getAsString()
+                : null;
+
+        //boolean profilePhotoExists = false;
+        if (base64Uri != null) {
             ImageLoader.displayBase64Image(base64Uri, profileImageView);
         } else {
             profileImageView.setImage(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("" +

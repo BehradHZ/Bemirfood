@@ -67,6 +67,17 @@ public class req {
         );
     }
 
+    public static HttpResponseData getOrder(Long  orderId) {
+        String path = "dt/order/" +  orderId;
+        return tryRequestWithRetry(
+                () -> sendGetRequest(path, Token.read()),
+                3,
+                "Failed to connect server"
+        );
+    }
+
+
+
     public static HttpResponseData tryRequestWithRetry(
             RequestSupplierWithException<HttpResponseData> requestSupplier,
             int maxRetries,

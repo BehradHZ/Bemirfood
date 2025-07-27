@@ -1,6 +1,7 @@
 package BuildEntity;
 
 import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -69,8 +70,14 @@ public class builder {
         order.setDeliveryAddress(orderDto.getDelivery_address());
         order.setCreatedAt(StringToTime(orderDto.getCreated_at()));
         order.setUpdatedAt(StringToTime(orderDto.getUpdated_at()));
-        order.setStatus(orderDto.getStatus() != null ? OrderStatus.strToStatus(orderDto.getStatus()) : OrderStatus.submitted);
+        String status = orderDto.getStatus();
+        try{
+            order.setStatus(OrderStatus.strToStatus(status));
+        }catch (Exception e){
+            order.setStatus(OrderStatus.submitted);
+        }
         order.setCourierFee(orderDto.getCourier_fee());
+        order.setPaid(orderDto.getIs_paid());
         return order;
     }
 
@@ -91,7 +98,11 @@ public class builder {
 
             OrderDto dto = new OrderDto();
             dto.setId(orderJson.get("id").getAsLong());
-            dto.setDelivery_address(orderJson.get("delivery_address").getAsString());
+            if(!orderJson.get("delivery_address").isJsonNull()){
+                dto.setDelivery_address(orderJson.get("delivery_address").getAsString());
+            }else{
+                dto.setDelivery_address("");
+            }
             dto.setCustomer_id(orderJson.get("customer_id").getAsLong());
             dto.setVendor_id(orderJson.get("vendor_id").getAsLong());
 
@@ -122,6 +133,7 @@ public class builder {
             dto.setStatus(orderJson.get("status").getAsString());
             dto.setCreated_at(orderJson.get("created_at").getAsString());
             dto.setUpdated_at(orderJson.get("updated_at").getAsString());
+            dto.setIs_paid(orderJson.get("is_paid").getAsBoolean());
 
             Order order = buildOrder(dto);
 
@@ -131,4 +143,69 @@ public class builder {
         return orders;
     }
 
+    public static List<Transaction> buildTransactionList(RequestFunction requestFunction, String title, String error, Object ... args) {
+        List<Transaction> transactions = new ArrayList<>();
+        HttpResponseData response = requestFunction.apply(args);
+        if(response.getStatusCode() != 200) expHandler(response, null, null);
+        JsonArray transactionsJsonArray = response.getBody().get(title).getAsJsonArray();
+        for(JsonElement element : transactionsJsonArray){
+            Transaction transaction = new Transaction();
+            JsonObject obj = element.getAsJsonObject();
+            transaction.setId(obj.get("id").getAsLong());
+            User user = EntityRequest.getUser(obj.get("user_id").getAsLong());
+            transaction.setSender(user);
+            transaction.setPaymentStatus(PaymentStatus.strToStatus(obj.get("status").getAsString()));
+            transaction.setPaymentMethod(PaymentMethod.strToStatus(obj.get("method").getAsString()));
+            transaction.setTimestamp(LocalDateTimeAdapter.StringToTime(obj.get("timestamp").getAsString()));
+
+            HttpResponseData orderDtoRes = req.getOrder(obj.get("order_id").getAsLong());
+            if(orderDtoRes.getStatusCode() != 200)  expHandler(response, error, null);
+            JsonObject orderJson = orderDtoRes.getBody().getAsJsonObject();
+
+            OrderDto dto = new OrderDto();
+            dto.setId(orderJson.get("id").getAsLong());
+            if(!orderJson.get("delivery_address").isJsonNull()){
+                dto.setDelivery_address(orderJson.get("delivery_address").getAsString());
+            }else{
+                dto.setDelivery_address("");
+            }
+            dto.setCustomer_id(orderJson.get("customer_id").getAsLong());
+            dto.setVendor_id(orderJson.get("vendor_id").getAsLong());
+
+            if (!orderJson.get("coupon_id").isJsonNull()) {
+                dto.setCoupon_id(orderJson.get("coupon_id").getAsLong());
+            }
+
+            JsonArray itemsArray = orderJson.getAsJsonArray("items");
+            List<OrderDto.ItemHelper> itemHelpers = new ArrayList<>();
+            for (JsonElement itemElement : itemsArray) {
+                JsonObject itemObj = itemElement.getAsJsonObject();
+                Long itemId = itemObj.get("item_id").getAsLong();
+                int quantity = itemObj.get("quantity").getAsInt();
+                itemHelpers.add(new OrderDto.ItemHelper(itemId, quantity));
+            }
+            dto.setItems(itemHelpers);
+
+            dto.setRaw_price(orderJson.get("raw_price").getAsLong());
+            dto.setTax_fee(orderJson.get("tax_fee").getAsDouble());
+            dto.setAdditional_fee(orderJson.get("additional_fee").getAsDouble());
+            dto.setCourier_fee(orderJson.get("courier_fee").getAsDouble());
+            dto.setPay_price(orderJson.get("pay_price").getAsLong());
+
+            if (!orderJson.get("courier_id").isJsonNull()) {
+                dto.setCourier_id(orderJson.get("courier_id").getAsLong());
+            }
+
+            dto.setStatus(orderJson.get("status").getAsString());
+            dto.setCreated_at(orderJson.get("created_at").getAsString());
+            dto.setUpdated_at(orderJson.get("updated_at").getAsString());
+            dto.setIs_paid(orderJson.get("is_paid").getAsBoolean());
+
+            transaction.setOrder(buildOrder(dto));
+
+            transactions.add(transaction);
+        }
+
+        return transactions;
+    }
 }
