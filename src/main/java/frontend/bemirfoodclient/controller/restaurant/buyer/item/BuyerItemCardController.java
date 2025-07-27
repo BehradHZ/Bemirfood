@@ -111,7 +111,12 @@ public class BuyerItemCardController {
         HttpResponseData response = getCartItemQuantity(item.getId());
         JsonObject body = response.getBody();
         JsonObject cartItemObj = body.getAsJsonObject("Cart item");
-        return cartItemObj.get("quantity").getAsInt();
+        if(cartItemObj != null && !cartItemObj.get("quantity").isJsonNull()) {
+            return cartItemObj.get("quantity").getAsInt();
+        }else{
+            return 0;
+        }
+
     }
 
     public void addItemToCart() {

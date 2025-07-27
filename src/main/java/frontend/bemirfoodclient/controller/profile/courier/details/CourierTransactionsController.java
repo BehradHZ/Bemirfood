@@ -46,6 +46,7 @@ public class CourierTransactionsController {
     }
 
     private List<Transaction> getTransactions() {
+        System.out.println("getTransactions invoked");
         return buildTransactionList(args -> Requests.getTransactions(), "List of transactions", "Failed to get transactions");
     }
 

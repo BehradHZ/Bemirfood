@@ -1,7 +1,10 @@
 package frontend.bemirfoodclient.controller;
 
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.Requests;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.entity.Transaction;
+import frontend.bemirfoodclient.model.entity.UserRole;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -74,7 +77,16 @@ public class TransactionCardController {
         return transaction.getTimestamp().getHour() + ":" + transaction.getTimestamp().getMinute();
     }
     public String getAmount(Transaction transaction) {
-        return transaction.getOrder().getPayPrice().toString();
+        HttpResponseData response = Requests.getCurrentUserProfile();
+        String strRole = response.getBody().get("Current user profile").getAsJsonObject().get("role").getAsString();
+        UserRole role = UserRole.valueOf(strRole.toUpperCase());
+        if(role.equals(UserRole.BUYER)) {
+            return transaction.getOrder().getPayPrice().toString();
+        }else if(role.equals(UserRole.COURIER)) {
+            return String.valueOf(transaction.getOrder().getRestaurant().getAdditionalFee()/4);
+        }else{
+            return String.valueOf(transaction.getOrder().getPayPrice() - transaction.getOrder().getRestaurant().getAdditionalFee()/4);
+        }
     }
     public String getDate(Transaction transaction) {
         return transaction.getTimestamp().getMonth().name() + " " + transaction.getTimestamp().getDayOfMonth() + ", " +
