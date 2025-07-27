@@ -53,8 +53,6 @@ public class BuyerItemCardController {
 
     private Item item;
 
-    private int tity;
-
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .serializeNulls()

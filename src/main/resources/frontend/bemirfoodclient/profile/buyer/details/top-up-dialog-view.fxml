@@ -13,7 +13,7 @@
             prefHeight="80.0" prefWidth="500.0">
     <content>
         <VBox spacing="10">
-            <Label text="Enter your account number:" style="-fx-font-weight: bold; -fx-font-size: 16">
+            <Label text="Enter your One Time Password:" style="-fx-font-weight: bold; -fx-font-size: 16">
                 <padding>
                     <Insets top="30" bottom="15"/>
                 </padding>

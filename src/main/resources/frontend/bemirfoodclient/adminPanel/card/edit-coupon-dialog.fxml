@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<DialogPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.adminPanel.card.EditCouponDialogController"
+            prefHeight="500.0" prefWidth="600.0">
+    <content>
+        <VBox>
+            <VBox.margin>
+                <Insets top="20" bottom="20" left="20" right="20"/>
+            </VBox.margin>
+
+            <Label text="Coupon Code:" style="-fx-font-weight: bold; -fx-font-size: 20">
+                <padding>
+                    <Insets bottom="5"/>
+                </padding>
+            </Label>
+            <TextField fx:id="couponCodeTextField">
+                <VBox.margin>
+                    <Insets bottom="15"/>
+                </VBox.margin>
+            </TextField>
+
+            <Label text="Type:" style="-fx-font-weight: bold; -fx-font-size: 20">
+                <padding>
+                    <Insets bottom="5"/>
+                </padding>
+            </Label>
+
+            <HBox spacing="10">
+                <padding>
+                    <Insets bottom="15"/>
+                </padding>
+                <RadioButton fx:id="fixedRadioButton" text="fixed"/>
+                <RadioButton fx:id="percentRadioButton" text="percent"/>
+            </HBox>
+
+            <Label text="Value:" style="-fx-font-weight: bold; -fx-font-size: 20">
+                <padding>
+                    <Insets bottom="5"/>
+                </padding>
+            </Label>
+            <TextField fx:id="valueTextField">
+                <VBox.margin>
+                    <Insets bottom="15"/>
+                </VBox.margin>
+            </TextField>
+
+            <Label text="Min Price:" style="-fx-font-weight: bold; -fx-font-size: 20">
+                <padding>
+                    <Insets bottom="5"/>
+                </padding>
+            </Label>
+            <TextField fx:id="minPriceTextField">
+                <VBox.margin>
+                    <Insets bottom="15"/>
+                </VBox.margin>
+            </TextField>
+
+            <Label text="User Count:" style="-fx-font-weight: bold; -fx-font-size: 20">
+                <padding>
+                    <Insets bottom="5"/>
+                </padding>
+            </Label>
+            <TextField fx:id="userCountTextField">
+                <VBox.margin>
+                    <Insets bottom="15"/>
+                </VBox.margin>
+            </TextField>
+
+            <HBox alignment="CENTER" spacing="50">
+                <VBox>
+                    <Label text="Start Date:" style="-fx-font-weight: bold; -fx-font-size: 20">
+                        <padding>
+                            <Insets bottom="5"/>
+                        </padding>
+                    </Label>
+                    <DatePicker fx:id="startDate"/>
+                </VBox>
+                <VBox>
+                    <Label text="End Date:" style="-fx-font-weight: bold; -fx-font-size: 20">
+                        <padding>
+                            <Insets bottom="5"/>
+                        </padding>
+                    </Label>
+                    <DatePicker fx:id="endDate"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </content>
+
+</DialogPane>

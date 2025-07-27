@@ -13,19 +13,15 @@ import java.util.Objects;
 public class PaymentGatewayDialogController {
     @FXML private VBox amountVBox;
     @FXML private TextField amountField;
-    @FXML private TextField accountNumberField;
+    @FXML private TextField otp;
 
-    /**
-     * Configures the dialog for a specific mode.
-     * @param isWalletTopUp true if it's for topping up the wallet, false for cart payment.
-     */
     public void setMode(boolean isWalletTopUp) {
         amountVBox.setVisible(isWalletTopUp);
         amountVBox.setManaged(isWalletTopUp); // This removes it from the layout when hidden
     }
 
-    public String getAccountNumber() {
-        return accountNumberField.getText();
+    public String getOtp() {
+        return otp.getText();
     }
 
     public double getAmount() {

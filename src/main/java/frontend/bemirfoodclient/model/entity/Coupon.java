@@ -39,9 +39,24 @@ Coupon {
         this.endDate = endDate;
     }
 
+    public Coupon(Long id, String code, CouponType type, Long value, Long minPrice, Long userCount, LocalDateTime startDate, LocalDateTime endDate) {
+        this.id = id;
+        this.code = code;
+        this.type = type;
+        this.value = value;
+        this.minPrice = minPrice;
+        this.userCount = userCount;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public void subtractUserCount(){
         if(this.userCount <= 0) throw new ForbiddenException("Coupon can't be used any more");
         this.userCount--;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getCode() {
