@@ -28,13 +28,13 @@ public class AddRatingDialogController {
 
     private OrderRating existingRating;
 
-    public void setExistingRating(OrderRating rating) {
-        this.existingRating = rating;
-        if (rating != null) {
-            this.currentRating = rating.getRating();
-            this.commentTextArea.setText(rating.getComment());
-            if (rating.getImageBase64() != null) {
-                this.imageBase64List.addAll(rating.getImageBase64());
+    public void setExistingRating(BuyerOrderCardController.OrderRatingDto ratingDto) {
+        //this.existingRating = rating;
+        if (ratingDto != null) {
+            this.currentRating = ratingDto.getRating();
+            this.commentTextArea.setText(ratingDto.getComment());
+            if (ratingDto.getImageBase64() != null) {
+                this.imageBase64List.addAll(ratingDto.getImageBase64());
                 updateImageButtonText();
             }
             updateStars();
