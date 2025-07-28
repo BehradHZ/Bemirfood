@@ -44,7 +44,7 @@ public class BuyerProfileController {
             .create();
 
     @FXML
-    public static BorderPane mainBorderPane;
+    public BorderPane mainBorderPane;
 
     @FXML
     public Button profileSmall;

@@ -59,8 +59,11 @@ public class BuyerBorderController {
     private final List<Restaurant> allRestaurants = MockDataFactory.createMockRestaurants();
     private final List<Item> allItems = MockDataFactory.createMockItems(allRestaurants);
 
+    public static BorderPane staticMainBorderPane;
+
 
     public void initialize() {
+        staticMainBorderPane = mainBorderPane;
         borderBemirfoodLogo.setPreserveRatio(true);
         borderBemirfoodLogo.setFitHeight(40);
 

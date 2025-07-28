@@ -40,7 +40,7 @@ import static HttpClientHandler.Requests.getCurrentUserProfile;
 import static HttpClientHandler.Requests.updateUserProfile;
 import static Util.ImageProcess.imageFileToBase64;
 import static exception.exp.expHandler;
-import static frontend.bemirfoodclient.controller.profile.buyer.BuyerProfileController.mainBorderPane;
+import static frontend.bemirfoodclient.controller.border.BuyerBorderController.staticMainBorderPane;
 
 public class BuyerProfileDetailsController {
 
@@ -113,7 +113,7 @@ public class BuyerProfileDetailsController {
     }
 
     private void cardClick(Restaurant selectedRestaurant) {
-        if (selectedRestaurant != null && mainBorderPane != null) {
+        if (selectedRestaurant != null && staticMainBorderPane != null) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(
                         "/frontend/bemirfoodclient/restaurant/buyer/buyer-restaurant-view.fxml"
@@ -123,7 +123,7 @@ public class BuyerProfileDetailsController {
                 BuyerRestaurantViewController pageController = loader.getController();
                 pageController.setRestaurantData(selectedRestaurant);
 
-                mainBorderPane.setCenter(restaurantPageView);
+                staticMainBorderPane.setCenter(restaurantPageView);
             } catch (IOException e) {
                 e.printStackTrace();
             }
