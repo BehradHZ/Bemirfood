@@ -165,6 +165,9 @@ public class BuyerRestaurantViewController {
         List<Item> items = new ArrayList<>();
         for(JsonElement itemElement : itemArray) {
             Item item = g.fromJson(itemElement, Item.class);
+            HttpResponseData res = getItemAvgRating(item.getId());
+            JsonObject array = res.getBody().getAsJsonObject("List of ratings and reviews");
+            item.setRating(array.get("avg_rating").getAsDouble());
             items.add(item);
         }
 
