@@ -22,14 +22,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static BuildEntity.EntityRequest.getEntity;
 import static HttpClientHandler.Requests.getCustomerFavorites;
+import static HttpClientHandler.Requests.getItemsWithFilter;
 
 public class BuyerBorderController {
 
@@ -86,7 +85,7 @@ public class BuyerBorderController {
         displayRestaurants(recommendedRestaurants);
 
         List<Item> recommendedItems = getRecommendedItems();
-        //displayItems(recommendedItems);
+        displayItems(recommendedItems);
     }
 
     private void displayRestaurants(List<Restaurant> restaurants) {
@@ -275,13 +274,16 @@ public class BuyerBorderController {
     }
 
     public List<Item> getRecommendedItems() {
-        //do the stuff in backend
-        //recommended items can be 5 recently added items
+        Map<String, Object> request =  new HashMap<>();
+        HttpResponseData response = getItemsWithFilter(gson.toJson(request));
+        JsonArray itemArray = response.getBody().getAsJsonArray("List of items");
+        List<Item> items = new ArrayList<>();
+        for(JsonElement itemElement : itemArray) {
+            Item item = gson.fromJson(itemElement, Item.class);
+            items.add(item);
+        }
 
-//        List<Item> items = new ArrayList<>();
-//        return items;
-        return allItems.stream().filter(i -> i.getName().contains("Pizza") || i.getName().contains("Taco")).collect(Collectors.toList());
-
+        return items;
     }
 
     public void cardClick(Restaurant selectedRestaurant) {

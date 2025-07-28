@@ -1,5 +1,8 @@
 package frontend.bemirfoodclient.controller.restaurant.buyer.order;
 
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
+import com.google.gson.*;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.entity.CartItem;
 import frontend.bemirfoodclient.model.entity.Order;
@@ -11,16 +14,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static HttpClientHandler.Requests.*;
+import static exception.exp.expHandler;
+
 public class BuyerOrderCardController {
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+            .serializeNulls()
+            .create();
     @FXML
     public BorderPane mainBorderPane;
     @FXML
@@ -194,7 +204,7 @@ public class BuyerOrderCardController {
             AddRatingDialogController dialogController = loader.getController();
             dialogController.setOrderId(this.order.getId());
 
-            String title = "Add Rating";
+            //String title = "Add Rating";
 //            if (existingRating != null) {
 //                dialogController.setExistingRating(existingRating);
 //                title = "Edit Your Rating";
@@ -206,17 +216,40 @@ public class BuyerOrderCardController {
 
             ButtonType deleteButtonType = new ButtonType("Delete", ButtonBar.ButtonData.OTHER);
             dialog.getDialogPane().getButtonTypes().addAll(deleteButtonType, ButtonType.CANCEL, ButtonType.OK);
-//            if (existingRating == null) {
-//                dialog.getDialogPane().lookupButton(deleteButtonType).setVisible(false);
-//            } else {
-//                dialog.getDialogPane().lookupButton(deleteButtonType).setVisible(true);
-//            }
+            if (existingRating == null) {
+                dialog.getDialogPane().lookupButton(deleteButtonType).setVisible(false);
+            } else {
+                dialog.getDialogPane().lookupButton(deleteButtonType).setVisible(true);
+            }
 
             dialog.setHeaderText(null);
-            dialog.setTitle(title);
 
             final Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
             okButton.setText("Submit");
+
+            String title;
+
+            HttpResponseData response = getOrderRating(order.getId());
+            if(response.getStatusCode() != 200) {
+                title = "Add Rating";
+            }else{
+                JsonObject body = response.getBody().get("Order rating").getAsJsonObject();
+                OrderRatingDto ratingDto = new OrderRatingDto();
+                ratingDto.setOrder_id(body.get("order_id").getAsLong());
+                ratingDto.setRating(body.get("rating").getAsInt());
+                ratingDto.setComment(body.get("comment").getAsString());
+                JsonArray imageArray = body.getAsJsonArray("imageBase64");
+                List<String> images = new ArrayList<>();
+                for (JsonElement element : imageArray) {
+                    images.add(element.getAsString());
+                }
+                ratingDto.setImageBase64(images);
+                title = "Edit Your Rating";
+                dialogController.setExistingRating(ratingDto);
+            }
+
+            dialog.setTitle(title);
+
 
             AtomicReference<Map<String, Object>> ratingDataRef = new AtomicReference<>();
 
@@ -232,7 +265,7 @@ public class BuyerOrderCardController {
 
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 Map<String, Object> ratingData = ratingDataRef.get();
-                long orderId = Long.parseLong(ratingData.get("orderId").toString());
+                long orderId = Long.parseLong(ratingData.get("order_id").toString());
                 int rating = Integer.parseInt(ratingData.get("rating").toString());
                 String comment = ratingData.get("comment").toString();
                 List<String> images = new ArrayList<>();
@@ -241,24 +274,23 @@ public class BuyerOrderCardController {
                 } catch (ClassCastException e) {
                     e.printStackTrace();
                 }
-                if (existingRating == null) {
-                    //TODO: they are adding new rating
-                    if (addRating(orderId, rating, comment, images) == 200) {
-                        System.out.println("Successfully added rating");
-                    }
-                    //TODO: show alerts
-                } else {
-                    //TODO: they are updating the rating
-                    if (editRating(orderId, rating, comment, images) == 200) {
-                        System.out.println("Successfully edited rating");
-                    }
-                    //TODO: show alerts
+
+                if(response.getStatusCode() != 200) {
+                    HttpResponseData res = addRating(orderId, rating, comment, images);
+
+                    if (res.getStatusCode() != 200) expHandler(response, "Filed to submit rating",null);
+                    System.out.println("Successfully added rating");
+
+                }else{
+                    HttpResponseData res = editRating( orderId, rating, comment, images);
+                    if(res.getStatusCode() != 200) expHandler(res, "Filed to edit rating",null);
+                    System.out.println("Successfully edited rating");
                 }
 
             } else if (result.get() == deleteButtonType) {
                 //TODO: delete the existing rating
                 if (deleteRating() == 200) {
-                    System.out.println("Successfully edited rating");
+                    System.out.println("Successfully delete rating");
                 }
                 //TODO: show alerts
                 System.out.println("Delete button pressed");
@@ -269,21 +301,36 @@ public class BuyerOrderCardController {
         }
     }
 
-    public int addRating(long orderId, int rating, String comment, List<String> images) {
-        /*TODO: do the stuff in backend
-        *       you can also use this.order to find the order*/
-        return 200;
+    public HttpResponseData addRating(long orderId, int rating, String comment, List<String> images) {
+        Map<String, Object> request = new HashMap<>();
+        request.put("order_id", orderId);
+        request.put("rating", rating);
+        if(comment != null) request.put("comment", comment);
+        if(images != null && !images.isEmpty())request.put("imageBase64", images);
+        return submitRating(gson.toJson(request));
     }
 
-    public int editRating(long orderId, int rating, String comment, List<String> images) {
-        /*TODO: do the stuff in backend
-         *       you can also use this.order to find the order*/
-        return 200;
+    public HttpResponseData editRating(Long orderId, int rating, String comment, List<String> images) {
+        Map<String, Object> request = new HashMap<>();
+        request.put("order_id", orderId);
+        request.put("rating", rating);
+        request.put("comment", comment);
+        request.put("imageBase64", images);
+        return editOrderRating(gson.toJson(request), orderId);
     }
 
     public int deleteRating() {
         /*TODO: do the stuff in backend
         *  you can also use this.order to find the order*/
         return 200;
+    }
+
+    @Getter
+    @Setter
+    class OrderRatingDto {
+        Long order_id;
+        int rating;
+        String comment;
+        List<String> imageBase64;
     }
 }

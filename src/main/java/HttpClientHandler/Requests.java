@@ -852,4 +852,81 @@ public class Requests {
             return response;
         }
     }
+
+    public static HttpResponseData getItemsWithFilter(String requestBody) {
+        String path = "items";
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path,HttpRequest.POST, requestBody,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData submitRating(String requestBody) {
+        String path = "ratings";
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path,HttpRequest.POST, requestBody,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData getOrderRating(Long orderId) {
+        String path = "ratings/order/" + orderId;
+        try{
+            HttpResponseData responseData =
+                    sendGetRequest(
+                            path,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData editOrderRating(String requestBody, Long ratingId) {
+        String path = "ratings/" + ratingId;
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path,HttpRequest.PUT, requestBody,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
 }
