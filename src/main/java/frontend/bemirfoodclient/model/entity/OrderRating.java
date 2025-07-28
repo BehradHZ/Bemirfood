@@ -10,8 +10,31 @@ public class OrderRating {
     private int rating;
     private String comment;
     private List<String> imageBase64;
-    LocalDateTime createdAt;
-
+    private LocalDateTime createdAt;
 
     private Order order;
+
+    public Long getId() {
+        return id;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public List<String> getImageBase64() {
+        return imageBase64;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
 }

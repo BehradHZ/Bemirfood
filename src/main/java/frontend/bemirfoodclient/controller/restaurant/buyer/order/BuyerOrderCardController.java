@@ -3,18 +3,26 @@ package frontend.bemirfoodclient.controller.restaurant.buyer.order;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.entity.CartItem;
 import frontend.bemirfoodclient.model.entity.Order;
+import frontend.bemirfoodclient.model.entity.OrderRating;
 import frontend.bemirfoodclient.model.entity.OrderStatus;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class BuyerOrderCardController {
+    @FXML
+    public BorderPane mainBorderPane;
     @FXML
     public Label orderId;
     @FXML
@@ -59,11 +67,17 @@ public class BuyerOrderCardController {
     public Region lastUpdateSpacer;
     @FXML
     public Label lastUpdate;
+    @FXML
+    public Button addRatingButton;
+    @FXML
+    public ImageView orderRatingButtonIcon;
 
     private Order order;
+    private OrderRating existingRating;
 
     public void setOrderData(Order order) {
         this.order = order;
+        this.existingRating = order.getRating();
         setScene();
     }
 
@@ -78,10 +92,20 @@ public class BuyerOrderCardController {
         HBox.setHgrow(lastUpdateSpacer, Priority.ALWAYS);
 
         orderStatusButton.setDisable(true);
+        orderRatingButtonIcon.setPreserveRatio(true);
+        orderRatingButtonIcon.setFitHeight(20);
     }
 
     public void setScene() {
         orderId.setText("Order #" + order.getId());
+
+//        if (order.getStatus() == OrderStatus.completed) {
+//            addRatingButton.setVisible(true);
+//            addRatingButton.setManaged(true);
+//        } else {
+//            addRatingButton.setVisible(false);
+//            addRatingButton.setManaged(false);
+//        }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm");
         dateTime.setText(order.getCreatedAt().format(formatter));
@@ -159,5 +183,107 @@ public class BuyerOrderCardController {
         //do the stuff in backend
 
         return 200; //temporary
+    }
+
+    public void manageRatingButtonClicked(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(
+                    "/frontend/bemirfoodclient/restaurant/buyer/order/add-rating-dialog.fxml"));
+            DialogPane dialogPane = loader.load();
+
+            AddRatingDialogController dialogController = loader.getController();
+            dialogController.setOrderId(this.order.getId());
+
+            String title = "Add Rating";
+            if (existingRating != null) {
+                dialogController.setExistingRating(existingRating);
+                title = "Edit Your Rating";
+            }
+
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.initOwner(mainBorderPane.getScene().getWindow());
+            dialog.setDialogPane(dialogPane);
+
+            ButtonType deleteButtonType = new ButtonType("Delete", ButtonBar.ButtonData.OTHER);
+            dialog.getDialogPane().getButtonTypes().addAll(deleteButtonType, ButtonType.CANCEL, ButtonType.OK);
+            if (existingRating == null) {
+                dialog.getDialogPane().lookupButton(deleteButtonType).setVisible(false);
+            } else {
+                dialog.getDialogPane().lookupButton(deleteButtonType).setVisible(true);
+            }
+
+            dialog.setHeaderText(null);
+            dialog.setTitle(title);
+
+            final Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+            okButton.setText("Submit");
+
+            AtomicReference<Map<String, Object>> ratingDataRef = new AtomicReference<>();
+
+            okButton.addEventFilter(ActionEvent.ACTION, e -> {
+                Map<String, Object> resultData = dialogController.processResult();
+                ratingDataRef.set(resultData); // Store the result
+                if (resultData == null) {
+                    e.consume();
+                }
+            });
+
+            Optional<ButtonType> result = dialog.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                Map<String, Object> ratingData = ratingDataRef.get();
+                long orderId = Long.parseLong(ratingData.get("orderId").toString());
+                int rating = Integer.parseInt(ratingData.get("rating").toString());
+                String comment = ratingData.get("comment").toString();
+                List<String> images = new ArrayList<>();
+                try {
+                    images = (List<String>) ratingData.get("imageBase64");
+                } catch (ClassCastException e) {
+                    e.printStackTrace();
+                }
+                if (existingRating == null) {
+                    //TODO: they are adding new rating
+                    if (addRating(orderId, rating, comment, images) == 200) {
+                        System.out.println("Successfully added rating");
+                    }
+                    //TODO: show alerts
+                } else {
+                    //TODO: they are updating the rating
+                    if (editRating(orderId, rating, comment, images) == 200) {
+                        System.out.println("Successfully edited rating");
+                    }
+                    //TODO: show alerts
+                }
+
+            } else if (result.get() == deleteButtonType) {
+                //TODO: delete the existing rating
+                if (deleteRating() == 200) {
+                    System.out.println("Successfully edited rating");
+                }
+                //TODO: show alerts
+                System.out.println("Delete button pressed");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int addRating(long orderId, int rating, String comment, List<String> images) {
+        /*TODO: do the stuff in backend
+        *       you can also use this.order to find the order*/
+        return 200;
+    }
+
+    public int editRating(long orderId, int rating, String comment, List<String> images) {
+        /*TODO: do the stuff in backend
+         *       you can also use this.order to find the order*/
+        return 200;
+    }
+
+    public int deleteRating() {
+        /*TODO: do the stuff in backend
+        *  you can also use this.order to find the order*/
+        return 200;
     }
 }

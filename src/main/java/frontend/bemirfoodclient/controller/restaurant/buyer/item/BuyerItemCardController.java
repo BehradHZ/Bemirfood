@@ -4,11 +4,12 @@ import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.ImageLoader;
 import frontend.bemirfoodclient.model.entity.Item;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -21,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static HttpClientHandler.Requests.getCartItemQuantity;
 import static HttpClientHandler.Requests.modifyCartItems;
 
 public class BuyerItemCardController {
@@ -50,6 +50,8 @@ public class BuyerItemCardController {
     public Button plus;
     @FXML
     public HBox addToCart;
+    @FXML
+    public Button viewRatingsButton;
 
     private Item item;
 
@@ -95,6 +97,20 @@ public class BuyerItemCardController {
         quantity.setText(String.valueOf(getItemQuantity()));
     }
 
+    @FXML
+    void viewRatingsButtonClicked(ActionEvent event) {
+        // TODO: In a real implementation, you would:
+        // 1. Call your backend to get all ratings for this.item.getId()
+        // 2. Create a new custom dialog to display the list of ratings.
+
+        // For now, we will just show a placeholder alert.
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Item Ratings");
+        alert.setHeaderText("Ratings for " + item.getName());
+        alert.setContentText("Backend integration needed to display ratings here.");
+        alert.showAndWait();
+    }
+
     private void setItemPhoto() {
         //do the stuff in backend
         boolean profilePhotoExists = false;
@@ -108,10 +124,11 @@ public class BuyerItemCardController {
     }
 
     public int getItemQuantity() {
-        HttpResponseData response = getCartItemQuantity(item.getId());
-        JsonObject body = response.getBody();
-        JsonObject cartItemObj = body.getAsJsonObject("Cart item");
-        return cartItemObj.get("quantity").getAsInt();
+//        HttpResponseData response = getCartItemQuantity(item.getId());
+//        JsonObject body = response.getBody();
+//        JsonObject cartItemObj = body.getAsJsonObject("Cart item");
+//        return cartItemObj.get("quantity").getAsInt();
+        return 3;
     }
 
     public void addItemToCart() {

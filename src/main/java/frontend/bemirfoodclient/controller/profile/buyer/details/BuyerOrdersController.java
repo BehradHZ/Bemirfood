@@ -2,17 +2,16 @@ package frontend.bemirfoodclient.controller.profile.buyer.details;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.restaurant.buyer.order.BuyerOrderCardController;
-import frontend.bemirfoodclient.model.entity.Order;
+import frontend.bemirfoodclient.model.entity.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-
-import static BuildEntity.builder.buildOrderList;
-import static HttpClientHandler.Requests.getCustomerOrders;
 
 public class BuyerOrdersController {
 
@@ -44,12 +43,11 @@ public class BuyerOrdersController {
 
 
     private List<Order> getOrders() {
-        return buildOrderList(args -> getCustomerOrders(), "List of past orders", "Failed to get orders");
-    }
+//        return buildOrderList(args -> getCustomerOrders(), "List of past orders", "Failed to get orders");
+//    }
 
 
-    /*
-            //do the stuff in backend
+        //do the stuff in backend
 
         //temporary
         List<Order> orders = new ArrayList<>();
@@ -96,6 +94,7 @@ public class BuyerOrdersController {
                 LocalDateTime.now().minusDays(2), LocalDateTime.now().minusDays(1),
                 fixedDiscount, OrderStatus.waiting_vendor, 15000.0);
         order1.setDelivery(delivery1); // Manually set the delivery person
+        order1.setId(101L);
         orders.add(order1);
 
         // --- ORDER 2: A pending burger order with a percentage coupon ---
@@ -104,6 +103,7 @@ public class BuyerOrdersController {
                 LocalDateTime.now().minusHours(1), LocalDateTime.now(),
                 percentDiscount, OrderStatus.waiting_vendor, 18000.0);
         order2.setDelivery(delivery1); // Manually set the delivery person
+        order2.setId(102L);
         orders.add(order2);
 
         // --- ORDER 3: A cancelled pizza order with no coupon ---
@@ -112,8 +112,9 @@ public class BuyerOrdersController {
                 LocalDateTime.now().minusDays(3), LocalDateTime.now().minusDays(3).plusHours(1),
                 OrderStatus.cancelled, 0.0);
         order3.setDelivery(delivery2); // Manually set the delivery person
+        order3.setId(103L);
         orders.add(order3);
 
         return orders;
-    * */
+    }
 }
