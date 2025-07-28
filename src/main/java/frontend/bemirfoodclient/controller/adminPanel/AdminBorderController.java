@@ -29,17 +29,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static BuildEntity.builder.buildOrderList;
 import static BuildEntity.builder.buildTransactionList;
 import static HttpClientHandler.Requests.*;
 import static exception.exp.expHandler;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class AdminBorderController {
 
@@ -311,14 +306,21 @@ public class AdminBorderController {
                 controller.setCouponData(coupon);
 
                 controller.setOnDelete(couponToDelete -> {
-                    if (deleteCoupon(couponToDelete) == 200)
-                        discountCodesButtonClicked(); // Refresh the list
+                    HttpResponseData responseData = deleteCoupon(couponToDelete);
+                    if(responseData.getStatusCode() == 200) {
+                        discountCodesButtonClicked();
+                    }else{
+                        expHandler(responseData, "Failed to remove coupon", null);
+                    }
                 });
 
                 // Set the action for the edit button
                 controller.setOnEdit(couponToEdit -> {
-                    if (updateCoupon(couponToEdit) == 200){
-                        discountCodesButtonClicked(); // Refresh the list
+                    HttpResponseData response = updateCoupon(couponToEdit);
+                    if (response.getStatusCode() == 200) {
+                        discountCodesButtonClicked();
+                    }else{
+                        expHandler(response, "Failed to update coupon", null);
                     }
                 });
 
@@ -329,14 +331,23 @@ public class AdminBorderController {
         }
     }
 
-    private int updateCoupon(Coupon couponToEdit) {
-        //do the stuff in backend
-        return 200; //temporary
+    private HttpResponseData updateCoupon(Coupon couponToEdit) {
+        Map<String, Object> request = new HashMap<>();
+        if(couponToEdit.getCode() != null) request.put("coupon_code", couponToEdit.getCode());
+        if(couponToEdit.getCode() != null) request.put("type", couponToEdit.getType());
+        if(couponToEdit.getValue() != 0) request.put("value", couponToEdit.getValue());
+        if(couponToEdit.getMinPrice() != null) request.put("min_price", couponToEdit.getMinPrice());
+        if(couponToEdit.getUserCount() != null) request.put("user_count", couponToEdit.getUserCount());
+        if(couponToEdit.getStartDate() != null)
+            request.put("start_date", LocalDateTimeAdapter.DateTimeToString(couponToEdit.getStartDate()));
+        if(couponToEdit.getEndDate() != null)
+            request.put("end_date", LocalDateTimeAdapter.DateTimeToString(couponToEdit.getEndDate()));
+
+        return updateCouponAdmin(gson.toJson(request),  couponToEdit.getId());
     }
 
-    private int deleteCoupon(Coupon couponToDelete) {
-        //do the stuff in backend
-        return 200;
+    private HttpResponseData deleteCoupon(Coupon couponToDelete) {
+        return removeCouponAdmin(couponToDelete.getId());
     }
 
     public List<Coupon> getCoupons() {
@@ -453,16 +464,27 @@ public class AdminBorderController {
             // Show the dialog and process the result
             Optional<ButtonType> result = dialog.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                if (createCoupon(newCoupon.get()) == 200) // Call the backend logic
-                    discountCodesButtonClicked(); // Refresh the view
+                HttpResponseData response = createCoupon(newCoupon.get());
+                if(response.getStatusCode() == 200){
+                    discountCodesButtonClicked();
+                }else{
+                    expHandler(response, "Failed to get coupons", null);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public int createCoupon(Coupon coupon) {
-        //do the stuff in backend
-        return 200;
+    public HttpResponseData createCoupon(Coupon coupon) {
+        Map<String, Object> request = new HashMap<>();
+        request.put("coupon_code", coupon.getCode());
+        request.put("type", coupon.getType());
+        request.put("value", coupon.getValue());
+        request.put("min_price", coupon.getMinPrice());
+        request.put("user_count",  coupon.getUserCount());
+        request.put("start_date", LocalDateTimeAdapter.DateTimeToString(coupon.getStartDate()));
+        request.put("end_date", LocalDateTimeAdapter.DateTimeToString(coupon.getStartDate()));
+        return Requests.addCouponAdmin(gson.toJson(request));
     }
 }

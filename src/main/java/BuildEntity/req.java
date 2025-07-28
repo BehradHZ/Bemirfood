@@ -76,6 +76,15 @@ public class req {
         );
     }
 
+    public static HttpResponseData getCoupon(Long couponId) {
+        String path = "dt/coupons/" + couponId;
+        return tryRequestWithRetry(
+                () -> sendGetRequest(path, Token.read()),
+                3,
+                "Failed to connect server"
+        );
+    }
+
 
 
     public static HttpResponseData tryRequestWithRetry(

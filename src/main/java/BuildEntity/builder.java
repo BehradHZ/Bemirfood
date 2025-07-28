@@ -39,6 +39,7 @@ public class builder {
         cust.setFull_name(user.getFull_name());
         cust.setMobile(user.getMobile());
         order.setCustomer(cust);
+        cust.setRole(user.getRole());
 
         if(orderDto.getCourier_id() != null){
             user = getUser(orderDto.getCourier_id());
@@ -53,6 +54,7 @@ public class builder {
             del.setFull_name(user.getFull_name());
             del.setMobile(user.getMobile());
             order.setDelivery(del);
+            del.setRole(user.getRole());
         }else{
             order.setDelivery(null);
         }
@@ -65,6 +67,20 @@ public class builder {
                 item = getItem(ih.getItem_id());
                 cartItems.add(new CartItem(item, ih.getQuantity()));
             }
+        }
+        if(orderDto.getCoupon_id() != null){
+            HttpResponseData res = req.getCoupon(orderDto.getCoupon_id());
+            JsonObject obj = res.getBody().get("Coupon details").getAsJsonObject();
+            Coupon coupon = new Coupon();
+            coupon.setId(orderDto.getCoupon_id());
+            coupon.setCode(obj.get("code").getAsString());
+            coupon.setType(CouponType.valueOf(obj.get("type").getAsString().toLowerCase()));
+            coupon.setValue(obj.get("value").getAsLong());
+            coupon.setUserCount(obj.get("user_count").getAsLong());
+            coupon.setMinPrice(obj.get("min_price").getAsLong());
+            coupon.setStartDate(LocalDateTimeAdapter.StringToDateTime(obj.get("start_date").getAsString()));
+            coupon.setEndDate(LocalDateTimeAdapter.StringToDateTime(obj.get("end_date").getAsString()));
+            order.setCoupon(coupon);
         }
         order.setCartItems(cartItems);
         order.setDeliveryAddress(orderDto.getDelivery_address());

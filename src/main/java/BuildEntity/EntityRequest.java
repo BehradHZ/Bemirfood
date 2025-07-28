@@ -17,7 +17,10 @@ public class EntityRequest {
 
     public static User getUser(Long userId) {
         HttpResponseData response = req.getUser(userId);
-        return gson.fromJson(response.getBody(), User.class);
+        User user = gson.fromJson(response.getBody(), User.class);
+        user.setRole(UserRole.valueOf(response.getBody().get("role").getAsString().toUpperCase()));
+        user.setMobile(response.getBody().get("phone").getAsString());
+        return user;
     }
 
     public static <T> T getEntity(Long id, Class<T> clazz) {

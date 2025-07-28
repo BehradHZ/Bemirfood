@@ -1,5 +1,10 @@
 package frontend.bemirfoodclient.controller.restaurant.courier;
 
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
+import HttpClientHandler.Requests;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.entity.CartItem;
 import frontend.bemirfoodclient.model.entity.Order;
@@ -11,12 +16,23 @@ import javafx.scene.layout.*;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import static exception.exp.expHandler;
+
 public class DeliveryCardController {
+
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+            .serializeNulls()
+            .create();
+
     @FXML
     public Label orderId;
     @FXML
@@ -93,9 +109,13 @@ public class DeliveryCardController {
 
         statusComboBox.valueProperty().addListener((obs, oldStatus, newStatus) -> {
             if (newStatus != null && newStatus != oldStatus) {
-                changeOrderStatus((OrderStatus) newStatus);
+                HttpResponseData response = changeOrderStatus(OrderStatus.strToStatus(newStatus.toString()));
+                if(response.getStatusCode() == 200){
+                    statusComboBox.setButtonCell(cellFactory.call(null));
+                }else{
+                    expHandler(response, "Failed to change status", null);
+                }
 
-                statusComboBox.setButtonCell(cellFactory.call(null));
             }
         });
     }
@@ -198,10 +218,10 @@ public class DeliveryCardController {
         this.statusChangeCallback = callback;
     }
 
-    public int changeOrderStatus(OrderStatus orderStatus) {
-        //do the stuff in backend
-
-        return 200; //temporary
+    public HttpResponseData changeOrderStatus(OrderStatus orderStatus) {
+        Map<String, String> request = new HashMap<>();
+        request.put("status", orderStatus.toString().toLowerCase());
+        return Requests.changeOrderStatusDelivery(order.getId(), gson.toJson(request));
     }
 
     public void acceptButtonClicked() {

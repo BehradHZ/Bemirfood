@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static BuildEntity.builder.buildOrderList;
+import static HttpClientHandler.Requests.getCustomerOrders;
+
 public class BuyerOrdersController {
 
     @FXML
@@ -43,11 +46,12 @@ public class BuyerOrdersController {
 
 
     private List<Order> getOrders() {
-//        return buildOrderList(args -> getCustomerOrders(), "List of past orders", "Failed to get orders");
-//    }
+        return buildOrderList(args -> getCustomerOrders(), "List of past orders", "Failed to get orders");
+    }
 
 
-        //do the stuff in backend
+    /*
+            //do the stuff in backend
 
         //temporary
         List<Order> orders = new ArrayList<>();
@@ -111,10 +115,11 @@ public class BuyerOrdersController {
         Order order3 = new Order(order3Items, customer1.getAddress(), customer1, pizzaPalace,
                 LocalDateTime.now().minusDays(3), LocalDateTime.now().minusDays(3).plusHours(1),
                 OrderStatus.cancelled, 0.0);
+
         order3.setDelivery(delivery2); // Manually set the delivery person
         order3.setId(103L);
         orders.add(order3);
 
         return orders;
-    }
+    * */
 }

@@ -1,8 +1,8 @@
 package frontend.bemirfoodclient.controller.border;
 
+import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.LocalDateTimeAdapter;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.restaurant.buyer.BuyerRestaurantViewController;
 import frontend.bemirfoodclient.controller.restaurant.buyer.RestaurantCardController;
@@ -27,6 +27,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static BuildEntity.EntityRequest.getEntity;
+import static HttpClientHandler.Requests.getCustomerFavorites;
 
 public class BuyerBorderController {
 
@@ -80,7 +83,7 @@ public class BuyerBorderController {
         displayRestaurants(recommendedRestaurants);
 
         List<Item> recommendedItems = getRecommendedItems();
-        displayItems(recommendedItems);
+        //displayItems(recommendedItems);
     }
 
     private void displayRestaurants(List<Restaurant> restaurants) {
@@ -250,23 +253,22 @@ public class BuyerBorderController {
 
 
     public List<Restaurant> getRecommendedRestaurants() {
-//        HttpResponseData response = getCustomerFavorites();
-//        JsonObject json = response.getBody();
-//        JsonArray rstaurantJsonArray = json.getAsJsonArray( "List of favorite restaurants");
-//        List<Restaurant> restaurants = new ArrayList<>();
-//
-//        if(rstaurantJsonArray == null) return restaurants;
-//
-//        for (JsonElement element : rstaurantJsonArray) {
-//            JsonObject restaurantJson = element.getAsJsonObject();
-//            Restaurant restaurant = gson.fromJson(restaurantJson, Restaurant.class);
-//            Seller seller = getEntity(restaurantJson.get("seller_id").getAsLong(), Seller.class);
-//            restaurant.setSeller(seller);
-//            restaurants.add(restaurant);
-//        }
-//
-//        return restaurants;
-        return allRestaurants.stream().limit(2).collect(Collectors.toList());
+        HttpResponseData response = getCustomerFavorites();
+        JsonObject json = response.getBody();
+        JsonArray rstaurantJsonArray = json.getAsJsonArray( "List of favorite restaurants");
+        List<Restaurant> restaurants = new ArrayList<>();
+
+        if(rstaurantJsonArray == null) return restaurants;
+
+        for (JsonElement element : rstaurantJsonArray) {
+            JsonObject restaurantJson = element.getAsJsonObject();
+            Restaurant restaurant = gson.fromJson(restaurantJson, Restaurant.class);
+            Seller seller = getEntity(restaurantJson.get("seller_id").getAsLong(), Seller.class);
+            restaurant.setSeller(seller);
+            restaurants.add(restaurant);
+        }
+
+        return restaurants;
     }
 
     public List<Item> getRecommendedItems() {

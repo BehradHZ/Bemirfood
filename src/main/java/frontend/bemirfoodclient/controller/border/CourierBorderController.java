@@ -154,7 +154,9 @@ public class CourierBorderController {
         List<Order> historyAndActiveOrders =
                 buildOrderList(args -> searchDeliveryHistory((Map) args[0]), "List of completed and active deliveries", "Failed to get history", queryParams);
 
-        List<Order> activeDeliveries = historyAndActiveOrders.stream().filter(o -> o.getStatus().equals(OrderStatus.on_the_way) || o.getStatus().equals(OrderStatus.accepted)).toList();
+        List<Order> activeDeliveries = historyAndActiveOrders.stream().filter(
+                o -> o.getStatus().equals(OrderStatus.on_the_way) ||
+                        o.getStatus().equals(OrderStatus.accepted)).toList();
 
         activeDeliverySection.getChildren().clear();
 

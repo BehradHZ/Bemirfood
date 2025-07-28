@@ -4,6 +4,7 @@ import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.ImageLoader;
 import frontend.bemirfoodclient.model.entity.Item;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static HttpClientHandler.Requests.getCartItemQuantity;
 import static HttpClientHandler.Requests.modifyCartItems;
 
 public class BuyerItemCardController {
@@ -124,11 +126,15 @@ public class BuyerItemCardController {
     }
 
     public int getItemQuantity() {
-//        HttpResponseData response = getCartItemQuantity(item.getId());
-//        JsonObject body = response.getBody();
-//        JsonObject cartItemObj = body.getAsJsonObject("Cart item");
-//        return cartItemObj.get("quantity").getAsInt();
-        return 3;
+        HttpResponseData response = getCartItemQuantity(item.getId());
+        JsonObject body = response.getBody();
+        JsonObject cartItemObj = body.getAsJsonObject("Cart item");
+        if(cartItemObj != null && !cartItemObj.get("quantity").isJsonNull()) {
+            return cartItemObj.get("quantity").getAsInt();
+        }else{
+            return 0;
+        }
+
     }
 
     public void addItemToCart() {
