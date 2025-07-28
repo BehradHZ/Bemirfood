@@ -25,10 +25,11 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Consumer;
 
-import static exception.exp.expHandler;
 import static HttpClientHandler.Requests.*;
+import static exception.exp.expHandler;
 
 public class SellerMenuCardController {
+
 
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).serializeNulls()

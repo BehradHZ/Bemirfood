@@ -16,6 +16,7 @@ import java.util.Objects;
 public class BemirfoodApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+
         Image icon = new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("assets/Bemirfood_Logo.png"))); // Example resource path
         stage.getIcons().add(icon);
 

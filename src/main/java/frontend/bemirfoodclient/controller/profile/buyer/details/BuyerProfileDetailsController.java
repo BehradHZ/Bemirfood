@@ -3,15 +3,14 @@ package frontend.bemirfoodclient.controller.profile.buyer.details;
 import HttpClientHandler.HttpResponseData;
 import HttpClientHandler.LocalDateTimeAdapter;
 import Util.ImageProcess;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.restaurant.buyer.BuyerRestaurantViewController;
 import frontend.bemirfoodclient.controller.restaurant.buyer.RestaurantCardController;
 import frontend.bemirfoodclient.model.ImageLoader;
 import frontend.bemirfoodclient.model.entity.Bank_info;
 import frontend.bemirfoodclient.model.entity.Restaurant;
+import frontend.bemirfoodclient.model.entity.Seller;
 import frontend.bemirfoodclient.model.entity.User;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -36,8 +35,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static HttpClientHandler.Requests.getCurrentUserProfile;
-import static HttpClientHandler.Requests.updateUserProfile;
+import static BuildEntity.EntityRequest.getEntity;
+import static HttpClientHandler.Requests.*;
 import static Util.ImageProcess.imageFileToBase64;
 import static exception.exp.expHandler;
 import static frontend.bemirfoodclient.controller.border.BuyerBorderController.staticMainBorderPane;
@@ -85,8 +84,16 @@ public class BuyerProfileDetailsController {
     }
 
     private void loadFavoriteRestaurants() {
-        //TODO: do the stuff in backend
         favoriteRestaurants = new ArrayList<>();
+        HttpResponseData response = getCustomerFavorites();
+        JsonArray array = response.getBody().getAsJsonObject().get("List of favorite restaurants").getAsJsonArray();
+        for(JsonElement el : array) {
+            JsonObject res = el.getAsJsonObject();
+            Restaurant restaurant = gson.fromJson(res, Restaurant.class);
+            Seller seller = getEntity(res.get("seller_id").getAsLong(), Seller.class);
+            restaurant.setSeller(seller);
+            favoriteRestaurants.add(restaurant);
+        }
         displayFavorites(favoriteRestaurants);
     }
 

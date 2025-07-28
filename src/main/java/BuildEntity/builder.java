@@ -19,6 +19,8 @@ import static exception.exp.expHandler;
 
 public class builder {
 
+
+
     @FunctionalInterface
     public interface RequestFunction {
         HttpResponseData apply(Object... args);
@@ -216,9 +218,8 @@ public class builder {
             dto.setCreated_at(orderJson.get("created_at").getAsString());
             dto.setUpdated_at(orderJson.get("updated_at").getAsString());
             dto.setIs_paid(orderJson.get("is_paid").getAsBoolean());
-
-            transaction.setOrder(buildOrder(dto));
-
+            Order order = buildOrder(dto);
+            transaction.setOrder(order);
             transactions.add(transaction);
         }
 

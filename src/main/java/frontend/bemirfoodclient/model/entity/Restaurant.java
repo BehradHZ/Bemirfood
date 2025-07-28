@@ -1,5 +1,7 @@
 package frontend.bemirfoodclient.model.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 
@@ -60,12 +62,15 @@ public class Restaurant {
 
     private String address;
     private String phone;
+    @SerializedName("logoBase64")
     private String logo;
     private String description;
     private String workingHours;
     private int totalOrders;
     private Double averageRating;
+    @SerializedName("tax_fee")
     private Double taxFee = 0.0;
+    @SerializedName("additional_fee")
     private Double additionalFee = 0.0;
 
 
