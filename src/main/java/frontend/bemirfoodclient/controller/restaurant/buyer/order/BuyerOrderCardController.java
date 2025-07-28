@@ -195,10 +195,10 @@ public class BuyerOrderCardController {
             dialogController.setOrderId(this.order.getId());
 
             String title = "Add Rating";
-            if (existingRating != null) {
-                dialogController.setExistingRating(existingRating);
-                title = "Edit Your Rating";
-            }
+//            if (existingRating != null) {
+//                dialogController.setExistingRating(existingRating);
+//                title = "Edit Your Rating";
+//            }
 
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.initOwner(mainBorderPane.getScene().getWindow());
@@ -206,11 +206,11 @@ public class BuyerOrderCardController {
 
             ButtonType deleteButtonType = new ButtonType("Delete", ButtonBar.ButtonData.OTHER);
             dialog.getDialogPane().getButtonTypes().addAll(deleteButtonType, ButtonType.CANCEL, ButtonType.OK);
-            if (existingRating == null) {
-                dialog.getDialogPane().lookupButton(deleteButtonType).setVisible(false);
-            } else {
-                dialog.getDialogPane().lookupButton(deleteButtonType).setVisible(true);
-            }
+//            if (existingRating == null) {
+//                dialog.getDialogPane().lookupButton(deleteButtonType).setVisible(false);
+//            } else {
+//                dialog.getDialogPane().lookupButton(deleteButtonType).setVisible(true);
+//            }
 
             dialog.setHeaderText(null);
             dialog.setTitle(title);
