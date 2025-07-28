@@ -7,18 +7,25 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import frontend.bemirfoodclient.BemirfoodApplication;
+import frontend.bemirfoodclient.controller.restaurant.buyer.BuyerRestaurantViewController;
+import frontend.bemirfoodclient.controller.restaurant.buyer.RestaurantCardController;
 import frontend.bemirfoodclient.model.ImageLoader;
 import frontend.bemirfoodclient.model.entity.Bank_info;
+import frontend.bemirfoodclient.model.entity.Restaurant;
 import frontend.bemirfoodclient.model.entity.User;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -27,14 +34,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static HttpClientHandler.Requests.getCurrentUserProfile;
 import static HttpClientHandler.Requests.updateUserProfile;
 import static Util.ImageProcess.imageFileToBase64;
 import static exception.exp.expHandler;
+import static frontend.bemirfoodclient.controller.profile.buyer.BuyerProfileController.mainBorderPane;
 
 public class BuyerProfileDetailsController {
 
@@ -54,8 +60,11 @@ public class BuyerProfileDetailsController {
     public Label bankNameLabel;
     @FXML
     public Label accountNumberLabel;
+    @FXML
+    public VBox favoriteRestaurantsVBox;
 
     private static User buyer;
+    private List<Restaurant> favoriteRestaurants;
 
     @FXML
     public void initialize() {
@@ -63,6 +72,7 @@ public class BuyerProfileDetailsController {
         profileImageView.setPreserveRatio(true);
         profileImageView.setFitHeight(120);
         setScene();
+        loadFavoriteRestaurants();
     }
 
     public void setScene() {
@@ -72,6 +82,52 @@ public class BuyerProfileDetailsController {
         emailLabel.setText(getEmail());
         bankNameLabel.setText(buyer.getBank_info().getBank_name());
         accountNumberLabel.setText(buyer.getBank_info().getAccount_number());
+    }
+
+    private void loadFavoriteRestaurants() {
+        //TODO: do the stuff in backend
+        favoriteRestaurants = new ArrayList<>();
+        displayFavorites(favoriteRestaurants);
+    }
+
+    private void displayFavorites(List<Restaurant> restaurants) {
+        favoriteRestaurantsVBox.getChildren().clear();
+
+        if (restaurants == null) return;
+
+        for (Restaurant restaurant : restaurants) {
+            try {
+                FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(
+                        "/frontend/bemirfoodclient/restaurant/buyer/restaurant-card.fxml"
+                ));
+                Pane card = loader.load();
+                RestaurantCardController controller = loader.getController();
+                controller.setData(restaurant);
+                card.setOnMouseClicked(event -> cardClick(restaurant));
+
+                favoriteRestaurantsVBox.getChildren().add(card);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void cardClick(Restaurant selectedRestaurant) {
+        if (selectedRestaurant != null && mainBorderPane != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                        "/frontend/bemirfoodclient/restaurant/buyer/buyer-restaurant-view.fxml"
+                ));
+                Parent restaurantPageView = loader.load();
+
+                BuyerRestaurantViewController pageController = loader.getController();
+                pageController.setRestaurantData(selectedRestaurant);
+
+                mainBorderPane.setCenter(restaurantPageView);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void setUser() {

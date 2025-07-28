@@ -51,6 +51,12 @@
             </HBox>
 
             <HBox>
+                <Label text="Address:" style="-fx-font-size: 20; -fx-font-weight: bold"/>
+                <Region fx:id="addressSpacer"/>
+                <TextField fx:id="addressTextField" style="-fx-font-size: 16" minWidth="100" maxHeight="10"/>
+            </HBox>
+
+            <HBox>
                 <Label text="Raw Price" style="-fx-font-size: 16"/>
                 <Region fx:id="rawPriceSpacer"/>
                 <Label fx:id="rawPrice" style="-fx-font-size: 16"/>

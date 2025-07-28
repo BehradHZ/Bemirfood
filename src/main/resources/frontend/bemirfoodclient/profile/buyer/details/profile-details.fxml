@@ -1,14 +1,10 @@
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.layout.*?>
 <VBox xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="frontend.bemirfoodclient.controller.profile.buyer.details.BuyerProfileDetailsController"
-      alignment="TOP_CENTER">
+      alignment="TOP_CENTER" spacing="50">
     <HBox alignment="CENTER_LEFT" spacing="30">
         <VBox.margin>
             <Insets top="10"/>
@@ -28,4 +24,27 @@
             <Label fx:id="accountNumberLabel" style="-fx-font-size: 16"/>
         </VBox>
     </HBox>
+    <VBox fx:id="favoritesSection" style="-fx-background-color: white; -fx-background-radius: 25;
+                    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 0)"
+          prefHeight="400">
+
+        <VBox.margin>
+            <Insets top="30" bottom="30" left="30" right="30"/>
+        </VBox.margin>
+        <Label text="Favorites:" style="-fx-font-size: 24; -fx-font-weight: bold">
+            <VBox.margin>
+                <Insets top="30" left="30"/>
+            </VBox.margin>
+        </Label>
+        <ScrollPane fitToWidth="true">
+            <VBox.margin>
+                <Insets top="30" bottom="30" left="30" right="30"/>
+            </VBox.margin>
+            <VBox fx:id="favoriteRestaurantsVBox">
+                <padding>
+                    <Insets top="30" bottom="30" left="30" right="30"/>
+                </padding>
+            </VBox>
+        </ScrollPane>
+    </VBox>
 </VBox>

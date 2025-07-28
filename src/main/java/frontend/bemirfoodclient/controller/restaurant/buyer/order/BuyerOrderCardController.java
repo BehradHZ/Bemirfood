@@ -204,6 +204,12 @@ public class BuyerOrderCardController {
             AddRatingDialogController dialogController = loader.getController();
             dialogController.setOrderId(this.order.getId());
 
+            //String title = "Add Rating";
+//            if (existingRating != null) {
+//                dialogController.setExistingRating(existingRating);
+//                title = "Edit Your Rating";
+//            }
+
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.initOwner(mainBorderPane.getScene().getWindow());
             dialog.setDialogPane(dialogPane);
@@ -254,7 +260,6 @@ public class BuyerOrderCardController {
                     e.consume();
                 }
             });
-
 
             Optional<ButtonType> result = dialog.showAndWait();
 
