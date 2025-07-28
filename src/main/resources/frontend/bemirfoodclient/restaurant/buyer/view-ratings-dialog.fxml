@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<DialogPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.bemirfoodclient.controller.restaurant.buyer.ViewRatingsDialogController"
+            prefWidth="600.0">
+    <header>
+        <VBox spacing="10" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            <Label fx:id="itemNameLabel" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
+            <HBox spacing="5" alignment="CENTER_LEFT">
+                <ImageView fitHeight="20" preserveRatio="true">
+                    <Image url="@../../assets/icons/star.png"/>
+                </ImageView>
+                <Label fx:id="averageRatingLabel" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+            </HBox>
+        </VBox>
+    </header>
+    <content>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="400">
+            <content>
+                <VBox fx:id="commentsVBox"/>
+            </content>
+        </ScrollPane>
+    </content>
+</DialogPane>

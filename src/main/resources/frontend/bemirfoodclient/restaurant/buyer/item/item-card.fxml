@@ -26,12 +26,25 @@
                     </HBox.margin>
                 </ImageView>
 
-                <VBox alignment="CENTER_LEFT" minWidth="500" minHeight="200" spacing="5">
+                <VBox alignment="CENTER_LEFT" minWidth="350" minHeight="200" spacing="5">
                     <HBox.margin>
                         <Insets top="10" bottom="10" left="30" right="10"/>
                     </HBox.margin>
 
-                    <Label fx:id="itemName" style="-fx-font-size: 16; -fx-font-weight: bold"/>
+                    <HBox>
+                        <padding>
+                            <Insets top="15"/>
+                        </padding>
+                        <Label fx:id="itemName" style="-fx-font-size: 16; -fx-font-weight: bold"/>
+                        <Region fx:id="spacer"/>
+                        <Button style="-fx-background-color: transparent" onAction="#viewRatingsButtonClicked">
+                            <graphic>
+                                <ImageView preserveRatio="true" fitHeight="30">
+                                    <Image url="@../../../assets/icons/comment.png"/>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </HBox>
 
                     <Label fx:id="itemDescription" style="-fx-font-size: 14;"/>
 
@@ -40,8 +53,8 @@
                             <Insets top="10"/>
                         </padding>
                     </Label>
-                    <ScrollPane style="-fx-background-color: white">
-                        <HBox style="-fx-background-color: white">
+                    <ScrollPane prefWidth="200" style="-fx-background-color: white">
+                        <HBox style="-fx-background-color: transparent" >
                             <Label fx:id="itemKeywords" style="-fx-font-size: 14"/>
                         </HBox>
                     </ScrollPane>

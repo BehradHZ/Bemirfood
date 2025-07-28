@@ -6,17 +6,20 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import frontend.bemirfoodclient.BemirfoodApplication;
+import frontend.bemirfoodclient.controller.restaurant.buyer.ViewRatingsDialogController;
 import frontend.bemirfoodclient.model.ImageLoader;
 import frontend.bemirfoodclient.model.entity.Item;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,6 +28,7 @@ import java.util.Objects;
 
 import static HttpClientHandler.Requests.getCartItemQuantity;
 import static HttpClientHandler.Requests.modifyCartItems;
+import static frontend.bemirfoodclient.controller.border.BuyerBorderController.staticMainBorderPane;
 
 public class BuyerItemCardController {
 
@@ -54,6 +58,7 @@ public class BuyerItemCardController {
     public HBox addToCart;
     @FXML
     public Button viewRatingsButton;
+    public Region spacer;
 
     private Item item;
 
@@ -72,6 +77,8 @@ public class BuyerItemCardController {
         itemImage.setFitHeight(120);
         ratingStarImage.setPreserveRatio(true);
         ratingStarImage.setFitHeight(18);
+
+        HBox.setHgrow(spacer, Priority.ALWAYS);
     }
 
     public void setScene() {
@@ -101,16 +108,25 @@ public class BuyerItemCardController {
 
     @FXML
     void viewRatingsButtonClicked(ActionEvent event) {
-        // TODO: In a real implementation, you would:
-        // 1. Call your backend to get all ratings for this.item.getId()
-        // 2. Create a new custom dialog to display the list of ratings.
+        try {
+            FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(
+                    "/frontend/bemirfoodclient/restaurant/buyer/view-ratings-dialog.fxml"
+            ));
+            DialogPane dialogPane = loader.load();
 
-        // For now, we will just show a placeholder alert.
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Item Ratings");
-        alert.setHeaderText("Ratings for " + item.getName());
-        alert.setContentText("Backend integration needed to display ratings here.");
-        alert.showAndWait();
+            ViewRatingsDialogController controller = loader.getController();
+            controller.setItemData(this.item);
+
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.initOwner(staticMainBorderPane.getScene().getWindow());
+            dialog.setDialogPane(dialogPane);
+            dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+            dialog.setTitle("Ratings & Reviews");
+            dialog.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setItemPhoto() {
@@ -134,7 +150,6 @@ public class BuyerItemCardController {
         }else{
             return 0;
         }
-
     }
 
     public void addItemToCart() {
