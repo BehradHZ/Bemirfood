@@ -127,6 +127,7 @@ public class AdminBorderController {
                 controller.setOnDelete(userToDelete -> {
                      HttpResponseData response = deleteUser(user);
                      if(response.getStatusCode() != 200) expHandler(response, "Failed to remove user", null);
+                     else usersButtonClicked();
                 });
 
                 contentVBox.getChildren().add(card);

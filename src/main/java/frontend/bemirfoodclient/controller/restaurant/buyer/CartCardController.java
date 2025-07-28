@@ -82,6 +82,10 @@ public class CartCardController {
     public ToggleGroup methodToggleGroup;
     @FXML
     public ImageView applyCouponIcon;
+    @FXML
+    public Region addressSpacer;
+    @FXML
+    public TextField addressTextField;
 
     private Order order;
 
@@ -100,6 +104,7 @@ public class CartCardController {
         onlineToggle.setSelected(true);
 
         HBox.setHgrow(couponCodeSpacer, Priority.ALWAYS);
+        HBox.setHgrow(addressSpacer, Priority.ALWAYS);
         HBox.setHgrow(rawPriceSpacer, Priority.ALWAYS);
         HBox.setHgrow(taxFeeSpacer, Priority.ALWAYS);
         HBox.setHgrow(additionalFeeSpacer, Priority.ALWAYS);
@@ -146,6 +151,7 @@ public class CartCardController {
 
     public void pay() {
         Toggle selectedToggle = methodToggleGroup.getSelectedToggle();
+        String address = addressTextField.getText();
         HttpResponseData response = null;
         if (selectedToggle == onlineToggle) {
             showPaymentDialog(false);
