@@ -88,6 +88,20 @@ public class AddItemDialogController {
             }
         }
 
+        String keywordsInput;
+        if (keywordTextField.getText().isEmpty()) {
+            showAlert("Item Keywords cannot be empty!");
+            keywordTextField.requestFocus();
+            return null;
+        } else {
+            keywordsInput = keywordTextField.getText();
+        }
+
+        List<String> keywords = Arrays.stream(keywordsInput.split(",")) // 1. Split the string by commas into an array
+                .map(String::trim)                // 2. Trim whitespace from each keyword
+                .filter(keyword -> !keyword.isEmpty()) // 3. Remove any keywords that are now empty
+                .toList();
+
         double price = 0.0;
         if (priceTextField.getText().isEmpty()) {
             showAlert("Item Price cannot be empty!");
@@ -102,12 +116,6 @@ public class AddItemDialogController {
                 return null;
             }
         }
-
-        String keywordsInput = keywordTextField.getText();
-        List<String> keywords = Arrays.stream(keywordsInput.split(",")) // 1. Split the string by commas into an array
-                .map(String::trim)                // 2. Trim whitespace from each keyword
-                .filter(keyword -> !keyword.isEmpty()) // 3. Remove any keywords that are now empty
-                .toList();
 
         return new Item(
             nameTextField.getText(),

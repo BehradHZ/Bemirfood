@@ -128,6 +128,7 @@ public class BuyerBorderController {
 
                 BuyerItemCardController controller = loader.getController();
                 controller.setItemData(item);
+                card.setUserData(item);
                 card.setOnMouseClicked(event -> cardClick(
                         ((Item) card.getUserData())
                                 .getRestaurant()));

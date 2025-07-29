@@ -44,6 +44,7 @@ public class SellerBorderController {
         profileIcon.setPreserveRatio(true);
         profileIcon.setFitHeight(27);
 
+        profileButtonClicked();
     }
 
     public void setCenterContent(Node content) {
@@ -72,10 +73,11 @@ public class SellerBorderController {
         switch (getCurrentUserProfile()){
             case 200:
                 try {
-                    Stage stage = (Stage) profileIcon.getScene().getWindow();
+//                    Stage stage = (Stage) profileIcon.getScene().getWindow();
                     Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
                             "/frontend/bemirfoodclient/profile/seller/seller-profile-view.fxml")));
-                    stage.getScene().setRoot(root);
+//                    stage.getScene().setRoot(root);
+                    mainBorderpane.setCenter(root);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

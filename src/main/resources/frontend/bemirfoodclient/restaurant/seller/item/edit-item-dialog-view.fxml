@@ -45,7 +45,7 @@
                 <TextField fx:id="supplyTextField"/>
             </VBox>
             <VBox alignment="CENTER">
-                <Label text="Keywords" style="-fx-font-size: 14">
+                <Label text="Keywords*" style="-fx-font-size: 14">
                     <padding>
                         <Insets bottom="5"/>
                     </padding>

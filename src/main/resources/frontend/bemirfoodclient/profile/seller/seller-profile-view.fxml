@@ -23,13 +23,13 @@
             <BorderPane.margin>
                 <Insets bottom="13"/>
             </BorderPane.margin>
-            <Button fx:id="backButton" style="-fx-background-color: #f4f4f4" onAction="#backButtonClicked">
-                <graphic>
-                    <ImageView fx:id="backButtonImage">
-                        <Image url="@../../assets/icons/back.png"/>
-                    </ImageView>
-                </graphic>
-            </Button>
+<!--            <Button fx:id="backButton" style="-fx-background-color: #f4f4f4" onAction="#backButtonClicked">-->
+<!--                <graphic>-->
+<!--                    <ImageView fx:id="backButtonImage">-->
+<!--                        <Image url="@../../assets/icons/back.png"/>-->
+<!--                    </ImageView>-->
+<!--                </graphic>-->
+<!--            </Button>-->
             <Region fx:id="profileSpacer"/>
             <StackPane>
                 <Button fx:id="editButton" style="-fx-background-color: #f4f4f4" onAction="#editButtonClicked">

@@ -99,6 +99,19 @@ public class EditItemDialogController {
                 return null;
             }
 
+        String keywordsInput;
+        if (keywordTextField.getText().isEmpty()) {
+            showAlert("Item Keywords cannot be empty!");
+            keywordTextField.requestFocus();
+            return null;
+        } else {
+            keywordsInput = keywordTextField.getText();
+            keywordsList = Arrays.stream(keywordsInput.split(",")) // 1. Split the string by commas into an array
+                    .map(String::trim)                // 2. Trim whitespace from each keyword
+                    .filter(keyword -> !keyword.isEmpty()) // 3. Remove any keywords that are now empty
+                    .toList();
+        }
+
         if (!priceTextField.getText().isEmpty())
             try {
                 price = Integer.parseInt(priceTextField.getText());
@@ -108,14 +121,6 @@ public class EditItemDialogController {
                 return null;
             }
 
-        String keywordsInput = null;
-        if (!keywordTextField.getText().isEmpty()) {
-            keywordsInput = keywordTextField.getText();
-            keywordsList = Arrays.stream(keywordsInput.split(",")) // 1. Split the string by commas into an array
-                .map(String::trim)                // 2. Trim whitespace from each keyword
-                .filter(keyword -> !keyword.isEmpty()) // 3. Remove any keywords that are now empty
-                .toList();
-        }
 
         System.out.printf("%s %s %s %s %s", name, description, supply, price, keywordsList);
         return new Item(

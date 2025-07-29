@@ -244,7 +244,7 @@ public class SellerProfileDetailsController {
         if (base64Uri != null) {
             ImageLoader.displayBase64Image(base64Uri, profileImageView);
         } else {
-            profileImageView.setImage(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream("" +
+            profileImageView.setImage(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream(
                     "/frontend/bemirfoodclient/assets/icons/profileUpload.png"))));
         }
     }
