@@ -948,6 +948,25 @@ public class Requests {
         }
     }
 
+    public static HttpResponseData searchRestaurants(String requestBody) {
+        String path = "vendors";
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path, HttpRequest.POST, requestBody,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
 
 
 }

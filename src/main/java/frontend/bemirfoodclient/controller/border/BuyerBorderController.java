@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static BuildEntity.EntityRequest.getEntity;
-import static HttpClientHandler.Requests.getCustomerFavorites;
 import static HttpClientHandler.Requests.getItemsWithFilter;
+import static HttpClientHandler.Requests.searchRestaurants;
 
 public class BuyerBorderController {
 
@@ -257,9 +257,10 @@ public class BuyerBorderController {
 
 
     public List<Restaurant> getRecommendedRestaurants() {
-        HttpResponseData response = getCustomerFavorites();
+        Map<String, String> req = new HashMap<>();
+        HttpResponseData response = searchRestaurants(gson.toJson(req));
         JsonObject json = response.getBody();
-        JsonArray rstaurantJsonArray = json.getAsJsonArray( "List of favorite restaurants");
+        JsonArray rstaurantJsonArray = json.getAsJsonArray( "List of vendors");
         List<Restaurant> restaurants = new ArrayList<>();
 
         if(rstaurantJsonArray == null) return restaurants;
