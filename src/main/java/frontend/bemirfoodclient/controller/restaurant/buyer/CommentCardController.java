@@ -24,7 +24,7 @@ public class CommentCardController {
 
         // Set sender name from the user associated with the rating
         if (rating.getUser() != null) {
-            senderNameLabel.setText(rating.getUser().getFull_name());
+            senderNameLabel.setText(String.valueOf(rating.getUser().getId()));
         } else {
             senderNameLabel.setText("Anonymous");
         }

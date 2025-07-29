@@ -1,8 +1,14 @@
 package frontend.bemirfoodclient.controller.restaurant.buyer;
 
+import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.entity.Item;
 import frontend.bemirfoodclient.model.entity.ItemRating;
+import frontend.bemirfoodclient.model.entity.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -10,8 +16,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static HttpClientHandler.Requests.getItemAvgRating;
 
 public class ViewRatingsDialogController {
 
@@ -47,22 +56,28 @@ public class ViewRatingsDialogController {
 
     private List<ItemRating> getRatingsForItem(long itemId) {
         List<ItemRating> ratings = new ArrayList<>();
+        HttpResponseData res = getItemAvgRating(itemId);
+        JsonObject jsonObject = res.getBody().get("List of ratings and reviews").getAsJsonObject();
+        Integer avgRatings = jsonObject.get("avg_rating").getAsInt();
+        JsonArray array = jsonObject.get("comments").getAsJsonArray();
 
-        /*// Create some mock users to associate with the ratings
-        User user1 = new User("John Doe", "555-0101", "buyer", "john@email.com", null, "123 Oak St", null, "pass1");
-        User user2 = new User("Jane Smith", "555-0102", "buyer", "jane@email.com", null, "456 Pine St", null, "pass2");
-
-        // --- Mock Rating 1 ---
-        ItemRating rating1 = new ItemRating(1L, 5, "Absolutely delicious! Best pizza in town. Will order again for sure.", new ArrayList<>(), LocalDateTime.now().minusDays(1), user1, itemId);
-        ratings.add(rating1);
-
-        // --- Mock Rating 2 (with a mock image) ---
-        List<String> mockImages = new ArrayList<>();
-        // This is a tiny, valid Base64 string for a red dot image for testing.
-        mockImages.add("iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==");
-        ItemRating rating2 = new ItemRating(2L, 4, "Pretty good, but a bit cold when it arrived.", mockImages, LocalDateTime.now().minusHours(5), user2, itemId);
-        ratings.add(rating2);*/
-
+        for(JsonElement itemElement : array) {
+            JsonObject obj = itemElement.getAsJsonObject();
+            Integer rating = obj.get("rating").getAsInt();
+            String comment = obj.get("comment").getAsString();
+            JsonArray imageArray = obj.get("imageBase64").getAsJsonArray();
+            List<String> images = new ArrayList<>();
+            for (JsonElement element : imageArray) {
+                images.add(element.getAsString());
+            }
+            LocalDateTime createdAt = LocalDateTimeAdapter.StringToTime(obj.get("created_at").getAsString());
+            User user = new User();
+            user.setId(obj.get("userId").getAsLong());
+            ItemRating itemRating = new ItemRating(
+                    (long)0,rating, comment, images, createdAt, user, itemId
+            );
+            ratings.add(itemRating);
+        }
         return ratings;
 
         /*TODO: do the stuff in backend

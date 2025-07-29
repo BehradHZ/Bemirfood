@@ -929,4 +929,25 @@ public class Requests {
         }
     }
 
+    public static HttpResponseData getItemAvgRating(Long itemId) {
+        String path = "ratings/items/" + itemId;
+        try{
+            HttpResponseData responseData =
+                    sendGetRequest(
+                            path,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+
+
 }

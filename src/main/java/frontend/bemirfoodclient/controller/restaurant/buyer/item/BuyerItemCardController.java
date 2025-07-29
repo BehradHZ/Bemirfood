@@ -122,6 +122,7 @@ public class BuyerItemCardController {
             dialog.setDialogPane(dialogPane);
             dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
             dialog.setTitle("Ratings & Reviews");
+            dialog.setResizable(true);
             dialog.showAndWait();
 
         } catch (IOException e) {
