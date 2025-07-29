@@ -27,8 +27,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static BuildEntity.EntityRequest.getEntity;
-import static HttpClientHandler.Requests.getItemsWithFilter;
-import static HttpClientHandler.Requests.searchRestaurants;
+import static HttpClientHandler.Requests.*;
 
 public class BuyerBorderController {
 
@@ -93,10 +92,8 @@ public class BuyerBorderController {
     private void displayRestaurants(List<Restaurant> restaurants) {
 
         recommendedVendorList.getChildren().clear();
-        List<Restaurant> res = getRecommendedRestaurants();
-        if(res == null) return;
 
-        for (Restaurant restaurant : res) {
+        for (Restaurant restaurant : restaurants) {
             try {
                 FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(
                         "/frontend/bemirfoodclient/restaurant/buyer/restaurant-card.fxml"
@@ -176,67 +173,43 @@ public class BuyerBorderController {
             return;
         }
 
-        long commaCount = query.chars().filter(ch -> ch == ',').count();
+        String[] parts = query.split(",");
+        String searchString = parts[0].trim();
+        String keywords = parts.length > 1 ? parts[1].trim() : "";
 
-        if (commaCount == 1) {
-            // --- VENDOR SEARCH (e.g., "Pizza, italian") ---
-            String[] parts = query.split(",");
-            String searchString = parts[0].trim();
-            String keywords = parts.length > 1 ? parts[1].trim() : "";
-
-
-            List<Restaurant> searchedRestaurants = searchForVendors(searchString, keywords);
-            displayRestaurants(searchedRestaurants);
-            displayItems(new ArrayList<>()); // Clear items list
-
-        } else if (commaCount == 2) {
-            // --- ITEM SEARCH (e.g., "Burger, 150000, beef") ---
-            String[] parts = query.split(",");
-            String searchString = parts[0].trim();
-            String price = parts.length > 1 ? parts[1].trim() : "";
-            String keywords = parts.length > 2 ? parts[2].trim() : "";
-
-            System.out.println("--- Item Search ---");
-            System.out.println("Search String: " + searchString);
-            System.out.println("Max Price: " + price);
-            System.out.println("Keywords: " + keywords);
-
-            // TODO: Call your backend to search for items
-            List<Item> searchedItems = searchForItems(searchString, price, keywords);
-            displayItems(searchedItems);
-            displayRestaurants(new ArrayList<>()); // Clear vendors list
-
-        } else {
-            // Handle invalid search format
-            showAlert("Invalid Search Format!\nFor vendors, use: name, keywords\nFor items, use: name, max price, keywords");
-        }
+        List<Restaurant> searchedRestaurants = searchForVendors(searchString, keywords);
+        displayRestaurants(searchedRestaurants);
     }
 
 
     private List<Restaurant> searchForVendors(String searchString, String keywords) {
-        //TODO: do the stuff in backend
-
-//        return new ArrayList<>();
-        Stream<Restaurant> stream = allRestaurants.stream();
         String finalSearchString = searchString.toLowerCase();
         String finalKeywords = keywords.toLowerCase();
 
-        // Filter by the main search string
-        if (!finalSearchString.isEmpty()) {
-            stream = stream.filter(r -> r.getName().toLowerCase().contains(finalSearchString));
+        Map<String, String> req = new HashMap<>();
+        req.put("search", searchString);
+        HttpResponseData response = searchRestaurants(gson.toJson(req));
+        JsonObject json = response.getBody();
+        JsonArray rstaurantJsonArray = json.getAsJsonArray( "List of vendors");
+
+        List<Restaurant> restaurants = new ArrayList<>();
+
+        if(rstaurantJsonArray == null) return restaurants;
+
+        for (JsonElement element : rstaurantJsonArray) {
+            JsonObject restaurantJson = element.getAsJsonObject();
+            Restaurant restaurant = gson.fromJson(restaurantJson, Restaurant.class);
+            Seller seller = getEntity(restaurantJson.get("seller_id").getAsLong(), Seller.class);
+            restaurant.setSeller(seller);
+            restaurants.add(restaurant);
         }
 
-        // Also filter by the keywords within the name
-        if (!finalKeywords.isEmpty()) {
-            stream = stream.filter(r -> r.getName().toLowerCase().contains(finalKeywords));
-        }
-        return stream.collect(Collectors.toList());
+        return restaurants;
     }
 
     private List<Item> searchForItems(String searchString, String price, String keywords) {
         //TODO: do the stuff in backend
 
-//        return new ArrayList<>();
         Stream<Item> stream = allItems.stream();
         if (searchString != null && !searchString.isEmpty()) {
             stream = stream.filter(i -> i.getName().toLowerCase().contains(searchString.toLowerCase()));
@@ -283,12 +256,14 @@ public class BuyerBorderController {
         List<Item> items = new ArrayList<>();
         for(JsonElement itemElement : itemArray) {
             Item item = gson.fromJson(itemElement, Item.class);
+            HttpResponseData res = getItemAvgRating(item.getId());
+            JsonObject array = res.getBody().getAsJsonObject("List of ratings and reviews");
+            item.setRating(array.get("avg_rating").getAsDouble());
             items.add(item);
         }
 
         return items;
 
-//        return MockDataFactory.createMockItems(MockDataFactory.createMockRestaurants());
     }
 
     public void cardClick(Restaurant selectedRestaurant) {
@@ -341,51 +316,49 @@ public class BuyerBorderController {
         alert.getDialogPane().setGraphic(null);
         alert.showAndWait();
     }
+
+/*    @FXML
+    public void searchButtonClicked() {
+        String query = searchTextField.getText();
+
+        if (query == null || query.trim().isEmpty()) {
+            loadRecommendedView();
+            return;
+        }
+
+        long commaCount = query.chars().filter(ch -> ch == ',').count();
+
+        if (commaCount == 1) {
+            // --- VENDOR SEARCH (e.g., "Pizza, italian") ---
+            String[] parts = query.split(",");
+            String searchString = parts[0].trim();
+            String keywords = parts.length > 1 ? parts[1].trim() : "";
+
+
+            List<Restaurant> searchedRestaurants = searchForVendors(searchString, keywords);
+            displayRestaurants(searchedRestaurants);
+            displayItems(new ArrayList<>()); // Clear items list
+
+        } else if (commaCount == 2) {
+            // --- ITEM SEARCH (e.g., "Burger, 150000, beef") ---
+            String[] parts = query.split(",");
+            String searchString = parts[0].trim();
+            String price = parts.length > 1 ? parts[1].trim() : "";
+            String keywords = parts.length > 2 ? parts[2].trim() : "";
+
+            System.out.println("--- Item Search ---");
+            System.out.println("Search String: " + searchString);
+            System.out.println("Max Price: " + price);
+            System.out.println("Keywords: " + keywords);
+
+            // TODO: Call your backend to search for items
+            List<Item> searchedItems = searchForItems(searchString, price, keywords);
+            displayItems(searchedItems);
+            displayRestaurants(new ArrayList<>()); // Clear vendors list
+
+        } else {
+            // Handle invalid search format
+            showAlert("Invalid Search Format!\nFor vendors, use: name, keywords\nFor items, use: name, max price, keywords");
+        }
+    }*/
 }
-
-/*
-class MockDataFactory {
-    public static List<Restaurant> createMockRestaurants() {
-        List<Restaurant> restaurants = new ArrayList<>();
-        restaurants.add(new Restaurant("Pizza Palace Italian", new Seller(), "123 Main St", "555-1111", null, 0.0, 0.0));
-        restaurants.add(new Restaurant("Burger Barn Grill", new Seller(), "456 Oak Ave", "555-2222", null, 0.0, 0.0));
-        restaurants.add(new Restaurant("Sushi Station Japanese", new Seller(), "789 Pine Ln", "555-3333", null, 0.0, 0.0));
-        restaurants.add(new Restaurant("Taco Town Mexican", new Seller(), "101 Maple Rd", "555-4444", null, 0.0, 0.0));
-        return restaurants;
-    }
-
-    */
-/**
-     * THIS METHOD IS NOW FIXED.
-     * It assigns a unique ID to every mock Item object.
-     *//*
-
-    public static List<Item> createMockItems(List<Restaurant> restaurants) {
-        List<Item> items = new ArrayList<>();
-        Restaurant pizzaPlace = restaurants.get(0);
-        Restaurant burgerPlace = restaurants.get(1);
-        Restaurant sushiPlace = restaurants.get(2);
-        Restaurant tacoPlace = restaurants.get(3);
-
-        // --- Create items and SET THEIR IDs ---
-        Item item1 = new Item("Pepperoni Pizza", null, "Classic cheese and pepperoni.", 12.99, 50, List.of("pizza", "meat"), pizzaPlace, 4.5);
-        item1.setId(1L);
-        items.add(item1);
-
-        Item item2 = new Item("Margherita Pizza", null, "Fresh tomatoes, mozzarella, and basil.", 10.99, 30, List.of("pizza", "vegetarian"), pizzaPlace, 4.8);
-        item2.setId(2L);
-        items.add(item2);
-
-        Item item3 = new Item("Classic Burger", null, "A juicy all-beef patty.", 9.99, 100, List.of("burger", "beef"), burgerPlace, 4.2);
-        item3.setId(3L);
-        items.add(item3);
-
-        Item item4 = new Item("Bacon Cheeseburger", null, "Classic burger with bacon and cheese.", 11.99, 80, List.of("burger", "cheese"), burgerPlace, 4.6);
-        item4.setId(4L);
-        items.add(item4);
-
-        // Add more items with IDs as needed...
-
-        return items;
-    }
-}*/
