@@ -538,7 +538,7 @@ public class SellerRestaurantViewController {
 
         ordersSection.getChildren().clear();
         List<Order> orders = getOrders(); // Get orders from your backend
-
+        Collections.reverse(orders);
         for (Order order : orders) {
             try {
                 FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(

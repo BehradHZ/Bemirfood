@@ -259,7 +259,7 @@ public class BuyerBorderController {
             HttpResponseData res = getItemAvgRating(item.getId());
             JsonObject array = res.getBody().getAsJsonObject("List of ratings and reviews");
             item.setRating(array.get("avg_rating").getAsDouble());
-            items.add(item);
+            if(item.getRating() > 4.5)    items.add(item);
         }
 
         return items;

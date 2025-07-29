@@ -15,6 +15,7 @@ import javafx.scene.layout.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 import static BuildEntity.builder.buildTransactionList;
@@ -41,7 +42,7 @@ public class SellerTransactionsController {
         HBox.setHgrow(balanceSpacer, Priority.ALWAYS);
 
         List<Transaction> transactions = getTransactions();
-
+        Collections.reverse(transactions);
         for (Transaction transaction : transactions) {
             try {
                 FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(

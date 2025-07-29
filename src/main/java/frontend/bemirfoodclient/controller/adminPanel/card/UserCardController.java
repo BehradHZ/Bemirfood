@@ -1,6 +1,9 @@
 package frontend.bemirfoodclient.controller.adminPanel.card;
 
 import HttpClientHandler.HttpResponseData;
+import HttpClientHandler.LocalDateTimeAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.model.entity.User;
 import frontend.bemirfoodclient.model.entity.UserStatus;
@@ -17,13 +20,21 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import static HttpClientHandler.Requests.removeUserAdmin;
+import static HttpClientHandler.Requests.*;
+import static exception.exp.expHandler;
 
 public class UserCardController {
+    private static final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+            .serializeNulls()
+            .create();
 
     public ImageView userPhoto;
     public Label idRoleLabel;
@@ -38,6 +49,9 @@ public class UserCardController {
     
     public void setUser(User user) {
         this.user = user;
+        HttpResponseData response = getUserStatus(user.getId());
+        String status = response.getBody().get("status").getAsString();
+        user.setStatus(UserStatus.strToStatus(status));
         setScene();
     }
     
@@ -56,11 +70,19 @@ public class UserCardController {
 
     public void approveButtonClicked(ActionEvent event) {
         user.setStatus(UserStatus.approved);
+        Map<String, String> request = new HashMap<>();
+        request.put("status", UserStatus.approved.toString());
+        HttpResponseData response = adminChangeStatus(gson.toJson(request), user.getId());
+        if(response.getStatusCode() != 200) expHandler(response, "Failed to change status", null);
         setScene();
     }
 
     public void disapproveButtonClicked(ActionEvent event) {
         user.setStatus(UserStatus.not_approved);
+        Map<String, String> request = new HashMap<>();
+        request.put("status", UserStatus.not_approved.toString());
+        HttpResponseData response = adminChangeStatus(gson.toJson(request), user.getId());
+        if(response.getStatusCode() != 200) expHandler(response, "Failed to change status", null);
         setScene();
     }
 

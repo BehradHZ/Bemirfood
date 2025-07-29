@@ -44,6 +44,7 @@ public class BuyerTransactionsController {
         HBox.setHgrow(balanceSpacer, Priority.ALWAYS);
 
         List<Transaction> transactions = getTransactions();
+        Collections.reverse(transactions);
         for (Transaction transaction : transactions) {
             try {
                 FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(

@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import static HttpClientHandler.Requests.updateOrderAddress;
 import static HttpClientHandler.Requests.validateCoupon;
 import static exception.exp.expHandler;
 
@@ -126,7 +127,7 @@ public class CartCardController {
         if (order.getCoupon() != null)
             couponDetails.setText(order.getCoupon().getCode().toString());
         totalPrice.setText(order.getPayPrice().toString());
-
+        if(order.getDeliveryAddress() != null) addressTextField.setText(order.getDeliveryAddress());
         itemsInTheCart.getChildren().clear();
 
         // 2. Get the list of items from the order
@@ -152,6 +153,13 @@ public class CartCardController {
     public void pay() {
         Toggle selectedToggle = methodToggleGroup.getSelectedToggle();
         String address = addressTextField.getText();
+        Map<String, String> req = new HashMap<>();
+        req.put("address", address);
+        HttpResponseData responseDate = updateOrderAddress(gson.toJson(req), order.getId());
+        if(responseDate.getStatusCode() != 200){
+            expHandler(responseDate, "Failed register your address", null);
+            return;
+        }
         HttpResponseData response = null;
         if (selectedToggle == onlineToggle) {
             showPaymentDialog(false);
@@ -168,7 +176,7 @@ public class CartCardController {
             response = Requests.pay(gson.toJson(request));
         }
 
-        if(response.getStatusCode()== 200){
+        if(response.getStatusCode() == 200){
             showAlert("Successful payment", "Thanks for your purchase", Alert.AlertType.CONFIRMATION);
         }else if(response.getStatusCode() == 403){
             showAlert("Payment Failed", "Insufficient balance", Alert.AlertType.ERROR);

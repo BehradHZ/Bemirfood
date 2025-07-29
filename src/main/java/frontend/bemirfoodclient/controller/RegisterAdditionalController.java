@@ -124,7 +124,7 @@ public class RegisterAdditionalController {
         {
           "password": "%s",
           "full_name": "%s",
-          "mobile": "%s",
+          "phone": "%s",
           "email": "%s",
           "address": "%s",
           "profileImageBase64": "%s",

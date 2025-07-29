@@ -2,15 +2,14 @@ package frontend.bemirfoodclient.controller.profile.buyer.details;
 
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.restaurant.buyer.order.BuyerOrderCardController;
-import frontend.bemirfoodclient.model.entity.*;
+import frontend.bemirfoodclient.model.entity.Order;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static BuildEntity.builder.buildOrderList;
@@ -25,7 +24,7 @@ public class BuyerOrdersController {
     public void initialize() {
 
         List<Order> orders = getOrders();
-
+        Collections.reverse(orders);
         // 2. Loop through each order
         for (Order order : orders) {
             try {

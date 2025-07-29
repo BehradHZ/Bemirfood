@@ -224,7 +224,7 @@ public class AdminBorderController {
         contentVBox.getChildren().clear();
 
         List<Transaction> transactions = getTransactions(searchTextField.getText());
-
+        Collections.reverse(transactions);
         System.out.println("List of transactions : ");
         for (Transaction transaction : transactions) {
             try {

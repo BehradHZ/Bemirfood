@@ -971,6 +971,63 @@ public class Requests {
         }
     }
 
+    public static HttpResponseData updateOrderAddress(String requestBody, Long orderId) {
+        String path = "orders/" + orderId;
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path, HttpRequest.PUT, requestBody,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData adminChangeStatus(String requestBody, Long userId) {
+        String path = "admin/users/" + userId +  "/status";
+        try{
+            HttpResponseData responseData =
+                    sendRequest(
+                            path, HttpRequest.PUT, requestBody,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
+    public static HttpResponseData getUserStatus(Long userId) {
+        String path = "admin/users/" + userId +  "/status";
+        try{
+            HttpResponseData responseData =
+                    sendGetRequest(
+                            path,Token.read());
+            return responseData;
+        }catch (IOException e){
+            e.printStackTrace();
+            HttpResponseData response = new HttpResponseData(500, errorContent);
+            expHandler(
+                    response,
+                    "Failed to connect server",
+                    null
+            );
+            return response;
+        }
+    }
+
 
 
 }
