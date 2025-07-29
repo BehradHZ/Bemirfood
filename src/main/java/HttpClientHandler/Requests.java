@@ -209,6 +209,7 @@ public class Requests {
     }
 
     public static HttpResponseData getRestaurantMenu(Long restaurantId, String menuTitle) {
+        menuTitle  = menuTitle.replaceAll(" ", "%20");
         String path = "restaurants/" + restaurantId + "/menu/" + menuTitle;
         try{
             HttpResponseData responseData =
@@ -247,7 +248,8 @@ public class Requests {
     }
 
     public static HttpResponseData removeRestaurantMenus(Long restaurantId, String menuTitle) {
-        String path = "restaurants/" + restaurantId + "/menu/" +  menuTitle;
+        menuTitle  = menuTitle.replaceAll(" ", "%20");
+        String path = "restaurants/" + restaurantId + "/menu/" + menuTitle;
         try{
             HttpResponseData responseData =
                     sendRequest(
@@ -266,6 +268,7 @@ public class Requests {
     }
 
     public static HttpResponseData addItemMenu(Long restaurantId, String menuTitle, String requestBody) {
+        menuTitle  = menuTitle.replaceAll(" ", "%20");
         String path = "restaurants/" + restaurantId + "/menu/" +  menuTitle;
         try{
             HttpResponseData responseData =
@@ -285,6 +288,7 @@ public class Requests {
     }
 
     public static HttpResponseData removeItemMenu(Long restaurantId, String menuTitle, Long itemId) {
+        menuTitle  = menuTitle.replaceAll(" ", "%20");
         String path = "restaurants/" + restaurantId + "/menu/" +  menuTitle + "/" +  itemId;
         try{
             HttpResponseData responseData =

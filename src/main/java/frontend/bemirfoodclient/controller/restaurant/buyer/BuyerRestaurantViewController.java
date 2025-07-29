@@ -114,8 +114,17 @@ public class BuyerRestaurantViewController {
     }
 
     private void setFavoriteRestaurantStar() {
-        //do the stuff in backend
-        boolean isThisRestaurantInFavorite = true;
+        boolean isThisRestaurantInFavorite = false;
+        HttpResponseData response = getCustomerFavorites();
+        JsonArray array = response.getBody().getAsJsonObject().get("List of favorite restaurants").getAsJsonArray();
+        for(JsonElement el : array) {
+            JsonObject res = el.getAsJsonObject();
+            if(restaurant.getId() == res.get("id").getAsInt()){
+                isThisRestaurantInFavorite = true;
+                break;
+            }
+        }
+
         if (isThisRestaurantInFavorite) {
             favoriteRestaurantStar.setImage(new Image(Objects.requireNonNull(BemirfoodApplication.class.getResourceAsStream(
             "/frontend/bemirfoodclient/assets/icons/favorite.png")

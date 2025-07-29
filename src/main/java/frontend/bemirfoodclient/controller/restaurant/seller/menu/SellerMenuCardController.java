@@ -71,6 +71,7 @@ public class SellerMenuCardController {
 
         HttpResponseData response = getRestaurantMenu(menu.getRestaurant().getId(), menu.getTitle());
         JsonObject menuObj = response.getBody().getAsJsonObject("menu");
+        if(menuObj.isJsonNull()) return;
         String title = menuObj.get("title").getAsString();
 
         List<Item> menuItems = new ArrayList<>();
