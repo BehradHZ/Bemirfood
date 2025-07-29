@@ -62,7 +62,6 @@ public class BuyerBorderController {
 
     public static BorderPane staticMainBorderPane;
 
-
     public void initialize() {
         staticMainBorderPane = mainBorderPane;
         borderBemirfoodLogo.setPreserveRatio(true);
@@ -158,10 +157,16 @@ public class BuyerBorderController {
     @FXML
     public void profileButtonClicked() {
         try {
-            Stage stage = (Stage) profileIcon.getScene().getWindow();
+            /*Stage stage = (Stage) profileIcon.getScene().getWindow();
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
                     "/frontend/bemirfoodclient/profile/buyer/buyer-profile-view.fxml")));
-            stage.getScene().setRoot(root);
+            stage.getScene().setRoot(root);*/
+
+            FXMLLoader loader = new FXMLLoader(BemirfoodApplication.class.getResource(
+                    "/frontend/bemirfoodclient/profile/buyer/buyer-profile-view.fxml"
+            ));
+            Parent profileView = loader.load();
+            mainBorderPane.setCenter(profileView);
         } catch (IOException e) {
             e.printStackTrace();
         }

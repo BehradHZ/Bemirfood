@@ -6,6 +6,7 @@ import Util.Token;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
+import frontend.bemirfoodclient.controller.border.BuyerBorderController;
 import frontend.bemirfoodclient.controller.profile.buyer.details.EditProfileDialogController;
 import frontend.bemirfoodclient.model.dto.UserDto;
 import javafx.application.Platform;
@@ -34,14 +35,15 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static exception.exp.expHandler;
 import static HttpClientHandler.Requests.updateUserProfile;
+import static exception.exp.expHandler;
 
 public class BuyerProfileController {
 
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).serializeNulls()
             .create();
+    private static BorderPane mainNavigationPane;
 
     @FXML
     public BorderPane mainBorderPane;
@@ -85,6 +87,8 @@ public class BuyerProfileController {
 
     @FXML
     public void initialize() {
+        mainNavigationPane = BuyerBorderController.staticMainBorderPane;
+
         profileButtonClicked();
 
         backButtonImage.setPreserveRatio(true);
@@ -298,5 +302,9 @@ public class BuyerProfileController {
         alert.setContentText(content);
         alert.getDialogPane().setGraphic(null);
         alert.showAndWait();
+    }
+
+    public static BorderPane getMainNavigationPane() {
+        return mainNavigationPane;
     }
 }
