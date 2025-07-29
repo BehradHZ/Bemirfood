@@ -7,8 +7,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import frontend.bemirfoodclient.BemirfoodApplication;
 import frontend.bemirfoodclient.controller.border.BuyerBorderController;
+import frontend.bemirfoodclient.controller.profile.buyer.details.BuyerProfileDetailsController;
 import frontend.bemirfoodclient.controller.profile.buyer.details.EditProfileDialogController;
 import frontend.bemirfoodclient.model.dto.UserDto;
+import frontend.bemirfoodclient.model.entity.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -273,6 +275,13 @@ public class BuyerProfileController {
             dialog.getDialogPane().setContent(fxmlLoader.load());
         } catch (IOException ioe) {
             ioe.printStackTrace();
+        }
+
+        EditProfileDialogController dialogController = fxmlLoader.getController();
+        User currentUser = BuyerProfileDetailsController.getBuyer();
+
+        if (currentUser != null) {
+            dialogController.setUserData(currentUser);
         }
 
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.OK);
