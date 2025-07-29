@@ -89,8 +89,6 @@ public class SellerRestaurantViewController {
 
     private Restaurant restaurant;
 
-    private List<String> keywords = new ArrayList<>();
-
     List<Menu> menus = new ArrayList<>();
 
     public void setRestaurantData(Restaurant restaurant) {
@@ -115,10 +113,6 @@ public class SellerRestaurantViewController {
 
         addMenuButtonImage.setPreserveRatio(true);
         addMenuButtonImage.setFitHeight(40);
-
-//        keywords.add("kebab");
-//        keywords.add("irani");
-//        keywords.add("madagascar");
     }
 
     private void setScene() {

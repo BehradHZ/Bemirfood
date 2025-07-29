@@ -25,6 +25,8 @@ public class CartViewController {
     }
 
     public void setScene() {
+        cartsSection.getChildren().clear();
+
         List<Order> allOrders = getUnpaidOrders();
         
         List<Order> unpaidOrders = allOrders.stream()

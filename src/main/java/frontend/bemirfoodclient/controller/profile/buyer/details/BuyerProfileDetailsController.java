@@ -5,6 +5,7 @@ import HttpClientHandler.LocalDateTimeAdapter;
 import Util.ImageProcess;
 import com.google.gson.*;
 import frontend.bemirfoodclient.BemirfoodApplication;
+import frontend.bemirfoodclient.controller.profile.buyer.BuyerProfileController;
 import frontend.bemirfoodclient.controller.restaurant.buyer.BuyerRestaurantViewController;
 import frontend.bemirfoodclient.controller.restaurant.buyer.RestaurantCardController;
 import frontend.bemirfoodclient.model.ImageLoader;
@@ -23,6 +24,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -39,7 +41,6 @@ import static BuildEntity.EntityRequest.getEntity;
 import static HttpClientHandler.Requests.*;
 import static Util.ImageProcess.imageFileToBase64;
 import static exception.exp.expHandler;
-import static frontend.bemirfoodclient.controller.border.BuyerBorderController.staticMainBorderPane;
 
 public class BuyerProfileDetailsController {
 
@@ -120,7 +121,9 @@ public class BuyerProfileDetailsController {
     }
 
     private void cardClick(Restaurant selectedRestaurant) {
-        if (selectedRestaurant != null && staticMainBorderPane != null) {
+        BorderPane navigationPane = BuyerProfileController.getMainNavigationPane();
+
+        if (selectedRestaurant != null && navigationPane != null) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(
                         "/frontend/bemirfoodclient/restaurant/buyer/buyer-restaurant-view.fxml"
@@ -130,7 +133,7 @@ public class BuyerProfileDetailsController {
                 BuyerRestaurantViewController pageController = loader.getController();
                 pageController.setRestaurantData(selectedRestaurant);
 
-                staticMainBorderPane.setCenter(restaurantPageView);
+                navigationPane.setCenter(restaurantPageView);
             } catch (IOException e) {
                 e.printStackTrace();
             }

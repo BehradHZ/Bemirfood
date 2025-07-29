@@ -73,10 +73,10 @@ public class SellerProfileController {
 
     public String profileView;
 
-    @FXML
-    public Button backButton;
-    @FXML
-    public ImageView backButtonImage;
+//    @FXML
+//    public Button backButton;
+//    @FXML
+//    public ImageView backButtonImage;
     @FXML
     public Button editButton;
     @FXML
@@ -92,8 +92,8 @@ public class SellerProfileController {
     public void initialize() {
         profileButtonClicked();
 
-        backButtonImage.setPreserveRatio(true);
-        backButtonImage.setFitHeight(20);
+//        backButtonImage.setPreserveRatio(true);
+//        backButtonImage.setFitHeight(20);
 
         HBox.setHgrow(profileSpacer, Priority.ALWAYS);
 
@@ -233,17 +233,17 @@ public class SellerProfileController {
         alert.showAndWait();
     }
 
-    @FXML
-    public void backButtonClicked() {
-        try {
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
-                    "/frontend/bemirfoodclient/border/seller-border-view.fxml")));
-            stage.getScene().setRoot(root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    @FXML
+//    public void backButtonClicked() {
+//        try {
+//            Stage stage = (Stage) backButton.getScene().getWindow();
+//            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(
+//                    "/frontend/bemirfoodclient/border/seller-border-view.fxml")));
+//            stage.getScene().setRoot(root);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public HttpResponseData editUserProfile(UserDto userDto) {
         Map<String, Object> request = new LinkedHashMap<>();
